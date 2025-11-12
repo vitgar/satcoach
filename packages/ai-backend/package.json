@@ -1,0 +1,33 @@
+{
+  "name": "@satcoach/ai-backend",
+  "version": "1.0.0",
+  "description": "SAT Coach AI Backend - OpenAI Integration",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Tests coming soon\" && exit 0"
+  },
+  "keywords": ["sat", "ai", "openai", "education"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.0.0",
+    "dotenv": "^17.2.3",
+    "openai": "^4.67.3",
+    "express-validator": "^7.2.0",
+    "axios": "^1.7.7"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^22.8.6",
+    "typescript": "^5.6.3",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
+  }
+}
+

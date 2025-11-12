@@ -1,0 +1,152 @@
+{
+  "description": "MongoDB Indexes for SAT Coach - Copy and paste these into MongoDB Compass",
+  "instructions": "For each collection, go to the Indexes tab in Compass, click 'Create Index', and paste the JSON",
+  
+  "users": [
+    {
+      "name": "email_unique",
+      "keys": { "email": 1 },
+      "options": { "unique": true },
+      "description": "Unique index on email for fast user lookup and prevent duplicates"
+    },
+    {
+      "name": "createdAt",
+      "keys": { "createdAt": 1 },
+      "options": {},
+      "description": "Index for sorting users by registration date"
+    }
+  ],
+  
+  "questions": [
+    {
+      "name": "subject_difficulty",
+      "keys": { "subject": 1, "difficulty": 1 },
+      "options": {},
+      "description": "Compound index for filtering questions by subject and difficulty"
+    },
+    {
+      "name": "tags",
+      "keys": { "tags": 1 },
+      "options": {},
+      "description": "Index for topic-based question search"
+    },
+    {
+      "name": "timesUsed",
+      "keys": { "metadata.timesUsed": 1 },
+      "options": {},
+      "description": "Index for selecting less-used questions"
+    },
+    {
+      "name": "subject_difficulty_timesUsed",
+      "keys": { "subject": 1, "difficulty": 1, "metadata.timesUsed": 1 },
+      "options": {},
+      "description": "Compound index for optimal question selection"
+    }
+  ],
+  
+  "studentprogress": [
+    {
+      "name": "user_subject_topic_unique",
+      "keys": { "userId": 1, "subject": 1, "topic": 1 },
+      "options": { "unique": true },
+      "description": "Unique compound index - one progress record per user/subject/topic"
+    },
+    {
+      "name": "user_nextReview",
+      "keys": { "userId": 1, "performance.nextReviewDate": 1 },
+      "options": {},
+      "description": "Index for spaced repetition - finding due reviews"
+    },
+    {
+      "name": "user_mastery",
+      "keys": { "userId": 1, "performance.masteryLevel": 1 },
+      "options": {},
+      "description": "Index for analytics - tracking mastery levels"
+    },
+    {
+      "name": "nextReview_priority",
+      "keys": { "userId": 1, "performance.nextReviewDate": 1, "performance.masteryLevel": 1 },
+      "options": {},
+      "description": "Compound index for prioritized review scheduling"
+    }
+  ],
+  
+  "chatsessions": [
+    {
+      "name": "user_question",
+      "keys": { "userId": 1, "questionId": 1 },
+      "options": {},
+      "description": "Index for retrieving chat history for a specific question"
+    },
+    {
+      "name": "question",
+      "keys": { "questionId": 1 },
+      "options": {},
+      "description": "Index for analytics - chat sessions per question"
+    },
+    {
+      "name": "createdAt",
+      "keys": { "createdAt": 1 },
+      "options": {},
+      "description": "Index for cleanup - removing old chat sessions"
+    },
+    {
+      "name": "userId_createdAt",
+      "keys": { "userId": 1, "createdAt": -1 },
+      "options": {},
+      "description": "Index for user's recent chat history"
+    }
+  ],
+  
+  "bookmarks": [
+    {
+      "name": "user_question_unique",
+      "keys": { "userId": 1, "questionId": 1 },
+      "options": { "unique": true },
+      "description": "Unique index - one bookmark per user/question"
+    },
+    {
+      "name": "user_review",
+      "keys": { "userId": 1, "markedForReview": 1 },
+      "options": {},
+      "description": "Index for finding bookmarked questions marked for review"
+    },
+    {
+      "name": "userId_createdAt",
+      "keys": { "userId": 1, "createdAt": -1 },
+      "options": {},
+      "description": "Index for user's recent bookmarks"
+    }
+  ],
+  
+  "studysessions": [
+    {
+      "name": "user_startTime",
+      "keys": { "userId": 1, "startTime": -1 },
+      "options": {},
+      "description": "Index for user's recent study sessions"
+    },
+    {
+      "name": "user_endTime",
+      "keys": { "userId": 1, "endTime": 1 },
+      "options": {},
+      "description": "Index for finding active sessions (endTime is null)"
+    },
+    {
+      "name": "userId_startTime_endTime",
+      "keys": { "userId": 1, "startTime": -1, "endTime": 1 },
+      "options": {},
+      "description": "Compound index for session analytics and filtering"
+    }
+  ],
+  
+  "notes": {
+    "performance": "These indexes are crucial for application performance",
+    "unique_indexes": "Unique indexes prevent duplicate data and ensure data integrity",
+    "compound_indexes": "Compound indexes optimize multi-field queries",
+    "order_matters": "In compound indexes, field order matters - most selective field first",
+    "memory_usage": "Indexes use RAM - MongoDB Atlas M0 (free tier) has 512MB shared RAM",
+    "query_optimization": "Use Compass Explain Plan tab to verify indexes are being used"
+  }
+}
+
