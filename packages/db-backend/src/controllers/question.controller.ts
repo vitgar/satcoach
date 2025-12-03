@@ -122,7 +122,7 @@ export class QuestionController {
         return;
       }
 
-      const { subject, topic } = req.query;
+      const { subject, topic, requireGraph } = req.query;
       const userId = req.user.userId;
 
       // Get user's learning profile
@@ -142,7 +142,8 @@ export class QuestionController {
       const question = await questionService.getNextQuestionForUser(
         userId,
         subject as Subject | undefined,
-        topic as string | undefined
+        topic as string | undefined,
+        requireGraph === 'true'
       );
 
       // Don't send the correct answer to frontend yet

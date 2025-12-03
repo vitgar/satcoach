@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { Question, User } from '../types';
+import { Question } from '../types';
 import { aiService, QuestionContext, StudentContext, ChatMessage } from '../services/ai.service';
 import { useAuth } from '../contexts/AuthContext';
+import { MathMarkdown } from './MathMarkdown';
 
 interface Message {
   id: string;
@@ -17,34 +18,59 @@ interface ChatPanelProps {
     correctAnswer: string;
     explanation: string | null;
   } | null;
+  onNextQuestion?: () => void;
+  onPreviousQuestion?: () => void;
+  currentIndex?: number;
+  totalQuestions?: number;
+  demoMode?: boolean;
+  learnerState?: {
+    currentLevel: number;
+    studentType?: 'struggler' | 'intermediate' | 'advanced';
+  };
 }
 
-export const ChatPanel: React.FC<ChatPanelProps> = ({ question, answerResult }) => {
+export const ChatPanel: React.FC<ChatPanelProps> = ({
+  question,
+  answerResult,
+  onNextQuestion,
+  onPreviousQuestion,
+  currentIndex,
+  totalQuestions,
+  demoMode = false,
+  learnerState,
+}) => {
   const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Reset chat when question changes
-    setMessages([
-      {
-        id: '1',
-        role: 'assistant',
-        content: `Hi! I'm here to help you understand this ${question.subject} question. Feel free to ask me anything about:
+    const greeting = demoMode
+      ? `👋 Welcome to the SAT Coach demo mode!
+
+Use the navigation controls above to move between the curated set of graph questions.
+You can still review the explanation after submitting an answer, but live AI chat is temporarily disabled.`
+      : `Hi! I'm here to help you understand this ${question.subject} question. Feel free to ask me anything about:
         
 • How to approach this problem
 • Clarification on any concepts
 • Step-by-step explanation
 • Tips and strategies
 
-What would you like to know?`,
+What would you like to know?`;
+
+    setMessages([
+      {
+        id: '1',
+        role: 'assistant',
+        content: greeting,
         timestamp: new Date(),
       },
     ]);
     setInput('');
-  }, [question._id]);
+  }, [question._id, demoMode]);
 
   useEffect(() => {
     // Inject answer result into chat
@@ -81,11 +107,29 @@ Would you like me to help you understand why? Feel free to ask questions about:
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll within the messages container, not the whole page
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   };
 
   const handleSendMessage = async () => {
-    if (!input.trim() || !user) return;
+    if (!input.trim()) return;
+
+    if (demoMode) {
+      const infoMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content:
+          "Live AI tutoring is paused for this demo. Use the Back and Next buttons to explore the pre-loaded graph questions.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, infoMessage]);
+      setInput('');
+      return;
+    }
+
+    if (!user) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -110,8 +154,22 @@ Would you like me to help you understand why? Feel free to ask questions about:
         tags: question.tags,
       };
 
+      // Use learnerState if available (more accurate), otherwise fall back to user profile
+      const studentLevel = learnerState?.currentLevel || user.learningProfile.currentLevel || 3;
+      
+      // Determine recent performance based on student type
+      let recentPerformance: 'struggling' | 'average' | 'excelling' | undefined;
+      if (learnerState?.studentType === 'struggler') {
+        recentPerformance = 'struggling';
+      } else if (learnerState?.studentType === 'advanced') {
+        recentPerformance = 'excelling';
+      } else {
+        recentPerformance = 'average';
+      }
+      
       const studentContext: StudentContext = {
-        level: user.learningProfile.currentLevel,
+        level: studentLevel,
+        recentPerformance,
       };
 
       // Convert message history to AI format
@@ -163,15 +221,56 @@ Would you like me to help you understand why? Feel free to ask questions about:
   };
 
   return (
-    <div className="card h-full flex flex-col">
+    <div className="card h-full flex flex-col min-h-0">
       {/* Chat Header */}
       <div className="pb-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">AI Coach</h3>
-        <p className="text-sm text-gray-600">Ask me anything about this question</p>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {demoMode ? 'Graph Tutor (Demo Mode)' : 'AI Coach'}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {demoMode ? 'Use the navigation controls to explore curated graph questions.' : 'Ask me anything about this question'}
+            </p>
+          </div>
+          {typeof currentIndex === 'number' &&
+            typeof totalQuestions === 'number' &&
+            totalQuestions > 0 && (
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={onPreviousQuestion}
+                disabled={!onPreviousQuestion}
+                className="px-3 py-1 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+              >
+                ← Back
+              </button>
+              <span className="text-sm font-medium text-gray-700">
+                {currentIndex + 1} / {totalQuestions}
+              </span>
+              <button
+                onClick={onNextQuestion}
+                disabled={!onNextQuestion}
+                className="px-3 py-1 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+              >
+                Next →
+              </button>
+            </div>
+          )}
+          {onNextQuestion && (!totalQuestions || totalQuestions === undefined) && (
+            <div className="flex items-center">
+              <button
+                onClick={onNextQuestion}
+                className="px-3 py-1 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Next Question →
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-auto py-4 space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-auto py-4 space-y-4 pb-0">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -184,7 +283,15 @@ Would you like me to help you understand why? Feel free to ask questions about:
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              {message.role === 'user' ? (
+                // User messages: simple text display
+                <p className="text-sm whitespace-pre-wrap text-white">{message.content}</p>
+              ) : (
+                // AI messages: render with MathMarkdown for LaTeX support
+                <div className="text-sm">
+                  <MathMarkdown content={message.content} />
+                </div>
+              )}
               <p
                 className={`text-xs mt-1 ${
                   message.role === 'user' ? 'text-primary-100' : 'text-gray-500'
@@ -211,52 +318,54 @@ Would you like me to help you understand why? Feel free to ask questions about:
           </div>
         )}
 
-        <div ref={messagesEndRef} />
+        {/* Scroll anchor - no longer needed with scrollTop approach */}
       </div>
 
       {/* Input */}
-      <div className="pt-4 border-t border-gray-200">
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Ask a question..."
-            className="input-field flex-1"
-            disabled={loading}
-          />
-          <button
-            onClick={handleSendMessage}
-            disabled={!input.trim() || loading}
-            className="btn-primary px-6"
-          >
-            Send
-          </button>
-        </div>
+      {!demoMode && (
+        <div className="pt-4 border-t border-gray-200">
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask a question..."
+              className="input-field flex-1"
+              disabled={loading}
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={!input.trim() || loading}
+              className="btn-primary px-6"
+            >
+              Send
+            </button>
+          </div>
 
-        {/* Quick Questions */}
-        <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            onClick={() => setInput('How do I approach this?')}
-            className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
-          >
-            How do I approach this?
-          </button>
-          <button
-            onClick={() => setInput('Can you give me a hint?')}
-            className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
-          >
-            Can you give me a hint?
-          </button>
-          <button
-            onClick={() => setInput('Explain the concept')}
-            className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
-          >
-            Explain the concept
-          </button>
+          {/* Quick Questions */}
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              onClick={() => setInput('How do I approach this?')}
+              className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+            >
+              How do I approach this?
+            </button>
+            <button
+              onClick={() => setInput('Can you give me a hint?')}
+              className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+            >
+              Can you give me a hint?
+            </button>
+            <button
+              onClick={() => setInput('Explain the concept')}
+              className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+            >
+              Explain the concept
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

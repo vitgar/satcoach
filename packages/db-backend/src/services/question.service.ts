@@ -205,7 +205,8 @@ export class QuestionService {
   async getNextQuestionForUser(
     userId: string,
     subject?: Subject,
-    topic?: string
+    topic?: string,
+    requireGraph: boolean = false
   ): Promise<IQuestion> {
     console.log(`[QuestionService] Getting next question for user ${userId}, subject: ${subject}, topic: ${topic}`);
 
@@ -228,6 +229,11 @@ export class QuestionService {
       query.tags = topic;
     }
 
+    // If graph is required (for testing graph rendering), filter to questions that include a graph
+    if (requireGraph) {
+      query['content.graph'] = { $exists: true };
+    }
+
     let question = await Question.findOne(query)
       .sort({ 'metadata.timesUsed': 1 })
       .exec();
@@ -244,6 +250,17 @@ export class QuestionService {
         difficulty,
         topic
       );
+
+      // If graph was required but AI returned none (shouldn't happen with function-calling),
+      // try one more generation with a graph-focused topic hint
+      if (requireGraph && question && !(question.content as any).graph) {
+        const graphTopic = topic ? `${topic} with graph` : 'function with graph visualization';
+        question = await aiIntegrationService.generateAndSaveQuestion(
+          subject || 'math',
+          difficulty,
+          graphTopic
+        );
+      }
     }
 
     // TypeScript null check (should never be null at this point)

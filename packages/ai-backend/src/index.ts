@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { config, validateEnv } from './config/environment';
 import questionRoutes from './routes/question.routes';
 import chatRoutes from './routes/chat.routes';
+import feynmanRoutes from './routes/feynman.routes';
 import { errorHandler, notFound } from './middleware/errorHandler.middleware';
 
 // Validate environment variables
@@ -41,6 +42,7 @@ app.get('/health', (_req, res) => {
 // API Routes
 app.use('/api/v1/questions', questionRoutes);
 app.use('/api/v1/chat', chatRoutes);
+app.use('/api/v1/feynman', feynmanRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -71,6 +73,9 @@ const startServer = () => {
       console.log(`   POST /api/v1/chat/hint`);
       console.log(`   POST /api/v1/chat/explain`);
       console.log(`   POST /api/v1/chat/clarify`);
+      console.log('');
+      console.log(`   POST /api/v1/feynman/evaluate`);
+      console.log(`   POST /api/v1/feynman/prompts`);
       console.log('');
     });
   } catch (error) {

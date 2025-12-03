@@ -34,6 +34,8 @@ export class AIIntegrationService {
           options: aiQuestion.content.options,
           correctAnswer: aiQuestion.content.correctAnswer,
           explanation: aiQuestion.content.explanation,
+          // Persist graph data when provided by AI backend
+          graph: aiQuestion.content.graph,
         },
         tags: aiQuestion.tags || [],
         metadata: {

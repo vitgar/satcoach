@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* KaTeX CSS for math rendering */
+@import 'katex/dist/katex.min.css';
+
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900;
@@ -23,6 +26,64 @@
   
   .card {
     @apply bg-white rounded-lg shadow-md p-6;
+  }
+}
+
+/* Math Markdown Styling */
+.math-markdown {
+  @apply text-gray-800;
+}
+
+.math-markdown .katex {
+  font-size: 1.1em;
+}
+
+.math-markdown .katex-display {
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+/* Ensure math doesn't break layout in chat messages */
+.math-markdown .katex-html {
+  text-align: left;
+}
+
+/* Graph Container Styling */
+.graph-container {
+  background: white;
+  transition: box-shadow 0.2s;
+}
+
+.graph-container:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Custom fraction rectangle visuals */
+.fraction-rectangle-grid {
+  display: grid;
+  width: min(320px, 100%);
+  max-width: 100%;
+  aspect-ratio: 4 / 3;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.fraction-rectangle-cell {
+  border-width: 1px;
+  border-style: solid;
+  transition: background-color 0.2s ease;
+}
+
+/* Responsive graph handling */
+@media (max-width: 768px) {
+  .graph-container {
+    padding: 0.75rem;
+  }
+  
+  .math-markdown .katex {
+    font-size: 1em;
   }
 }
 

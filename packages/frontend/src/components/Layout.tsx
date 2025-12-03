@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,7 +65,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </nav>
 
       {/* Main Content */}
-      <main className="py-6">
+      <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
         {children}
       </main>
     </div>

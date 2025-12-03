@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { progressService } from '../services/progress.service';
-import { sessionService } from '../services/session.service';
+// import { sessionService } from '../services/session.service'; // TODO: Use when implementing session tracking
 import { Analytics, ReviewSchedule } from '../types';
 
 export const DashboardPage = () => {

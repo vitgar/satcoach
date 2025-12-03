@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.routes';
 import questionRoutes from './routes/question.routes';
 import progressRoutes from './routes/progress.routes';
 import sessionRoutes from './routes/session.routes';
+import learningRoutes from './routes/learning.routes';
 import { errorHandler, notFound } from './middleware/errorHandler.middleware';
 
 // Validate environment variables
@@ -45,6 +46,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/questions', questionRoutes);
 app.use('/api/v1/progress', progressRoutes);
 app.use('/api/v1/sessions', sessionRoutes);
+app.use('/api/v1/learning', learningRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -86,6 +88,11 @@ const startServer = async () => {
       console.log(`   POST /api/v1/sessions/start`);
       console.log(`   PUT  /api/v1/sessions/:id/end`);
       console.log(`   GET  /api/v1/sessions/history`);
+      console.log('');
+      console.log(`   GET  /api/v1/learning/state`);
+      console.log(`   GET  /api/v1/learning/question`);
+      console.log(`   POST /api/v1/learning/attempt`);
+      console.log(`   POST /api/v1/learning/explain`);
       console.log('');
     });
   } catch (error) {
