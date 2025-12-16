@@ -6,6 +6,7 @@ import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { StudyPage } from './pages/StudyPage';
+import { QuestionValidationPage } from './pages/QuestionValidationPage';
 import './styles/index.css';
 
 const queryClient = new QueryClient({
@@ -41,7 +42,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/validation"
+              element={
+                <ProtectedRoute>
+                  <QuestionValidationPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

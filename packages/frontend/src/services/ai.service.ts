@@ -100,6 +100,34 @@ export const aiService = {
   },
 
   /**
+   * Get clarifying questions about foundational concepts
+   */
+  async getClarifyingQuestions(
+    questionContext: QuestionContext,
+    studentContext: StudentContext,
+    chatHistory?: ChatMessage[]
+  ): Promise<string[]> {
+    try {
+      const response = await aiApi.post('/chat/clarifying-questions', {
+        questionContext,
+        studentContext,
+        chatHistory,
+      });
+      return response.data.questions || [];
+    } catch (error: any) {
+      console.error('[AIService] Clarifying questions error:', error);
+      // Return fallback questions based on tags
+      const fallback: string[] = [];
+      if (questionContext.tags && questionContext.tags.length > 0) {
+        questionContext.tags.slice(0, 3).forEach(tag => {
+          fallback.push(`What is ${tag}?`);
+        });
+      }
+      return fallback.length > 0 ? fallback : [];
+    }
+  },
+
+  /**
    * Generate a new question
    */
   async generateQuestion(subject: string, difficulty: string, topic?: string): Promise<any> {

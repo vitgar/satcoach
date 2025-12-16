@@ -1,0 +1,1875 @@
+const fs = require('fs');
+const path = require('path');
+
+const baseTimestamp = '2025-01-01T00:00:00.000Z';
+const generatedBy = 'manual';
+const difficultyScoreMap = {
+  easy: 4,
+  medium: 6,
+  hard: 8,
+};
+
+const createSeed = (seed) => seed;
+
+const mathSeeds = [
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText: 'If 3x - 7 = 11, what is the value of x?',
+    options: ['6', '4', '2', '-6'],
+    correctAnswer: 'A',
+    explanation: 'Add 7 to both sides to get 3x = 18, then divide by 3 to find x = 6.',
+    tags: ['heart of algebra', 'linear equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A system of equations is given by 2x + 3y = 22 and x - y = 1. What is the value of y?',
+    options: ['3', '4', '5', '6'],
+    correctAnswer: 'B',
+    explanation:
+      'From x - y = 1, substitute x = y + 1. Then 2(y + 1) + 3y = 22 → 5y + 2 = 22 → y = 4.',
+    tags: ['heart of algebra', 'systems of equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText:
+      'Which inequality represents all values of x for which 5 - 2x ≥ 11?',
+    options: ['x ≤ -3', 'x ≥ -3', 'x ≤ 3', 'x ≥ 3'],
+    correctAnswer: 'A',
+    explanation:
+      'Subtract 5 to get -2x ≥ 6, then divide by -2, reversing the sign: x ≤ -3.',
+    tags: ['heart of algebra', 'inequalities'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText:
+      'A line has slope -2 and passes through (1, 5). What is its y-intercept?',
+    options: ['-3', '7', '3', '-7'],
+    correctAnswer: 'B',
+    explanation:
+      'Use y = mx + b. Substituting gives 5 = -2(1) + b → b = 7.',
+    tags: ['heart of algebra', 'slope intercept'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A rideshare company charges an initial fee of $2.50 plus $1.75 per mile. Which equation models the total cost C, in dollars, of a ride that is m miles long?',
+    options: ['C = 2.50m + 1.75', 'C = 1.75m + 2.50', 'C = 1.75m - 2.50', 'C = 2.50m - 1.75'],
+    correctAnswer: 'B',
+    explanation:
+      'The slope represents the per-mile rate ($1.75), and the y-intercept is the initial fee ($2.50), so C = 1.75m + 2.50.',
+    tags: ['heart of algebra', 'linear modeling'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The quadratic function f(x) = x^2 - 6x + 5 can be rewritten to reveal its vertex. What is the minimum value of f(x)?',
+    options: ['-4', '-1', '1', '4'],
+    correctAnswer: 'A',
+    explanation: 'Complete the square: f(x) = (x - 3)^2 - 4. The minimum value is -4.',
+    tags: ['passport to advanced math', 'quadratics'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText: 'What are the solutions to x^2 - 9x + 20 = 0?',
+    options: ['x = 4 or x = 5', 'x = 2 or x = 10', 'x = -4 or x = -5', 'x = -2 or x = 10'],
+    correctAnswer: 'A',
+    explanation: 'Factor to (x - 4)(x - 5) = 0, giving x = 4 or x = 5.',
+    tags: ['passport to advanced math', 'quadratics'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The graph of g(x) intersects the x-axis at x = -2 and x = 6 and opens upward. Which equation could represent g(x)?',
+    options: ['g(x) = (x + 2)(x - 6)', 'g(x) = -(x + 2)(x - 6)', 'g(x) = (x - 2)(x - 6)', 'g(x) = (x + 2)(x + 6)'],
+    correctAnswer: 'A',
+    explanation: 'A quadratic with zeros at -2 and 6 factors as (x + 2)(x - 6) and opening upward keeps the positive leading coefficient.',
+    tags: ['passport to advanced math', 'quadratic roots'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A bacteria population doubles every 6 hours. If the initial population is 1,200, how many bacteria are there after 18 hours?',
+    options: ['2,400', '4,800', '9,600', '14,400'],
+    correctAnswer: 'C',
+    explanation: 'Eighteen hours is three doubling periods: 1,200 × 2^3 = 1,200 × 8 = 9,600.',
+    tags: ['passport to advanced math', 'exponential growth'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A medication decays by 15% each hour. If 80 milligrams are present initially, which expression gives the amount after t hours?',
+    options: ['80(0.85)^t', '80(1.15)^t', '80(0.15)^t', '80(0.85t)'],
+    correctAnswer: 'A',
+    explanation: 'Exponential decay with 15% loss multiplies by 0.85 each hour, so amount = 80(0.85)^t.',
+    tags: ['passport to advanced math', 'exponential decay'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Two numbers sum to 42 and have a difference of 6 (larger minus smaller). What is the larger number?',
+    options: ['18', '21', '24', '27'],
+    correctAnswer: 'C',
+    explanation:
+      'Let the numbers be a and b with a > b. Then a + b = 42 and a - b = 6. Adding equations gives 2a = 48, so a = 24.',
+    tags: ['heart of algebra', 'systems of equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A faucet can fill a tub in 24 minutes, and a drain can empty it in 36 minutes. If both are open, how many minutes will it take to fill the tub?',
+    options: ['48', '54', '72', '96'],
+    correctAnswer: 'C',
+    explanation:
+      'Filling rate is 1/24 tub per minute, draining rate is 1/36. Net rate is 1/24 - 1/36 = 1/72, so the tub fills in 72 minutes.',
+    tags: ['problem solving and data analysis', 'rates'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The line graph shows the total number of study hours Mateo recorded over five weeks. During which week did he log the greatest increase compared with the previous week?',
+    options: ['Week 2', 'Week 3', 'Week 4', 'Week 5'],
+    correctAnswer: 'C',
+    explanation:
+      'Hours per week increase as follows: Week1=6, Week2=9 (+3), Week3=11 (+2), Week4=16 (+5), Week5=18 (+2). The greatest jump is +5 from Week3 to Week4.',
+    tags: ['problem solving and data analysis', 'data interpretation'],
+    graph: {
+      type: 'line',
+      data: [
+        { week: 1, hours: 6 },
+        { week: 2, hours: 9 },
+        { week: 3, hours: 11 },
+        { week: 4, hours: 16 },
+        { week: 5, hours: 18 },
+      ],
+      config: {
+        title: 'Mateo’s Weekly Study Hours',
+        xLabel: 'Week',
+        yLabel: 'Hours',
+        xDomain: [1, 5],
+        yDomain: [0, 20],
+        showGrid: true,
+        dataKeys: ['hours'],
+      },
+    },
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A scatter plot of students’ hours slept and reaction times shows a line of best fit with equation t = -4h + 80, where t is reaction time in milliseconds. What does the slope represent?',
+    options: [
+      'Reaction time decreases about 4 ms per additional hour of sleep',
+      'Reaction time increases about 4 ms per additional hour of sleep',
+      'Students sleep 4 hours per 80 ms of reaction time',
+      'Students average 4 hours of sleep',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The slope -4 indicates that for each extra hour of sleep, reaction time decreases by roughly 4 milliseconds.',
+    tags: ['problem solving and data analysis', 'scatter plots'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A class contains 12 juniors and 8 seniors. If juniors average 78 on an exam and seniors average 84, what is the overall class average?',
+    options: ['80.4', '81.2', '82.0', '83.2'],
+    correctAnswer: 'A',
+    explanation:
+      'Total points = 12(78) + 8(84) = 1,608. Divide by 20 students to get an overall average of 80.4.',
+    tags: ['problem solving and data analysis', 'weighted average'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText: 'A rectangle has length 12 centimeters and width 7 centimeters. What is its area?',
+    options: ['19 cm²', '42 cm²', '72 cm²', '84 cm²'],
+    correctAnswer: 'D',
+    explanation: 'Area of a rectangle is length × width, so 12 × 7 = 84 cm².',
+    tags: ['geometry', 'area'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A circle has a circumference of 31.4 centimeters. Using π ≈ 3.14, what is the diameter of the circle?',
+    options: ['5 cm', '8 cm', '10 cm', '12 cm'],
+    correctAnswer: 'C',
+    explanation: 'Circumference = πd, so d = 31.4 / 3.14 ≈ 10 cm.',
+    tags: ['geometry', 'circles'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Triangle PQR has sides PQ = 10, QR = 13, and PR = 15. What is the perimeter of triangle PQR?',
+    options: ['26', '28', '36', '38'],
+    correctAnswer: 'D',
+    explanation: 'Add the three sides: 10 + 13 + 15 = 38.',
+    tags: ['geometry', 'triangles'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'In right triangle ABC with right angle at B, AB = 5 and AC = 13. What is sin(A)?',
+    options: ['5/13', '12/13', '13/5', '5/12'],
+    correctAnswer: 'B',
+    explanation:
+      'Using the Pythagorean theorem, BC = √(13^2 - 5^2) = 12. Angle A has opposite side BC = 12 and hypotenuse AC = 13, so sin(A) = 12/13.',
+    tags: ['geometry', 'trigonometry'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A cylindrical water tank has radius 3 feet and height 8 feet. What is its volume to the nearest cubic foot? (Use π ≈ 3.14.)',
+    options: ['113 ft³', '151 ft³', '226 ft³', '452 ft³'],
+    correctAnswer: 'C',
+    explanation: 'Volume = πr²h ≈ 3.14 × 9 × 8 = 226 ft³.',
+    tags: ['geometry', 'solid geometry'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The function f is defined by f(x) = 3|x - 2| + 1. What is the minimum value of f(x)?',
+    options: ['-2', '0', '1', '3'],
+    correctAnswer: 'C',
+    explanation: 'Absolute value is minimized at x = 2 where |x - 2| = 0, so f(2) = 1.',
+    tags: ['passport to advanced math', 'absolute value'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText:
+      'If h(x) = x^3 - 4x and h(x) = 0, which of the following is NOT a solution?',
+    options: ['x = 0', 'x = 2', 'x = -2', 'x = √2'],
+    correctAnswer: 'D',
+    explanation:
+      'Factor x(x^2 - 4) = x(x - 2)(x + 2). The real zeros are -2, 0, and 2. √2 is not a root.',
+    tags: ['passport to advanced math', 'polynomials'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The function p(x) = -2(x - 1)^2 + 9 models the height in feet of a ball t seconds after it is tossed. What is the maximum height of the ball?',
+    options: ['9 ft', '10 ft', '11 ft', '12 ft'],
+    correctAnswer: 'A',
+    explanation:
+      'A downward-opening parabola written in vertex form has maximum equal to the constant term, 9 feet.',
+    tags: ['passport to advanced math', 'quadratic modeling'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The bar chart shows the number of students attending each review session. How many more students attended Session 3 than Session 1?',
+    options: ['4', '6', '8', '10'],
+    correctAnswer: 'B',
+    explanation:
+      'Session 1 has 18 students and Session 3 has 24, a difference of 6.',
+    tags: ['problem solving and data analysis', 'bar charts'],
+    graph: {
+      type: 'bar',
+      data: [
+        { session: '1', students: 18 },
+        { session: '2', students: 21 },
+        { session: '3', students: 24 },
+        { session: '4', students: 20 },
+      ],
+      config: {
+        title: 'Review Session Attendance',
+        xLabel: 'Session',
+        yLabel: 'Students',
+        dataKeys: ['students'],
+        showGrid: true,
+      },
+    },
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A bag contains 5 red, 7 blue, and 8 green tiles. If one tile is selected at random, what is the probability it is not green?',
+    options: ['5/20', '7/20', '12/20', '15/20'],
+    correctAnswer: 'C',
+    explanation:
+      'There are 20 tiles in total and 12 are not green (red or blue), so the probability is 12/20 = 3/5.',
+    tags: ['problem solving and data analysis', 'probability'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText:
+      'How many different 3-letter arrangements can be formed from the letters in the word PLAN without repeating any letter?',
+    options: ['24', '36', '48', '64'],
+    correctAnswer: 'A',
+    explanation:
+      'There are 4 choices for the first letter, 3 for the second, and 2 for the third: 4 × 3 × 2 = 24 arrangements.',
+    tags: ['problem solving and data analysis', 'combinatorics'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText: 'Solve 4/(x - 1) + 3/(x + 1) = 5. Which answer gives all real solutions?',
+    options: [
+      'x = 2 only',
+      'x = -3/5 only',
+      'x = 2 or x = -3/5',
+      'x = 1 or x = -1',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Multiplying by (x - 1)(x + 1) gives 4(x + 1) + 3(x - 1) = 5(x^2 - 1). Simplifying leads to 5x^2 - 7x - 6 = 0, which factors to (5x + 3)(x - 2) = 0. Solutions are x = 2 and x = -3/5, neither excluded by the denominators.',
+    tags: ['passport to advanced math', 'rational equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText: 'Solve for x: |2x - 5| = 9.',
+    options: ['x = -2 or x = 7', 'x = 2 or x = -7', 'x = -2 or x = 2', 'x = -7 or x = 7'],
+    correctAnswer: 'A',
+    explanation: 'Set 2x - 5 = 9 or 2x - 5 = -9. Solutions are x = 7 and x = -2.',
+    tags: ['passport to advanced math', 'absolute value'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'If f(x) = 2x + 3 and g(x) = x^2 - 1, what is f(g(2))?',
+    options: ['5', '7', '9', '11'],
+    correctAnswer: 'C',
+    explanation: 'First compute g(2) = 4 - 1 = 3. Then f(3) = 2(3) + 3 = 9.',
+    tags: ['passport to advanced math', 'function composition'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Which linear function passes through both points (–4, 9) and (2, –3)?',
+    options: ['y = -2x + 1', 'y = -2x + 5', 'y = 2x + 1', 'y = 2x - 5'],
+    correctAnswer: 'A',
+    explanation:
+      'Slope = (-3 - 9)/(2 - (-4)) = -12/6 = -2. Substitute into y = -2x + b using (2, -3): -3 = -4 + b, so b = 1, giving y = -2x + 1.',
+    tags: ['heart of algebra', 'linear equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'What is the slope of a line perpendicular to the line 4y - 3x = 12?',
+    options: ['-3/4', '3/4', '4/3', '-4/3'],
+    correctAnswer: 'D',
+    explanation:
+      'Rewrite as y = (3/4)x + 3. The slope is 3/4, so a perpendicular slope is the negative reciprocal, -4/3.',
+    tags: ['heart of algebra', 'slope'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Data Set A has a mean of 50 with a small standard deviation, while Data Set B has the same mean but a larger standard deviation. What does this indicate?',
+    options: [
+      'Data Set A has more spread than Data Set B',
+      'Data Set B has more spread than Data Set A',
+      'Both sets have identical spreads',
+      'Data Set B must contain higher values only',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'A larger standard deviation means the values are more spread out from the mean, so Data Set B is more variable.',
+    tags: ['problem solving and data analysis', 'statistics'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A box plot of commute times shows a median of 22 minutes and an interquartile range of 8 minutes. Which statement is true?',
+    options: [
+      'Half of the commutes are between 18 and 26 minutes',
+      'All commutes are shorter than 22 minutes',
+      'The shortest commute is 8 minutes',
+      'The mean commute is 30 minutes',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'An IQR of 8 minutes centered on the median means the middle 50% of data lies from Q1 = 18 to Q3 = 26 minutes.',
+    tags: ['problem solving and data analysis', 'box plots'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A smoothie stand sells small drinks for $4 and large drinks for $6. If the stand sold 140 drinks and made $700, how many large drinks were sold?',
+    options: ['20', '35', '50', '70'],
+    correctAnswer: 'D',
+    explanation:
+      'Let s be small drinks and l be large. s + l = 140 and 4s + 6l = 700. Substitute s = 140 - l into the revenue equation: 4(140 - l) + 6l = 700 → 560 - 4l + 6l = 700 → 2l = 140 → l = 70.',
+    tags: ['heart of algebra', 'systems of equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText:
+      'A student increased her practice time from 40 minutes to 52 minutes per day. What is the percent increase?',
+    options: ['20%', '25%', '30%', '35%'],
+    correctAnswer: 'C',
+    explanation: 'The increase is 12 minutes. 12 ÷ 40 = 0.30, or a 30% increase.',
+    tags: ['problem solving and data analysis', 'percent change'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText:
+      'The data set {12, 15, 18, 19, 21, 24, 30} represents quiz scores. What is the median?',
+    options: ['18', '19', '21', '24'],
+    correctAnswer: 'B',
+    explanation:
+      'With seven values, the median is the fourth value when ordered from least to greatest, which is 19.',
+    tags: ['problem solving and data analysis', 'median'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Triangle ABC is similar to triangle DEF with a scale factor of 3 (ABC to DEF). If AB = 5, what is the length of DE?',
+    options: ['5/3', '3', '8', '15'],
+    correctAnswer: 'D',
+    explanation:
+      'Corresponding sides scale by 3, so DE = 3 × AB = 15.',
+    tags: ['geometry', 'similarity'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A regular pentagon has interior angles that sum to 540°. What is the measure of each interior angle?',
+    options: ['90°', '96°', '108°', '120°'],
+    correctAnswer: 'C',
+    explanation:
+      'A regular pentagon divides the 540° sum equally among 5 angles, giving 540° ÷ 5 = 108°.',
+    tags: ['geometry', 'polygons'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'What is the distance between the points (–3, 4) and (5, –2) in the coordinate plane?',
+    options: ['6', '8', '10', '12'],
+    correctAnswer: 'C',
+    explanation:
+      'Use the distance formula: √[(5 + 3)^2 + (-2 - 4)^2] = √[(8)^2 + (-6)^2] = √(64 + 36) = √100 = 10.',
+    tags: ['geometry', 'coordinate geometry'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText:
+      'If f(x) = (3x - 2)/(x + 4), what is f^{-1}(1)?',
+    options: ['-4', '-2', '1', '3'],
+    correctAnswer: 'D',
+    explanation:
+      'Set y = (3x - 2)/(x + 4) and solve for x: yx + 4y = 3x - 2 → (y - 3)x = -2 - 4y → x = -(2 + 4y)/(y - 3). Thus f^{-1}(x) = -(2 + 4x)/(x - 3). Substitute x = 1 to get f^{-1}(1) = -(2 + 4)/(1 - 3) = -6 / -2 = 3.',
+    tags: ['passport to advanced math', 'inverse functions'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Which point satisfies both inequalities y ≥ 2x - 1 and y < -x + 5?',
+    options: ['(0, 0)', '(1, 3)', '(2, 4)', '(3, 1)'],
+    correctAnswer: 'B',
+    explanation:
+      '(1, 3) gives 3 ≥ 2(1) - 1 = 1 (true) and 3 < -1 + 5 = 4 (true). The other points fail at least one inequality.',
+    tags: ['heart of algebra', 'inequalities'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText:
+      'A recipe calls for flour and sugar in a 3:2 ratio. If 4 cups of sugar are used, how much flour is needed to maintain the ratio?',
+    options: ['4 cups', '5 cups', '6 cups', '7 cups'],
+    correctAnswer: 'C',
+    explanation:
+      'Sugar corresponds to 2 parts. If 2 parts equal 4 cups, each part is 2 cups. Flour uses 3 parts, so 3 × 2 = 6 cups.',
+    tags: ['problem solving and data analysis', 'ratios'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The arithmetic sequence a_n = 7 + 5(n - 1) represents the score a student aims for on the nth practice test. What score is targeted on the 6th practice test?',
+    options: ['27', '32', '37', '42'],
+    correctAnswer: 'B',
+    explanation: 'Substitute n = 6: a_6 = 7 + 5(5) = 7 + 25 = 32.',
+    tags: ['passport to advanced math', 'sequences'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText:
+      'Solve for x: 3^{2x - 1} = 27.',
+    options: ['x = 1', 'x = 2', 'x = 3', 'x = 4'],
+    correctAnswer: 'B',
+    explanation:
+      '27 equals 3^3, so set 2x - 1 = 3 → 2x = 4 → x = 2.',
+    tags: ['passport to advanced math', 'exponential equations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText: 'What value of x satisfies log_2 x = 5?',
+    options: ['16', '25', '32', '64'],
+    correctAnswer: 'C',
+    explanation: 'Rewrite as 2^5 = x, so x = 32.',
+    tags: ['passport to advanced math', 'logarithms'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'A chemist mixes 3 liters of a 20% saline solution with x liters of a 50% saline solution to create a 32% solution. What is the value of x?',
+    options: ['1 L', '2 L', '3 L', '4 L'],
+    correctAnswer: 'B',
+    explanation:
+      'Total salt = 0.20(3) + 0.50x. Total volume = 3 + x. Set (0.6 + 0.5x)/(3 + x) = 0.32. Solving gives 0.6 + 0.5x = 0.96 + 0.32x → 0.18x = 0.36 → x = 2.',
+    tags: ['problem solving and data analysis', 'mixture problems'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'hard',
+    questionText:
+      'How many real solutions does the equation 4x^2 + 12x + 25 = 0 have?',
+    options: ['0', '1', '2', '4'],
+    correctAnswer: 'A',
+    explanation:
+      'Compute the discriminant: b^2 - 4ac = 12^2 - 4(4)(25) = 144 - 400 = -256, which is negative, so there are no real solutions.',
+    tags: ['passport to advanced math', 'quadratics'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'easy',
+    questionText:
+      'If point P(2, -5) is translated by the rule (x, y) → (x + 3, y + 4), what are the coordinates of P′?',
+    options: ['(5, -1)', '(5, -9)', '(1, -1)', '(1, -9)'],
+    correctAnswer: 'A',
+    explanation:
+      'Add 3 to the x-coordinate and 4 to the y-coordinate: (2 + 3, -5 + 4) = (5, -1).',
+    tags: ['geometry', 'transformations'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'Given the piecewise function h(x) = {2x + 1 for x ≤ 0, 5 - x for x > 0}, what is h(-2) + h(1)?',
+    options: ['-1', '1', '3', '5'],
+    correctAnswer: 'B',
+    explanation:
+      'Use 2x + 1 for x = -2 to get h(-2) = -3. Use 5 - x for x = 1 to get h(1) = 4. Sum: -3 + 4 = 1.',
+    tags: ['passport to advanced math', 'piecewise functions'],
+  }),
+  createSeed({
+    subject: 'math',
+    difficulty: 'medium',
+    questionText:
+      'The area chart shows the cumulative number of books Lin read this year. How many books did Lin read between Month 2 and Month 4?',
+    options: ['3', '4', '5', '6'],
+    correctAnswer: 'C',
+    explanation:
+      'Cumulative totals: Month2 = 6, Month4 = 11, so Lin read 11 - 6 = 5 books during that interval.',
+    tags: ['problem solving and data analysis', 'area chart'],
+    graph: {
+      type: 'area',
+      data: [
+        { month: 1, books: 3 },
+        { month: 2, books: 6 },
+        { month: 3, books: 8 },
+        { month: 4, books: 11 },
+        { month: 5, books: 14 },
+      ],
+      config: {
+        title: 'Cumulative Books Read',
+        xLabel: 'Month',
+        yLabel: 'Books',
+        xDomain: [1, 5],
+        yDomain: [0, 15],
+        dataKeys: ['books'],
+        showGrid: true,
+      },
+    },
+  }),
+  // 50 math questions go here
+];
+
+const readingSeeds = [
+  createSeed({
+    subject: 'reading',
+    difficulty: 'easy',
+    questionText:
+      'Passage: "The small observatory sat on a quiet hill, where Lena spent every clear night tracking the same comet inching across the sky." What is the main focus of the passage?',
+    options: [
+      'The noise from the town below the observatory',
+      'Lena’s dedication to following the comet',
+      'The technical design of the observatory',
+      'A rivalry between two astronomers',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The passage centers on Lena repeatedly observing a comet, emphasizing her dedication.',
+    tags: ['reading', 'information and ideas', 'main idea'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'easy',
+    questionText:
+      'Passage: "When the mayor proposed replacing a vacant lot with a pocket park, longtime residents welcomed the change, recalling the vibrant garden that once stood there." What inference can be made?',
+    options: [
+      'Residents oppose all new construction',
+      'The lot has always been empty',
+      'Residents associate the new park with positive memories',
+      'The mayor wants to build apartments',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Residents support the park because it reminds them of an earlier garden, implying positive associations.',
+    tags: ['reading', 'information and ideas', 'inference'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "The novel’s narrator speaks with wry amusement about his failed inventions, admitting that each setback taught him more than the rare success." Which choice best describes his tone?',
+    options: ['Resentful', 'Amused', 'Serious', 'Indifferent'],
+    correctAnswer: 'B',
+    explanation:
+      'The narrator uses humor to discuss failures, indicating an amused tone.',
+    tags: ['reading', 'craft and structure', 'tone'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Because the glacier’s retreat exposes older layers of ice, researchers can analyze trapped air bubbles to reconstruct the region’s ancient climate." What is the primary purpose of the sentence?',
+    options: [
+      'To argue that glaciers are dangerous',
+      'To explain how scientists gather climate data',
+      'To suggest ice bubbles are rare',
+      'To describe tourist activities',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The sentence explains the method scientists use (analyzing bubbles) to learn about past climates.',
+    tags: ['reading', 'information and ideas', 'purpose'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Despite its modest size, the museum curates exhibits that rotate monthly, ensuring visitors always encounter something new." Which word best replaces "modest" without changing the meaning?',
+    options: ['Humble', 'Extravagant', 'Temporary', 'Inaccurate'],
+    correctAnswer: 'A',
+    explanation:
+      '"Modest" in this context refers to the museum’s small scale; "humble" preserves that meaning.',
+    tags: ['reading', 'craft and structure', 'vocabulary'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "Elena first considered the mural merely a civic decoration, but the longer she studied its layers of intertwined hands, the more she recognized it as a call for collective action." What shift occurs in Elena’s perspective?',
+    options: [
+      'She stops supporting public art',
+      'She appreciates the mural’s deeper message',
+      'She questions whether the mural should be removed',
+      'She compares the mural to other paintings',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Elena moves from seeing the mural as decoration to understanding its call to action, showing deeper appreciation.',
+    tags: ['reading', 'information and ideas', 'perspective'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Scientists tracking monarch butterfly migration noted that the insects departed two weeks earlier than usual, coinciding with an unseasonably warm autumn." Which statement is supported by the passage?',
+    options: [
+      'Earlier departures may be linked to warmer weather',
+      'Butterflies migrate randomly each year',
+      'Warm weather always delays migration',
+      'Monarchs no longer migrate in autumn',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The passage links early departure with warm temperatures, suggesting a connection.',
+    tags: ['reading', 'information and ideas', 'data relationships'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "The librarian’s insistence on cataloging every donated book annoyed some volunteers, yet her careful records later proved invaluable when donors asked about specific titles." What best explains the librarian’s actions?',
+    options: [
+      'She hoped to discourage donors',
+      'She preferred working alone',
+      'Her detailed approach ultimately benefited the group',
+      'She wanted to sell the books',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Though initially unpopular, her detailed cataloging helped when donors requested updates, benefiting the group.',
+    tags: ['reading', 'information and ideas', 'function'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "The chef doesn’t measure spices so much as listen to the sizzle and watch the sauce deepen in color, letting those cues dictate the final dash of heat." What does the figurative language suggest?',
+    options: [
+      'The chef relies on precise tools',
+      'The kitchen is too loud for measuring',
+      'Cooking is guided by sensory intuition',
+      'The chef avoids using spices',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Describing listening to sizzles and watching colors implies the chef relies on senses rather than measurements.',
+    tags: ['reading', 'craft and structure', 'figurative language'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "After studying the ancient seed vault, Maya argued that preserving biodiversity required not just storage but also restoring habitats where those seeds could thrive." Which claim does Maya make?',
+    options: [
+      'Seed vaults are unnecessary',
+      'Habitat restoration must accompany preservation',
+      'Restoration is cheaper than storage',
+      'Biodiversity depends only on lab work',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Maya asserts that storing seeds isn’t enough; habitats must be restored, so preservation needs restoration.',
+    tags: ['reading', 'information and ideas', 'claims'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "While building the robot, Priya swapped out the bulky battery pack for a slimmer design, a choice that reduced weight but also shortened operating time." What trade-off does Priya make?',
+    options: [
+      'She increases weight but lengthens operation',
+      'She reduces weight at the cost of run time',
+      'She keeps both weight and time unchanged',
+      'She increases both weight and time',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The passage states the slimmer battery reduces weight but shortens operating time, showing a trade-off.',
+    tags: ['reading', 'information and ideas', 'cause and effect'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "The historian’s essay toggles between describing the ornate canal system and questioning whether its upkeep ultimately exhausted the empire." How does the author structure the essay?',
+    options: [
+      'By listing chronological events only',
+      'By alternating between description and analysis',
+      'By summarizing modern engineering feats',
+      'By presenting a fictional dialogue',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The passage explains the essay alternates between describing the canal and analyzing its consequences.',
+    tags: ['reading', 'craft and structure', 'text structure'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "“We are the stewards of a library written in living branches,” the botanist told the city council, urging them to protect the aging elm grove." What is the effect of the metaphor?',
+    options: [
+      'It highlights the grove’s monetary value',
+      'It compares the grove to noisy machinery',
+      'It likens the trees to a repository of knowledge',
+      'It suggests the grove is easily replaced',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Calling the grove a “library” of branches implies it holds valuable knowledge worth preserving.',
+    tags: ['reading', 'craft and structure', 'figurative language'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "The journalist contrasts the crowded city pier today with photos from a century ago that show a handful of wooden skiffs." What is the journalist’s likely purpose?',
+    options: [
+      'To demonstrate how the pier’s usage has changed',
+      'To argue against maintaining the pier',
+      'To promote photography classes',
+      'To describe weather patterns on the pier',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'By comparing past and present images, the journalist highlights how the pier’s usage evolved.',
+    tags: ['reading', 'information and ideas', 'comparison'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Notes scribbled in the margin—“check calcium level,” “resample on Tuesday”—show the lab intern thinking through her experiment in real time." What do the notes reveal?',
+    options: [
+      'The intern is ignoring instructions',
+      'The intern is documenting spontaneous insights',
+      'The intern has finished the experiment',
+      'The intern is drawing illustrations',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The margin notes capture immediate thoughts, showing the intern actively planning next steps.',
+    tags: ['reading', 'information and ideas', 'evidence'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Although the orchestra had rehearsed every intricate passage, the conductor reminded them to leave room for the soloist’s improvisation." What instruction is the conductor giving?',
+    options: [
+      'Play louder to cover mistakes',
+      'Maintain rigidity throughout',
+      'Allow flexibility for the soloist',
+      'Skip the solo entirely',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'The conductor wants the orchestra to create space so the soloist can improvise, emphasizing flexibility.',
+    tags: ['reading', 'information and ideas', 'purpose'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "Two letters from abolitionists in different states both describe the same mass meeting, yet one praises its orderly debates while the other worries the crowd obscured key voices." What does this reveal?',
+    options: [
+      'The meeting never occurred',
+      'Eyewitness accounts can emphasize different aspects',
+      'Both writers oppose abolition',
+      'The letters are forgeries',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The differing descriptions show how eyewitnesses highlight different elements of the same event.',
+    tags: ['reading', 'synthesis', 'multiple sources'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Although the wildlife survey documented fewer river otters this year, the biologist cautioned that heavy rains made sightings difficult." Which interpretation aligns with the passage?',
+    options: [
+      'Otter populations definitely collapsed',
+      'Counting conditions may have affected the survey',
+      'Rain increases otter visibility',
+      'Otters no longer live near rivers',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The biologist notes that rain hindered observations, suggesting the decline might reflect limited visibility rather than true population loss.',
+    tags: ['reading', 'information and ideas', 'evaluating evidence'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "The playwright admits that the comedic subplot was a late addition meant to counterbalance the tragedy unfolding in the leads’ storyline." What does the playwright reveal?',
+    options: [
+      'The subplot was written to lighten the mood',
+      'The subplot undermines the main story',
+      'Audiences disliked the subplot',
+      'The subplot is unrelated to the leads',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The passage states the subplot was added to counterbalance tragedy, so it was intended to lighten the play.',
+    tags: ['reading', 'information and ideas', 'author intent'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Because the conservation team published its field methods, other researchers can replicate the study’s results across different wetlands." Which statement does the passage support?',
+    options: [
+      'Sharing methods promotes reproducibility',
+      'Field methods should stay confidential',
+      'Wetlands cannot be studied systematically',
+      'Replication weakens scientific claims',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Publishing methods enables other scientists to repeat the study, supporting reproducibility.',
+    tags: ['reading', 'information and ideas', 'scientific reasoning'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "In his memoir, the engineer recounts the launch not as a triumph but as a warning about overconfidence, noting the overlooked sensor alert." What is the memoir’s central warning?',
+    options: [
+      'Technicians should ignore sensor alerts',
+      'Success can mask critical dangers',
+      'Launches are never worth the risk',
+      'Confidence is required for innovation',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'By framing the launch as a cautionary tale about ignoring a sensor, the engineer warns that apparent success can hide major risks.',
+    tags: ['reading', 'information and ideas', 'theme'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'easy',
+    questionText:
+      'Passage: "The beekeeper’s logbook notes, “Hive Three still sluggish—check for pests tomorrow.” What is the beekeeper planning to do?',
+    options: [
+      'Harvest honey immediately',
+      'Inspect the hive for problems the next day',
+      'Move Hive Three to a different farm',
+      'Stop keeping bees altogether',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The note explicitly schedules a pest inspection for the following day.',
+    tags: ['reading', 'information and ideas', 'textual evidence'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "“These dunes are archives,” the geologist said, pointing to layers of ash and pollen embedded in the sand." What does the metaphor convey?',
+    options: [
+      'The dunes are actively eroding',
+      'The dunes store records of past events',
+      'The dunes are man-made structures',
+      'The dunes contain literal books',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Calling the dunes “archives” emphasizes that their layers preserve historical information.',
+    tags: ['reading', 'craft and structure', 'figurative language'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "By charting the volunteers’ hours alongside student attendance, the coordinator showed that tutoring demand peaks mid-semester." Which conclusion follows from the chart?',
+    options: [
+      'Demand is highest in early September',
+      'Tutoring needs increase in the middle of the term',
+      'Volunteers are least needed mid-semester',
+      'Attendance is unrelated to volunteer support',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The chart correlates increased attendance with volunteer hours mid-semester, showing peak demand at that time.',
+    tags: ['reading', 'data interpretation', 'information and ideas'],
+    graph: {
+      type: 'line',
+      data: [
+        { week: 1, attendance: 20, volunteers: 8 },
+        { week: 4, attendance: 32, volunteers: 12 },
+        { week: 8, attendance: 45, volunteers: 18 },
+        { week: 12, attendance: 30, volunteers: 10 },
+      ],
+      config: {
+        title: 'Tutoring Center Activity',
+        xLabel: 'Week of Term',
+        yLabel: 'Counts',
+        showLegend: true,
+        dataKeys: ['attendance', 'volunteers'],
+        showGrid: true,
+      },
+    },
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "One editorial lauds the proposed wildlife crossing for reconnecting habitats, while another argues the funds would be better spent fixing local bridges." What is the main difference between the editorials?',
+    options: [
+      'One supports the project and the other prioritizes different infrastructure',
+      'Both editorials oppose the crossing',
+      'Both editorials discuss unrelated topics',
+      'One editorial is fictional while the other is factual',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The first editorial favors the crossing, whereas the second prefers reallocating funds, indicating differing priorities.',
+    tags: ['reading', 'synthesis', 'argument comparison'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Although the archaeological dig uncovered only fragments, the team matched the pottery’s mineral content to kilns in a distant valley." What does this evidence suggest?',
+    options: [
+      'The pottery was likely imported from afar',
+      'The team misidentified the site',
+      'Kilns were located on-site',
+      'Pottery analysis is unreliable',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Matching the fragments’ minerals to distant kilns supports the idea that the pottery originated elsewhere.',
+    tags: ['reading', 'information and ideas', 'inference'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Sales records show the bookstore’s translated fiction shelf doubled in revenue after the staff curated monthly recommendations." What is the most reasonable conclusion?',
+    options: [
+      'Staff recommendations helped boost translated fiction sales',
+      'Translated fiction is no longer popular',
+      'Revenue increased despite staff efforts',
+      'Monthly recommendations reduced revenue',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The passage links curated recommendations with increased revenue, implying the effort boosted sales.',
+    tags: ['reading', 'information and ideas', 'cause and effect'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "“The word ‘tenacious’ hardly does her justice,” the mentor laughed, recalling how Mariam rewrote her research grant three times in a week." What does “tenacious” mean in this context?',
+    options: ['Unmotivated', 'Persistent', 'Forgetful', 'Relaxed'],
+    correctAnswer: 'B',
+    explanation:
+      'Rewriting the proposal repeatedly shows determination, so “tenacious” means persistent.',
+    tags: ['reading', 'craft and structure', 'vocabulary'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Because the startup’s prototype hinges on recycled plastics, investors asked about supply-chain stability before approving funds." What concern do investors raise?',
+    options: [
+      'Whether the prototype can be miniaturized',
+      'How reliable the recycled material supply is',
+      'How many employees the startup has',
+      'Which new markets will be targeted',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Investors focus on the availability of recycled plastics, questioning supply stability.',
+    tags: ['reading', 'information and ideas', 'supporting details'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "The transcript alternates between a senator’s testimony and the committee chair’s skeptical interjections." What does this structure accomplish?',
+    options: [
+      'It hides the chair’s stance',
+      'It presents an unchallenged argument',
+      'It highlights tension between the speaker and the committee',
+      'It summarizes the testimony only',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Alternating testimony with skeptical interjections underscores the dynamic tension between the senator and chair.',
+    tags: ['reading', 'craft and structure', 'text structure'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage with Chart: "The bar chart lists renewable energy’s share of electricity generation—Region A: 18%, Region B: 27%, Region C: 35%, Region D: 22%." According to the chart, which region relies most on renewables?',
+    options: ['Region A', 'Region B', 'Region C', 'Region D'],
+    correctAnswer: 'C',
+    explanation:
+      'Region C shows the highest percentage (35%), indicating the greatest reliance on renewable energy.',
+    tags: ['reading', 'data interpretation', 'information and ideas'],
+    graph: {
+      type: 'bar',
+      data: [
+        { region: 'A', renewables: 18 },
+        { region: 'B', renewables: 27 },
+        { region: 'C', renewables: 35 },
+        { region: 'D', renewables: 22 },
+      ],
+      config: {
+        title: 'Renewable Energy Share',
+        xLabel: 'Region',
+        yLabel: 'Percent of Electricity',
+        dataKeys: ['renewables'],
+        showGrid: true,
+      },
+    },
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "The civic group’s proposal insists that replacing asphalt with permeable pavers will reduce flooding on the main street." Which claim can be drawn?',
+    options: [
+      'Permeable pavers allow water to drain, limiting floods',
+      'Asphalt blocks sunlight',
+      'Flooding is unrelated to paving',
+      'Pavers increase road congestion',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The proposal suggests pavers reduce flooding, implying they permit drainage rather than trapping water.',
+    tags: ['reading', 'information and ideas', 'claims'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "Two mentors disagree—one urges students to pick a single passion, while the other argues for sampling many disciplines." What does this disagreement show?',
+    options: [
+      'Both mentors advise the same approach',
+      'Mentors can prioritize different educational philosophies',
+      'Mentors refuse to help students',
+      'Mentors dislike interdisciplinary work',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'The mentors recommend different strategies (focus vs. exploration), illustrating divergent philosophies.',
+    tags: ['reading', 'synthesis', 'multiple viewpoints'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'medium',
+    questionText:
+      'Passage: "An environmental essay juxtaposes a satellite map of disappearing wetlands with interviews from fishers who now travel farther for each catch." What is the essay’s likely goal?',
+    options: [
+      'To connect environmental data with lived experiences',
+      'To promote satellite sales',
+      'To dismiss the fishers’ concerns',
+      'To compare satellites with boats',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Combining maps with interviews ties quantitative data to personal accounts, linking data with lived experiences.',
+    tags: ['reading', 'information and ideas', 'integration of sources'],
+  }),
+  createSeed({
+    subject: 'reading',
+    difficulty: 'hard',
+    questionText:
+      'Passage: "The scientist counters that correlation alone cannot prove the dietary supplement caused the observed health improvements." What reasoning does the scientist use?',
+    options: [
+      'Correlations always prove causation',
+      'Causation can be inferred without evidence',
+      'Evidence must distinguish between correlation and causation',
+      'The supplement has no effects whatsoever',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'The scientist emphasizes that correlation doesn’t establish causation, underscoring the need for stronger evidence.',
+    tags: ['reading', 'information and ideas', 'scientific reasoning'],
+  }),
+];
+
+const writingSeeds = [
+  createSeed({
+    subject: 'writing',
+    difficulty: 'easy',
+    questionText:
+      'Sentence: "The research assistants catalogs each specimen before placing them in cold storage." Which underlined portion should be replaced to correct the sentence?',
+    options: ['assistants catalogs', 'each specimen', 'before placing', 'cold storage'],
+    correctAnswer: 'A',
+    explanation:
+      '"Assistants" is plural, so the verb must be plural: change "assistants catalogs" to "assistants catalog."',
+    tags: ['writing', 'standard english conventions', 'subject-verb agreement'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'easy',
+    questionText:
+      'Sentence: "The robotics lab requires goggles, gloves, and close-toed shoes for all visitors." Which revision corrects the underlined portion?',
+    options: [
+      'close toe shoes',
+      'close-toed shoes',
+      'closed toed shoes',
+      'closed-toe shoes',
+    ],
+    correctAnswer: 'D',
+    explanation:
+      'The standard compound adjective is "closed-toe" (hyphenated and using the past participle).',
+    tags: ['writing', 'standard english conventions', 'hyphenation'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Because the volunteers finished the mural ahead of schedule, therefore the unveiling was moved up a week." What is the best revision?',
+    options: [
+      'Because the volunteers finished the mural ahead of schedule, consequently the unveiling was moved up a week.',
+      'Because the volunteers finished the mural ahead of schedule, the unveiling was moved up a week.',
+      'Because the volunteers finished the mural ahead of schedule, as a result the unveiling was moved up a week.',
+      'Because the volunteers finished the mural ahead of schedule, so the unveiling was moved up a week.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Using both "because" and a transition like "therefore" is redundant; option B keeps a single causal connector.',
+    tags: ['writing', 'standard english conventions', 'sentence structure'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Panelists discussed affordable housing, rising transit costs, and how to increase green space downtown." Which option ensures parallel structure?',
+    options: [
+      'affordable housing, rising transit costs, and increasing green space downtown',
+      'affordable housing, transit costs rising, and increasing green spaces downtown',
+      'affordable housing, the costs of transit rising, and increasing green space downtown',
+      'affordable housing, rising transit costs, and green space increasing downtown',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Option A maintains the noun phrase pattern ("affordable," "rising," "increasing"), ensuring parallelism.',
+    tags: ['writing', 'standard english conventions', 'parallelism'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "The committee reviewed the proposal, they also toured the pilot facility." Which revision best combines the two clauses?',
+    options: [
+      'The committee reviewed the proposal, they also toured the pilot facility.',
+      'The committee reviewed the proposal, also they toured the pilot facility.',
+      'The committee reviewed the proposal, and they also toured the pilot facility.',
+      'The committee reviewed the proposal: they also toured the pilot facility.',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Adding the coordinating conjunction "and" with a comma creates a correct compound sentence.',
+    tags: ['writing', 'standard english conventions', 'run-on corrections'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Over winter break, Malik not only drafted the grant application but also submitting a detailed budget." Which revision maintains parallelism?',
+    options: [
+      'not only drafted the grant application but also submitting',
+      'not only drafting the grant application but also submitted',
+      'not only drafted the grant application but also submitted',
+      'not only draft the grant application but also submitting',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Both verbs should be in the same tense: "drafted" and "submitted" maintain parallel structure.',
+    tags: ['writing', 'standard english conventions', 'parallelism'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Carla hopes to intern at an environmental nonprofit, her friends, however, plan to work at the local hospital." Which option fixes the punctuation error?',
+    options: [
+      '...nonprofit her friends however plan...',
+      '...nonprofit; her friends, however, plan...',
+      '...nonprofit her friends however, plan...',
+      '...nonprofit, her friends however plan...',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'A semicolon separates the independent clauses, and commas set off the interrupter "however."',
+    tags: ['writing', 'standard english conventions', 'punctuation'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "The drone footage revealed that the river had breached its banks, flooding the walking trail which was closed for repairs." Which revision correctly punctuates the nonessential clause?',
+    options: [
+      'flooding the walking trail, which was closed for repairs.',
+      'flooding the walking trail which, was closed for repairs.',
+      'flooding the walking trail; which was closed for repairs.',
+      'flooding the walking trail and which was closed for repairs.',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Use commas to set off the nonessential clause "which was closed for repairs."',
+    tags: ['writing', 'standard english conventions', 'nonessential clauses'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'easy',
+    questionText:
+      'Sentence: "The art teacher assigned Maya and I to catalog the supplies before class." Which revision is correct?',
+    options: [
+      'assigned Maya and I',
+      'assigned Maya and me',
+      'assigned Maya with me',
+      'assigned Maya to me',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Use the object pronoun "me" after the verb: "assigned Maya and me."',
+    tags: ['writing', 'standard english conventions', 'pronouns'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "The exhibit features large photographs, interactive kiosks, and a short film narrating by the curator." Which change improves the sentence?',
+    options: [
+      'replace narrating with narrated',
+      'replace features with featuring',
+      'replace interactive kiosks with interact kiosks',
+      'replace short film with shorter film',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'The film is narrated by the curator, so the past participle "narrated" is required.',
+    tags: ['writing', 'standard english conventions', 'verb tense'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: A paragraph describes the benefits of student-run farmers markets. Which sentence best introduces a statistic showing how many pounds of produce the market donated last season?',
+    options: [
+      'Volunteers meet every Tuesday evening to plan the booth layout.',
+      'In just twelve weeks, the market donated 860 pounds of produce to the campus pantry.',
+      'Students should consider bringing reusable bags for their purchases.',
+      'Some customers prefer the smoothies to the baked goods offered nearby.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Only option B provides an impactful statistic that supports the paragraph’s focus on community benefits.',
+    tags: ['writing', 'expression of ideas', 'supporting evidence'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Passage sentence: "The lab stored soil samples in temperature-controlled cases. Furthermore, the storage area is adjacent to the microscopes." Which transition best replaces "Furthermore"?',
+    options: ['However', 'Meanwhile', 'Consequently', 'Specifically'],
+    correctAnswer: 'D',
+    explanation:
+      'The second sentence adds a precise detail about location, so "Specifically" clarifies the relationship.',
+    tags: ['writing', 'expression of ideas', 'transitions'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'hard',
+    questionText:
+      'Passage sentence: "The campus newsletter profiles three student founders. [1] They highlight how each business reinvests revenue into community programs. [2] The article then lists café hours. [3]" To improve coherence, what should happen to sentence [2]?',
+    options: [
+      'Leave it in place',
+      'Move it to the end of the article’s final paragraph about dining options',
+      'Delete the sentence',
+      'Place it before sentence [1]',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Information about café hours is unrelated to student founders but relevant to dining content elsewhere, so moving it maintains coherence.',
+    tags: ['writing', 'expression of ideas', 'organization'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Because the sensor array was calibrated carefully, but the readings still fluctuated." Which revision creates a complete sentence?',
+    options: [
+      'Because the sensor array was calibrated carefully, but the readings still fluctuated.',
+      'Because the sensor array was calibrated carefully, the readings still fluctuated.',
+      'Because the sensor array was calibrated carefully, the team expected stable readings, but they still fluctuated.',
+      'Because the sensor array was calibrated carefully, stable readings.',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Option C completes the dependent clause and balances it with an independent clause for clarity.',
+    tags: ['writing', 'standard english conventions', 'sentence structure'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "City Council approved the budget after residents voiced their support at the hearing, this outcome surprised few observers." Which revision corrects the punctuation error?',
+    options: [
+      '..., this outcome surprised few observers.',
+      '...; this outcome surprised few observers.',
+      '..., which outcome surprised few observers.',
+      '... this outcome surprised few observers.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Two independent clauses should be joined by a semicolon (or conjunction); option B provides the correct punctuation.',
+    tags: ['writing', 'standard english conventions', 'run-on corrections'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'easy',
+    questionText:
+      'Sentence: "The new transit app is more efficient then the previous version." Choose the correct replacement for the underlined word.',
+    options: ['then', 'than', 'their', 'there'],
+    correctAnswer: 'B',
+    explanation:
+      'Use "than" for comparisons: "more efficient than the previous version."',
+    tags: ['writing', 'standard english conventions', 'word choice'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: A report summarizes survey data on student study spaces. Which sentence best integrates the chart showing that 62% of respondents prefer shared study lounges?',
+    options: [
+      'Some students like coffee shops, but I find them too noisy.',
+      'Table 1 reveals that nearly two-thirds of respondents favor shared study lounges over private carrels.',
+      'My roommate prefers to study off campus when possible.',
+      'Shared study lounges are painted green and blue.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B cites the chart’s key statistic and interprets it in context.',
+    tags: ['writing', 'expression of ideas', 'using data'],
+    graph: {
+      type: 'bar',
+      data: [
+        { space: 'Shared Lounge', percent: 62 },
+        { space: 'Quiet Carrel', percent: 21 },
+        { space: 'Library Table', percent: 11 },
+        { space: 'Other', percent: 6 },
+      ],
+      config: {
+        title: 'Preferred Study Spaces',
+        xLabel: 'Space Type',
+        yLabel: 'Percent of Respondents',
+        dataKeys: ['percent'],
+        showGrid: true,
+      },
+    },
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: A paragraph describes a coral restoration project. Which sentence provides a logical concluding statement?',
+    options: [
+      'The divers log water temperatures at the end of each dive.',
+      'These early results show that transplanted coral fragments can thrive when communities monitor water quality together.',
+      'Fish populations vary considerably in other reefs.',
+      'Wave action sometimes dislodges the monitoring equipment.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B synthesizes the paragraph by connecting community monitoring to the project’s success.',
+    tags: ['writing', 'expression of ideas', 'conclusions'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Our internship coordinator emails weekly reminders; including deadlines, networking events, and résumé workshops." Which revision eliminates the punctuation error?',
+    options: [
+      '..., including deadlines...',
+      '...; including, deadlines...',
+      '...; including deadlines; networking events...',
+      '..., and including deadlines...',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'A comma—not a semicolon—should introduce the list headed by "including."',
+    tags: ['writing', 'standard english conventions', 'punctuation'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Neither the maps nor the GPS receivers was returned after the expedition." Which revision corrects the error?',
+    options: [
+      'Neither the maps nor the GPS receivers were returned after the expedition.',
+      'Neither the maps nor the GPS receivers was returned after the expedition.',
+      'Neither the maps nor the GPS receivers has returned after the expedition.',
+      'Neither the maps nor the GPS receivers is returned after the expedition.',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'With correlative conjunctions, the verb agrees with the nearer subject ("receivers"), so "were returned" is correct.',
+    tags: ['writing', 'standard english conventions', 'subject-verb agreement'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'hard',
+    questionText:
+      'Sentence: "The fellowship committee values applicants who articulate a clear research question, demonstrate relevant preparation, and that outline how community partners will be involved." Which revision maintains parallel structure?',
+    options: [
+      '..., demonstrate relevant preparation, and that outline...',
+      '..., demonstrate relevant preparation, and outline...',
+      '..., demonstrating relevant preparation, and outlining...',
+      '..., demonstrates relevant preparation, and outlines...',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'All verbs should share the same form: "articulate," "demonstrate," and "outline."',
+    tags: ['writing', 'standard english conventions', 'parallelism'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: A letter encourages alumni to fund a new makerspace. Which sentence most effectively emphasizes the project’s impact?',
+    options: [
+      'Many students enjoy engineering club.',
+      'The makerspace will allow every design student to prototype ideas with equipment previously available only in industry labs.',
+      'The makerspace is located near the campus café.',
+      'Some students commute to campus by train.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B highlights the facility’s transformative value, aligning with the persuasive goal.',
+    tags: ['writing', 'expression of ideas', 'supporting evidence'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "The museum director greeted the donors and guided they through the new exhibit." Which revision corrects the pronoun error?',
+    options: [
+      'guided they through',
+      'greeted they and guided them through',
+      'greeted them and guided them through',
+      'greeted they and guided through them',
+    ],
+    correctAnswer: 'C',
+    explanation:
+      'Use the objective pronoun "them" when functioning as the object of verbs: "greeted them and guided them."',
+    tags: ['writing', 'standard english conventions', 'pronouns'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'hard',
+    questionText:
+      'Sentence: "The pilot study tracked twelve participants for six months: their progress—measured by mobility scores and self-reported wellness—were presented to the review board." Which revision corrects the error?',
+    options: [
+      'progress... were presented',
+      'progress... was presented',
+      'progress which measured... was presented',
+      'progress which measured... were presented',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      '"Progress" is singular, so use "was presented."',
+    tags: ['writing', 'standard english conventions', 'subject-verb agreement'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: An article contrasts two composting methods. Which sentence provides an effective transition between paragraphs describing cost and environmental benefits?',
+    options: [
+      'Both methods require volunteers to keep the bins tidy.',
+      'While the first method demands pricier equipment, it captures methane that would otherwise escape into the atmosphere.',
+      'The second method smells unpleasant during summer months.',
+      'Neither method is worth the community’s time.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B links cost (pricier equipment) with an environmental benefit, bridging the two topics.',
+    tags: ['writing', 'expression of ideas', 'transitions'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'easy',
+    questionText:
+      'Sentence: "There’s three different prototypes waiting for approval." Which revision is correct?',
+    options: [
+      'There’s three different prototypes waiting for approval.',
+      'There are three different prototypes waiting for approval.',
+      'Their three different prototypes waiting for approval.',
+      'They’re three different prototypes waiting for approval.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Use the plural verb "are" to agree with "prototypes."',
+    tags: ['writing', 'standard english conventions', 'subject-verb agreement'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Park rangers track invasive plants carefully because it’s seeds hitch rides on hikers’ gear." Choose the best replacement for the underlined word.',
+    options: ['it’s', 'its', 'their', 'there'],
+    correctAnswer: 'B',
+    explanation:
+      '"Its" is the possessive form needed to describe seeds belonging to the plant.',
+    tags: ['writing', 'standard english conventions', 'apostrophes'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: A memo outlines steps for launching a campus bike-share program. Which sentence clarifies the purpose of the accompanying table showing projected usage by season?',
+    options: [
+      'Table 2 compares projected winter ridership to spring ridership, illustrating when maintenance crews need the largest staff.',
+      'Table 2 lists every bike model currently in production.',
+      'Table 2 explains why students dislike riding in the summer.',
+      'Table 2 offers recipes that use seasonal produce.',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Option A interprets the table by explaining how the seasonal projections inform staffing decisions.',
+    tags: ['writing', 'expression of ideas', 'using data'],
+    graph: {
+      type: 'line',
+      data: [
+        { season: 'Winter', rides: 140 },
+        { season: 'Spring', rides: 380 },
+        { season: 'Summer', rides: 420 },
+        { season: 'Fall', rides: 310 },
+      ],
+      config: {
+        title: 'Projected Bike-Share Usage',
+        xLabel: 'Season',
+        yLabel: 'Estimated Rides per Month',
+        dataKeys: ['rides'],
+        showGrid: true,
+      },
+    },
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'hard',
+    questionText:
+      'Sentence: "The analyst argues that the policy will reduce emissions; citing data from cities that implemented similar programs." Which revision fixes the punctuation error?',
+    options: [
+      '..., citing data...',
+      '...; citing data...',
+      '...: citing data...',
+      '..., and citing data...',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Because "citing..." is a participial phrase, it should be attached with a comma instead of a semicolon.',
+    tags: ['writing', 'standard english conventions', 'punctuation'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "Wrenched from the hillside by heavy rain, the trail crew must now rebuild the boardwalk." Which revision removes the dangling modifier?',
+    options: [
+      'Wrenched from the hillside by heavy rain, the trail crew must now rebuild the boardwalk.',
+      'The heavy rain wrenched the boardwalk from the hillside, so the trail crew must now rebuild it.',
+      'The trail crew, wrenched from the hillside by heavy rain, must now rebuild the boardwalk.',
+      'Now the trail crew must rebuild the boardwalk, wrenched from the hillside by heavy rain.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B makes clear that the boardwalk—not the crew—was wrenched from the hillside.',
+    tags: ['writing', 'standard english conventions', 'modifiers'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: An email invites volunteers to a shoreline cleanup. Which sentence best encourages participation while providing a logistical detail?',
+    options: [
+      'Some people dislike getting up early.',
+      'Bring gloves and meet us at the pier at 9:00 a.m.; together we can restore this stretch of beach.',
+      'The pier is next to the coffee shop.',
+      'Cleaning shorelines makes people hungry.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B combines a motivational appeal ("together we can restore") with a precise logistical instruction.',
+    tags: ['writing', 'expression of ideas', 'purpose'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "The best time to prune the orchard trees are late winter, when sap flow is minimal." Which revision corrects the verb?',
+    options: [
+      'trees are late winter',
+      'trees are in late winter',
+      'trees is late winter',
+      'trees is in late winter',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Make the verb agree with "time": "The best time... is in late winter."',
+    tags: ['writing', 'standard english conventions', 'subject-verb agreement'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'hard',
+    questionText:
+      'Sentence: "The committee—which meets monthly and publishes detailed notes—have decided to sunset the pilot program." Which revision is correct?',
+    options: [
+      'committee... have decided',
+      'committee... has decided',
+      'committee... have deciding',
+      'committee... has deciding',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      '"Committee" is a collective noun treated as singular here, so use "has decided."',
+    tags: ['writing', 'standard english conventions', 'collective nouns'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Sentence: "The cybersecurity club hosted a workshop, the event taught first-year students how to detect phishing attempts." Which revision best corrects the comma splice?',
+    options: [
+      '..., and the event taught...',
+      '..., the event which taught...',
+      '..., teaching first-year students how to detect phishing attempts.',
+      '..., therefore teaching first-year students...',
+    ],
+    correctAnswer: 'A',
+    explanation:
+      'Adding a coordinating conjunction ("and") after the comma properly links the two independent clauses.',
+    tags: ['writing', 'standard english conventions', 'run-on corrections'],
+  }),
+  createSeed({
+    subject: 'writing',
+    difficulty: 'medium',
+    questionText:
+      'Context: A grant proposal paragraph presents a problem, details the plan, and ends abruptly. Which sentence provides a logical closing idea?',
+    options: [
+      'The campus café is located down the hall.',
+      'By funding this proposal, reviewers will equip 120 apprentices with the tools they need to launch paid apprenticeships in the region’s clean-energy sector.',
+      'Some apprentices carpool to class.',
+      'The applicants have hobbies outside of work.',
+    ],
+    correctAnswer: 'B',
+    explanation:
+      'Option B reinforces the proposal’s impact (equipping 120 apprentices) and ties directly to the funding request.',
+    tags: ['writing', 'expression of ideas', 'conclusions'],
+  }),
+];
+
+const seeds = [...mathSeeds, ...readingSeeds, ...writingSeeds];
+
+if (seeds.length !== 120) {
+  console.error(`Expected 120 question seeds, got ${seeds.length}`);
+  process.exit(1);
+}
+
+const questions = seeds.map((seed, index) => {
+  const difficultyScore = seed.difficultyScore ?? difficultyScoreMap[seed.difficulty];
+  return {
+    _id: `batch01-${seed.subject}-${String(index + 1).padStart(3, '0')}`,
+    subject: seed.subject,
+    difficulty: seed.difficulty,
+    difficultyScore,
+    content: {
+      questionText: seed.questionText,
+      options: seed.options,
+      correctAnswer: seed.correctAnswer,
+      explanation: seed.explanation,
+      ...(seed.graph ? { graph: seed.graph } : {}),
+    },
+    metadata: {
+      generatedBy,
+      generatedAt: baseTimestamp,
+      timesUsed: 0,
+      averageAccuracy: 0,
+      averageTimeSpent: 0,
+    },
+    tags: seed.tags,
+    createdAt: baseTimestamp,
+    updatedAt: baseTimestamp,
+  };
+});
+
+const outputDir = path.join(__dirname, '..', 'data', 'question-batches');
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+const jsonPath = path.join(outputDir, 'batch-01.json');
+fs.writeFileSync(jsonPath, JSON.stringify(questions, null, 2));
+
+const csvHeaders = [
+  '_id',
+  'subject',
+  'difficulty',
+  'difficultyScore',
+  'questionText',
+  'optionA',
+  'optionB',
+  'optionC',
+  'optionD',
+  'correctAnswer',
+  'explanation',
+  'graph',
+  'tags',
+  'metadata.generatedBy',
+  'metadata.generatedAt',
+  'metadata.timesUsed',
+  'metadata.averageAccuracy',
+  'metadata.averageTimeSpent',
+  'createdAt',
+  'updatedAt',
+];
+
+const escapeCsv = (value) => {
+  if (value === undefined || value === null) return '';
+  const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+  if (stringValue.includes(',') || stringValue.includes('\n') || stringValue.includes('"')) {
+    return `"${stringValue.replace(/"/g, '""')}"`;
+  }
+  return stringValue;
+};
+
+const csvRows = [csvHeaders.join(',')];
+for (const q of questions) {
+  const row = [
+    q._id,
+    q.subject,
+    q.difficulty,
+    q.difficultyScore,
+    q.content.questionText,
+    q.content.options[0],
+    q.content.options[1],
+    q.content.options[2],
+    q.content.options[3],
+    q.content.correctAnswer,
+    q.content.explanation,
+    q.content.graph ? JSON.stringify(q.content.graph) : '',
+    q.tags.join('|'),
+    q.metadata.generatedBy,
+    q.metadata.generatedAt,
+    q.metadata.timesUsed,
+    q.metadata.averageAccuracy,
+    q.metadata.averageTimeSpent,
+    q.createdAt,
+    q.updatedAt,
+  ].map(escapeCsv);
+  csvRows.push(row.join(','));
+}
+
+const csvPath = path.join(outputDir, 'batch-01.csv');
+fs.writeFileSync(csvPath, csvRows.join('\n'));
+
+console.log(`Generated ${questions.length} questions to:\n- ${jsonPath}\n- ${csvPath}`);

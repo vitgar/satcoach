@@ -26,7 +26,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.0.0",
-    "mongoose": "^8.19.3"
+    "mongoose": "^8.19.3",
+    "openai": "^6.10.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

@@ -1,0 +1,3856 @@
+[
+  {
+    "_id": "batch03-math-001",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Solve for x: 5x - 15 = 10.",
+      "options": [
+        "9",
+        "6",
+        "5",
+        "3"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Add 15 to both sides, then divide by 5 to get x = 5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-002",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Solve for x: -6x + 24 = -12.",
+      "options": [
+        "6",
+        "7",
+        "4",
+        "10"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Subtract 24 to both sides, then divide by -6 to get x = 6."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-003",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Solve for x: 4x + 8 = 40.",
+      "options": [
+        "6",
+        "8",
+        "12",
+        "9"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Subtract 8 to both sides, then divide by 4 to get x = 8."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-004",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: 9x - 18 = 36.",
+      "options": [
+        "6",
+        "4",
+        "7",
+        "10"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Add 18 to both sides, then divide by 9 to get x = 6."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-005",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: -7x - 14 = 7.",
+      "options": [
+        "-3",
+        "-5",
+        "1",
+        "-2"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Add 14 to both sides, then divide by -7 to get x = -3."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-006",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: 11x + 22 = 33.",
+      "options": [
+        "1",
+        "-1",
+        "2",
+        "5"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Subtract 22 to both sides, then divide by 11 to get x = 1."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-007",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve for x: 3x - 21 = -9.",
+      "options": [
+        "4",
+        "8",
+        "2",
+        "5"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Add 21 to both sides, then divide by 3 to get x = 4."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-008",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve for x: -8x + 5 = 61.",
+      "options": [
+        "-3",
+        "-7",
+        "-9",
+        "-6"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Subtract 5 to both sides, then divide by -8 to get x = -7."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-009",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Which value satisfies 12 - 4x ≥ -8?",
+      "options": [
+        "1",
+        "2",
+        "4",
+        "-2"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Isolate x to find x ≥ 2."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-010",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Which value satisfies 3x + 5 ≤ 20?",
+      "options": [
+        "6.67",
+        "8.67",
+        "-6.67",
+        "5.67"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Isolate x to find x ≤ 6.67."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-011",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Which value satisfies 7 - 2x ≥ 1?",
+      "options": [
+        "-0.5",
+        "0.5",
+        "1.5",
+        "-1.5"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Isolate x to find x ≥ -0.5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-012",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Which value satisfies 5x - 9 ≤ 31?",
+      "options": [
+        "5.2",
+        "-6.2",
+        "8.2",
+        "6.2"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Isolate x to find x ≤ 6.2."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-013",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve the system: 3x + 2y = 46 and x - y = 4. What is x?",
+      "options": [
+        "12.8",
+        "10.8",
+        "-10.8",
+        "7.8"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Substitute x = y + 4 into the first equation to get y = 6.8 and x = 10.8."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-014",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve the system: 5x + 5y = 70 and x - y = 6. What is x?",
+      "options": [
+        "7",
+        "-10",
+        "10",
+        "12"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Substitute x = y + 6 into the first equation to get y = 4 and x = 10."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-015",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve the system: 7x + -3y = 38 and x - y = -2. What is x?",
+      "options": [
+        "8",
+        "-11",
+        "13",
+        "11"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Substitute x = y + -2 into the first equation to get y = 13 and x = 11."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-016",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve the system: 4x + 1y = 22 and x - y = 3. What is x?",
+      "options": [
+        "7",
+        "2",
+        "-5",
+        "5"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Substitute x = y + 3 into the first equation to get y = 2 and x = 5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-017",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "What is the distance between (-3, 4) and (5, -2)?",
+      "options": [
+        "9",
+        "10",
+        "11",
+        "-10"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Apply the distance formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "distance"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-018",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "What is the distance between (7, -6) and (-1, -6)?",
+      "options": [
+        "7",
+        "9",
+        "-8",
+        "8"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Apply the distance formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "distance"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-019",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Find the slope of the line passing through (-4, 3) and (2, 9).",
+      "options": [
+        "-1",
+        "2",
+        "1",
+        "0"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Apply the slope formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "slope"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-020",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Find the slope of the line passing through (6, -5) and (10, -1).",
+      "options": [
+        "1",
+        "-1",
+        "0",
+        "2"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Apply the slope formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "slope"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-021",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Line m has slope 0.75. What is the slope of a line perpendicular to m?",
+      "options": [
+        "-1.33",
+        "-0.33",
+        "1.33",
+        "-2.33"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Perpendicular slopes are negative reciprocals, so slope = -1.33."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "perpendicular"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-022",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Line m has slope -2. What is the slope of a line perpendicular to m?",
+      "options": [
+        "3.5",
+        "-0.5",
+        "1.5",
+        "0.5"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Perpendicular slopes are negative reciprocals, so slope = 0.5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "perpendicular"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-023",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "What is the distance between (-8, -3) and (-2, 7)?",
+      "options": [
+        "-11.66",
+        "11.66",
+        "10.66",
+        "12.66"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Apply the distance formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "distance"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-024",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Find the slope of the line passing through (-7, 2) and (5, -1).",
+      "options": [
+        "-0.25",
+        "0.75",
+        "0.25",
+        "-1.25"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Apply the slope formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "slope"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-025",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The line graph shows the total peer-tutoring hours each week. During which week did hours increase the most compared with the previous week?",
+      "options": [
+        "1",
+        "3",
+        "4",
+        "2"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Week 3 jumps by 7 hours (18 → 25), the largest increase.",
+      "graph": {
+        "type": "line",
+        "data": [
+          {
+            "week": 1,
+            "hours": 14
+          },
+          {
+            "week": 2,
+            "hours": 18
+          },
+          {
+            "week": 3,
+            "hours": 25
+          },
+          {
+            "week": 4,
+            "hours": 30
+          }
+        ],
+        "config": {
+          "title": "Peer Tutoring Hours",
+          "xLabel": "Week",
+          "yLabel": "Hours",
+          "dataKeys": [
+            "hours"
+          ],
+          "showGrid": true
+        }
+      }
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "line graph"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-026",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "A science club recorded lab attendance for four days: 18, 24, 26, 32 students. What is the mean attendance?",
+      "options": [
+        "25",
+        "26",
+        "24",
+        "28"
+      ],
+      "correctAnswer": "A",
+      "explanation": "(18 + 24 + 26 + 32) / 4 = 25."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "statistics",
+      "averages"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-027",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A box plot of commute times has Q1 = 18, median = 24, Q3 = 32, and a minimum of 10 minutes. What is the interquartile range?",
+      "options": [
+        "14",
+        "12",
+        "16",
+        "20"
+      ],
+      "correctAnswer": "A",
+      "explanation": "IQR = Q3 - Q1 = 32 - 18 = 14."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "statistics",
+      "box plot"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-028",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The histogram displays daily water consumption (gallons) for 50 homes. Which interval contains the median value?",
+      "options": [
+        "35",
+        "55",
+        "65",
+        "45"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Cumulative totals place the 25th value in the 40–49 bin.",
+      "graph": {
+        "type": "histogram",
+        "data": [
+          {
+            "range": "20-29",
+            "homes": 6
+          },
+          {
+            "range": "30-39",
+            "homes": 10
+          },
+          {
+            "range": "40-49",
+            "homes": 18
+          },
+          {
+            "range": "50-59",
+            "homes": 11
+          },
+          {
+            "range": "60-69",
+            "homes": 5
+          }
+        ],
+        "config": {
+          "title": "Daily Water Use",
+          "xLabel": "Gallons",
+          "yLabel": "Homes",
+          "dataKeys": [
+            "homes"
+          ],
+          "showGrid": true
+        }
+      }
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "histogram"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-029",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "A two-way table shows 60 students choosing electives. 28 prefer art, 21 prefer engineering, and the rest choose music. If 34 students are sophomores, how many sophomores selected engineering?",
+      "options": [
+        "21",
+        "12",
+        "17",
+        "14"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Use row/column totals to solve for the missing cell (12)."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "two-way tables"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-030",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The bar chart lists waste diverted each month (tons). In which month did diversion exceed the average by the largest margin?",
+      "options": [
+        "March",
+        "April",
+        "May",
+        "June"
+      ],
+      "correctAnswer": "C",
+      "explanation": "May’s bar is highest relative to the mean.",
+      "graph": {
+        "type": "bar",
+        "data": [
+          {
+            "month": "Mar",
+            "tons": 12
+          },
+          {
+            "month": "Apr",
+            "tons": 15
+          },
+          {
+            "month": "May",
+            "tons": 21
+          },
+          {
+            "month": "Jun",
+            "tons": 17
+          }
+        ],
+        "config": {
+          "title": "Waste Diversion",
+          "xLabel": "Month",
+          "yLabel": "Tons",
+          "dataKeys": [
+            "tons"
+          ],
+          "showGrid": true
+        }
+      }
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "bar chart"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-031",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "A survey’s pie chart shows 35% of commuters bike, 40% take transit, 15% walk, and 10% drive. What percentage uses active modes (bike or walk)?",
+      "options": [
+        "55",
+        "45",
+        "50",
+        "60"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Active modes total 35% + 15% = 50%."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "pie chart"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-032",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The table shows scholarships awarded: Biology 18, Chemistry 12, Physics 9, Earth Science 6. What fraction went to Physics?",
+      "options": [
+        "1/5",
+        "2/9",
+        "1/4",
+        "3/10"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Physics received 9 of 45 awards, so 1/5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "ratios"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-033",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The quadratic y = x^2 - 10x + 21 intersects the x-axis at which values?",
+      "options": [
+        "x = 2 or x = 8",
+        "x = 3 or x = 7",
+        "x = 1 or x = 21",
+        "x = -3 or x = -7"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Factor to (x - 3)(x - 7) = 0."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "quadratic roots"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-034",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "What is the vertex form of f(x) = x^2 + 6x + 5?",
+      "options": [
+        "(x - 3)^2 + 4",
+        "(x + 3)^2 - 4",
+        "(x + 3)^2 + 4",
+        "(x - 3)^2 - 4"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Complete the square: x^2 + 6x + 9 - 4."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "vertex form"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-035",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A culture doubles every 5 hours starting at 1,200 cells. About how many after 15 hours?",
+      "options": [
+        "9600",
+        "7200",
+        "8400",
+        "10800"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Three doubling periods: 1,200 × 2^3 = 9,600."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "exponential growth"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-036",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "A material loses 12% of its mass each day. If initial mass is 900 g, how much remains after 4 days?",
+      "options": [
+        "600",
+        "580",
+        "549.15",
+        "640"
+      ],
+      "correctAnswer": "C",
+      "explanation": "900 × (0.88)^4 ≈ 549.15."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "exponential decay"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-037",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: log_3 (x - 2) = 4.",
+      "options": [
+        "85",
+        "83",
+        "81",
+        "82"
+      ],
+      "correctAnswer": "B",
+      "explanation": "x - 2 = 3^4 = 81 → x = 83."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "logarithms"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-038",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve: 5/(x - 1) + 2/(x + 3) = 3.",
+      "options": [
+        "2",
+        "1",
+        "-3",
+        "-1"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Multiply through and solve: x = 1 (extraneous checked)."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "rational equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-039",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "The arithmetic sequence a_n = 12 - 3(n - 1). What is a_8?",
+      "options": [
+        "-9",
+        "-12",
+        "-15",
+        "-6"
+      ],
+      "correctAnswer": "A",
+      "explanation": "a_8 = 12 - 3×7 = -9."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "sequences"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-040",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "If f(x) = 2x - 5 and g(x) = x^2 + 1, what is f(g(3))?",
+      "options": [
+        "17",
+        "13",
+        "11",
+        "15"
+      ],
+      "correctAnswer": "D",
+      "explanation": "g(3)=10, f(10)=2(10)-5=15."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "passport to advanced math",
+      "function composition"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-041",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "A triangle has side lengths 9, 10, and 13. What is its perimeter?",
+      "options": [
+        "36",
+        "32",
+        "33",
+        "30"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Sum the side lengths."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "geometry",
+      "perimeter"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-042",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A circle with radius 11 cm subtends a central angle of 45°. What is the arc length? (π ≈ 3.14)",
+      "options": [
+        "9.42",
+        "7.21",
+        "11.5",
+        "8.64"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Arc length = (θ/360)·2πr."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "geometry",
+      "circles"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-043",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A right cone has radius 5 inches and height 12 inches. What is its volume? (π ≈ 3.14)",
+      "options": [
+        "376.8",
+        "235.5",
+        "188.4",
+        "314"
+      ],
+      "correctAnswer": "D",
+      "explanation": "V = (1/3)πr²h = (1/3)·3.14·25·12."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "geometry",
+      "volume"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-044",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Vector a = <4, -1> and b = <-2, 5>. What is |a + b|?",
+      "options": [
+        "4.47",
+        "3.61",
+        "5.39",
+        "5.83"
+      ],
+      "correctAnswer": "A",
+      "explanation": "a + b = <2, 4>; magnitude = sqrt(2² + 4²) = sqrt(20)."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "geometry",
+      "vectors"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-045",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "A circle graph shows greenhouse energy use: Lighting 28%, HVAC 33%, Irrigation 19%, Computing 12%, Other 8%. What percent is lighting plus HVAC?",
+      "options": [
+        "59",
+        "52",
+        "61",
+        "64"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Combine 28% + 33% = 61%.",
+      "graph": {
+        "type": "pie",
+        "data": [
+          {
+            "name": "Lighting",
+            "value": 28
+          },
+          {
+            "name": "HVAC",
+            "value": 33
+          },
+          {
+            "name": "Irrigation",
+            "value": 19
+          },
+          {
+            "name": "Computing",
+            "value": 12
+          },
+          {
+            "name": "Other",
+            "value": 8
+          }
+        ],
+        "config": {
+          "title": "Greenhouse Energy Use (%)",
+          "showLegend": true
+        }
+      }
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "pie chart"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-046",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "In △LMN, angle L = 45°, angle M = 65°. What is the measure of angle N?",
+      "options": [
+        "75",
+        "70",
+        "85",
+        "60"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Angles sum to 180°, so N = 180 - 45 - 65 = 70°."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "geometry",
+      "angles"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-047",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "A survey recorded daily steps (in thousands) for five runners: 9, 12, 12, 15, 18. What is the median?",
+      "options": [
+        "15",
+        "11",
+        "12",
+        "13.5"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ordered list’s middle value is 12."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "statistics",
+      "median"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-048",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A sector of radius 10 cm has area 78.5 cm². What is the central angle (degrees)? (π ≈ 3.14)",
+      "options": [
+        "45",
+        "75",
+        "60",
+        "90"
+      ],
+      "correctAnswer": "D",
+      "explanation": "θ = (area × 360) / (πr²) = (78.5 × 360) / (3.14 × 100) ≈ 90°."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "geometry",
+      "circles"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-049",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A data table lists carbon emissions (tons) for 2019–2022: 48, 52, 44, 41. What is the overall percent decrease from 2019 to 2022?",
+      "options": [
+        "12.5",
+        "20",
+        "16.7",
+        "14.6"
+      ],
+      "correctAnswer": "D",
+      "explanation": "((48 - 41) / 48) × 100 ≈ 14.6%."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "percent change"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-math-050",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The scatter plot shows bike rentals vs. temperature. At which temperature does the model predict roughly 420 rentals?",
+      "options": [
+        "82",
+        "74",
+        "70",
+        "78"
+      ],
+      "correctAnswer": "D",
+      "explanation": "420 rentals align with the 78°F data point.",
+      "graph": {
+        "type": "scatter",
+        "data": [
+          {
+            "temp": 62,
+            "rentals": 260
+          },
+          {
+            "temp": 68,
+            "rentals": 310
+          },
+          {
+            "temp": 74,
+            "rentals": 360
+          },
+          {
+            "temp": 78,
+            "rentals": 420
+          },
+          {
+            "temp": 82,
+            "rentals": 450
+          }
+        ],
+        "config": {
+          "title": "Bike Rentals vs Temperature",
+          "xLabel": "Temperature (°F)",
+          "yLabel": "Rentals",
+          "showGrid": true
+        }
+      }
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "problem solving and data analysis",
+      "scatter plot"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-051",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"The refurbished makerspace sits beside the river, where Paola now tests recycled polymers for lightweight boat hulls.\" What is the main idea?",
+      "options": [
+        "Paola uses the makerspace to experiment with recycled materials.",
+        "The river flooded the makerspace last year.",
+        "Paola dislikes the refurbished facility.",
+        "Boat manufacturing is prohibited."
+      ],
+      "correctAnswer": "A",
+      "explanation": "The sentence highlights Paola’s experiments in the makerspace."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "main idea"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-052",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"When the music director shortened rehearsals, brass players welcomed the change, remembering exhausting marathon practices in prior seasons.\" What inference can be drawn?",
+      "options": [
+        "Shorter rehearsals are appreciated because previous ones were tiring.",
+        "The brass section dislikes music.",
+        "Rehearsals are now canceled entirely.",
+        "Prior seasons had no rehearsals."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Their relief suggests earlier rehearsals were exhausting."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "inference"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-053",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Malik narrates his solar-kite experiments with dry wit, insisting the kite demanded hazard pay after every rooftop landing.\" Which term best describes Malik’s tone?",
+      "options": [
+        "Humorous",
+        "Angry",
+        "Melancholic",
+        "Detached"
+      ],
+      "correctAnswer": "A",
+      "explanation": "His playful exaggeration shows humor."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "tone"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-054",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Because thawing permafrost releases long-trapped pollen, botanists analyze the grains to reconstruct Arctic plant histories.\" What is the purpose of the sentence?",
+      "options": [
+        "To explain how botanists collect historical data.",
+        "To warn hikers about permafrost.",
+        "To describe modern pollen diets.",
+        "To compare permafrost to deserts."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It explains the research method."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "purpose"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-055",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Though the exhibit occupies a single room, its rotating cases display ship logs, sonar maps, and divers’ oral histories.\" Which word best replaces \"single\" without changing the meaning?",
+      "options": [
+        "Modest",
+        "Lavish",
+        "Tempestuous",
+        "Ambiguous"
+      ],
+      "correctAnswer": "A",
+      "explanation": "“Modest” matches the sense of small scale."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "vocabulary"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-056",
+    "subject": "reading",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "\"Initially, Rina thought the quilt’s circuitry motif was purely decorative; later she realized the dimmed patches marked neighborhoods left behind by factory closures.\" How does Rina’s perspective change?",
+      "options": [
+        "She moves from seeing the quilt as decoration to recognizing its commentary on closures.",
+        "She decides quilts are obsolete.",
+        "She insists the artist redo the pattern.",
+        "She stops supporting textile art."
+      ],
+      "correctAnswer": "A",
+      "explanation": "She uncovers the deeper meaning."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "perspective"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-057",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Sensors on the marsh towers logged that egrets migrated a week earlier than usual during the warmest autumn on record.\" What does the data suggest?",
+      "options": [
+        "Warmer weather may trigger earlier departures.",
+        "Bird migrations are random.",
+        "Heat prevents migrations entirely.",
+        "Sensors caused the migration."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Early migration coincided with warmth."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "data relationships"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-058",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Elena’s color-coded spreadsheet first frustrated the compost volunteers, yet it later settled every question about who had turned which pile.\" What can be concluded?",
+      "options": [
+        "The spreadsheet proved useful despite initial doubts.",
+        "Volunteers ignored the data.",
+        "The compost piles failed.",
+        "The spreadsheet was destroyed."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It resolved disputes."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "function"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-059",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Rather than weigh spices, Chef Omari listens for the skillet’s hiss and watches the sauce bronze before finishing with smoked paprika.\" What does the figurative language imply?",
+      "options": [
+        "Cooking is guided by sensory cues.",
+        "The chef refuses to use spices.",
+        "The kitchen is silent.",
+        "Measurements are banned."
+      ],
+      "correctAnswer": "A",
+      "explanation": "He relies on sound and color."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "figurative language"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-060",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"After touring the heirloom seed vault, Anish argued that preserving biodiversity requires restoring the terraces where those seeds once sprouted.\" Which claim does Anish make?",
+      "options": [
+        "Storage must be paired with habitat restoration.",
+        "Seed vaults should close.",
+        "Labs alone can protect biodiversity.",
+        "Terraces no longer matter."
+      ],
+      "correctAnswer": "A",
+      "explanation": "He emphasizes restoration plus storage."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "claims"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-061",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"Coach Gupta’s two-line pep talk—“Stay loose, trust your stride”—quieted the relay team.\" What effect did the coach’s words have?",
+      "options": [
+        "They calmed the runners.",
+        "They caused an argument.",
+        "They ended the meet.",
+        "They changed the lineup."
+      ],
+      "correctAnswer": "A",
+      "explanation": "The passage says the team quieted."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "textual evidence"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-062",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"During prototyping, Keisha swapped a bulky battery for a slimmer one, saving half a pound but reducing runtime by two hours.\" What trade-off occurs?",
+      "options": [
+        "Less weight but shorter runtime.",
+        "More weight and shorter runtime.",
+        "Less weight and longer runtime.",
+        "No change in runtime."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Weight decreases while runtime drops."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "cause and effect"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-063",
+    "subject": "reading",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "\"The historian alternates between cataloging irrigation gates and questioning whether their upkeep eventually sank the city budget.\" How is the essay structured?",
+      "options": [
+        "By alternating description with analysis.",
+        "By presenting dialogue only.",
+        "By listing unrelated facts.",
+        "By summarizing memoirs."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It toggles between description and critique."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "text structure"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-064",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"“These dunes are archives,” the geomorphologist said, brushing a layer of charcoal embedded in the sand.\" What does the metaphor convey?",
+      "options": [
+        "The dunes preserve historical evidence.",
+        "The dunes repel researchers.",
+        "The dunes are museums.",
+        "The dunes contain literal books."
+      ],
+      "correctAnswer": "A",
+      "explanation": "“Archives” implies stored records."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "figurative language"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-065",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"The journalist contrasts a photo of five ferries from 1910 with today’s image of a packed terminal.\" What is the likely purpose?",
+      "options": [
+        "To highlight how terminal usage changed.",
+        "To advertise tourism.",
+        "To critique photography.",
+        "To describe weather."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Juxtaposition shows change."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "comparison"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-066",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Margins scribbled with “retest nitrate,” “adjust pH Friday” show the lab assistant thinking aloud on paper.\" What do the notes reveal?",
+      "options": [
+        "She is planning her next steps in real time.",
+        "She has finished the experiment.",
+        "She ignores the procedure.",
+        "She is doodling."
+      ],
+      "correctAnswer": "A",
+      "explanation": "The notes capture immediate actions."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "evidence"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-067",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Though the quartet rehearsed every cue, the violist reminded them to leave space for her improvisation.\" What instruction is being given?",
+      "options": [
+        "Allow flexibility for the solo.",
+        "Play faster to finish early.",
+        "Skip the solo entirely.",
+        "Replace the violist."
+      ],
+      "correctAnswer": "A",
+      "explanation": "She asks for musical space."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "purpose"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-068",
+    "subject": "reading",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "\"Two abolitionist letters describe the same mass meeting: one praises the orderly vote, the other laments voices drowned out in the crowd.\" What does this reveal?",
+      "options": [
+        "Eyewitnesses emphasize different aspects of events.",
+        "The meeting never happened.",
+        "Both letters oppose abolition.",
+        "The letters were plagiarized."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Different focuses show perspective."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "synthesis",
+      "multiple sources"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-069",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Although this year’s otter count fell, the biologist noted that flood-stage rivers hid many burrows.\" Which interpretation aligns with the passage?",
+      "options": [
+        "Lower sightings may stem from poor conditions.",
+        "Otters left the region permanently.",
+        "Floods guarantee better counts.",
+        "Biologists stopped counting."
+      ],
+      "correctAnswer": "A",
+      "explanation": "She warns about observation limits."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "evaluating evidence"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-070",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"The playwright explains that weaving a comedic subplot into the tragedy keeps audiences from emotional exhaustion.\" What does the playwright reveal?",
+      "options": [
+        "The subplot offsets the heavier storyline.",
+        "The play is purely comedic.",
+        "The subplot replaces the main plot.",
+        "Audiences dislike tragedy."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It balances tone."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "author intent"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-071",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Publishing wetland sampling protocols allowed teams in two countries to replicate carbon measurements.\" What does this support?",
+      "options": [
+        "Sharing methods improves reproducibility.",
+        "Protocols should stay secret.",
+        "Wetlands cannot be studied.",
+        "Replication hurts science."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Shared methods enable replication."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "scientific reasoning"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-072",
+    "subject": "reading",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "\"In her memoir, the aerospace engineer recounts the celebrated launch as a warning: the crew ignored a small sensor spike minutes before liftoff.\" What is the memoir’s warning?",
+      "options": [
+        "Success can hide overlooked risks.",
+        "Sensor data is useless.",
+        "Launches should never proceed.",
+        "Engineers should not write memoirs."
+      ],
+      "correctAnswer": "A",
+      "explanation": "She highlights danger in ignoring data."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "theme"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-073",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"Savita noted “Hive Nine slow—inspect for mites Thursday” in her apiary log.\" What is Savita planning?",
+      "options": [
+        "A mite inspection later that week.",
+        "Moving the hive off-site immediately.",
+        "Harvesting honey that day.",
+        "Selling the hive."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Her note schedules an inspection."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "textual evidence"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-074",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Plotting volunteer shifts against litter collected showed dawn crews gathered nearly twice as much trash as evening crews.\" What conclusion follows?",
+      "options": [
+        "Cleanup productivity peaks at dawn.",
+        "Evening crews should be eliminated.",
+        "Trash totals were inaccurate.",
+        "Volunteers dislike evenings."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Dawn crews collected more trash."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "data interpretation",
+      "information and ideas"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-075",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Two editorials debate a wildlife overpass: one applauds reconnecting habitats, the other urges spending on bridge repairs first.\" What is the key difference?",
+      "options": [
+        "They prioritize different infrastructure goals.",
+        "Both oppose funding wildlife projects.",
+        "They discuss unrelated issues.",
+        "They copy the same argument."
+      ],
+      "correctAnswer": "A",
+      "explanation": "One supports the overpass, the other shifts priorities."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "synthesis",
+      "argument comparison"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-076",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Geochemists matched ceramic fragments to kilns nearly 300 miles upriver using trace minerals.\" What does this evidence suggest?",
+      "options": [
+        "The pottery was transported over long distances.",
+        "The fragments were fake.",
+        "Kilns were on-site.",
+        "Mineral testing failed."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Shared minerals imply importation."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "inference"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-077",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"After librarians curated a city-policy shelf with annotations, checkouts of translated policy briefs doubled.\" What conclusion is supported?",
+      "options": [
+        "Curation boosted checkouts.",
+        "Curation reduced interest.",
+        "Translations were removed.",
+        "Checkouts stayed flat."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Checkouts increased after curation."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "cause and effect"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-078",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"“Tenacious barely describes her,” the mentor laughed, recalling how Miri rewrote her grant nightly until funding arrived.\" What does “tenacious” mean here?",
+      "options": [
+        "Persistent",
+        "Forgetful",
+        "Passive",
+        "Uncertain"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Her repeated effort shows persistence."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "vocabulary"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-079",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Investors asked whether recycled-aluminum supply contracts could survive port delays before backing the battery project.\" What concern do investors raise?",
+      "options": [
+        "Supply chain reliability for recycled aluminum.",
+        "The number of employees.",
+        "The location of cafeterias.",
+        "Color options for batteries."
+      ],
+      "correctAnswer": "A",
+      "explanation": "They question supply stability."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "supporting details"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-080",
+    "subject": "reading",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "\"The committee transcript alternates between a senator’s microgrid proposal and the chair’s skeptical follow-ups.\" What does the structure emphasize?",
+      "options": [
+        "Tension between the speaker and committee.",
+        "Complete agreement.",
+        "A fictional story.",
+        "Budget totals."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Alternating testimony and questions shows tension."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "text structure"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-081",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"The bar chart lists renewable energy share by district: North 24%, South 31%, East 38%, West 27%.\" Which district relies most on renewables?",
+      "options": [
+        "North",
+        "South",
+        "East",
+        "West"
+      ],
+      "correctAnswer": "C",
+      "explanation": "East has 38%, the highest."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "data interpretation",
+      "information and ideas"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-082",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"Uncle Dev wrote “Dear future marine biologist” atop every postcard, even when we mailed selfies from the desert.\" What does the greeting suggest?",
+      "options": [
+        "He playfully encouraged big dreams.",
+        "He believed we were marine biologists already.",
+        "He refused to learn our names.",
+        "He disliked postcards."
+      ],
+      "correctAnswer": "A",
+      "explanation": "The greeting is affectionate encouragement."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "tone"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-083",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Residents argue that replacing asphalt with porous bricks will reduce flash flooding by allowing water to drain through the surface.\" Which claim is made?",
+      "options": [
+        "Permeable surfaces help reduce flooding.",
+        "Bricks cause flooding.",
+        "Flooding is unrelated to surface material.",
+        "Residents oppose drainage."
+      ],
+      "correctAnswer": "A",
+      "explanation": "They assert drainage reduces flooding."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "claims"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-084",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Two mentors disagree: one urges students to specialize early, the other champions sampling multiple disciplines.\" What does this show?",
+      "options": [
+        "Mentors can value different educational philosophies.",
+        "Mentors refuse to help.",
+        "All students must specialize.",
+        "Sampling disciplines is forbidden."
+      ],
+      "correctAnswer": "A",
+      "explanation": "They prioritize different strategies."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "synthesis",
+      "multiple viewpoints"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-reading-085",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Noise monitors recorded 32, 37, 40, 45, and 50 decibels over the evening.\" What is the range of the measurements?",
+      "options": [
+        "18 decibels",
+        "20 decibels",
+        "22 decibels",
+        "25 decibels"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Range = 50 - 32 = 18 decibels."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "integration of sources"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-086",
+    "subject": "writing",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "The lab technicians calibrates each thermometer before the trial. Which change corrects the sentence?",
+      "options": [
+        "Calibrates → calibrate",
+        "Lab → labs",
+        "Each → every",
+        "Before → after"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Plural subject “technicians” requires “calibrate.”"
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-087",
+    "subject": "writing",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Participants must wear closed toe shoes while operating the laser cutter. Choose the correct revision.",
+      "options": [
+        "closed-toe shoes",
+        "close-toed shoe",
+        "closing toes shoes",
+        "closed toe shoe"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Hyphenate the compound adjective."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "hyphenation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-088",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Because the volunteers assembled the stage early, therefore the festival opened ahead of schedule. Which revision is best?",
+      "options": [
+        "Because the volunteers assembled the stage early, the festival opened ahead of schedule.",
+        "Because the volunteers assembled the stage early, therefore the festival opened.",
+        "Because the volunteers assembled the stage early, so the festival opened.",
+        "Because the volunteers assembled the stage early, consequently the festival opened."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Remove redundant transitions."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "sentence structure"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-089",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The memo reviews transit data, compares greenhouse audits, and drafting proposals for shared mobility hubs. Which option fixes the parallel structure?",
+      "options": [
+        "reviews transit data, compares audits, and drafts proposals",
+        "review transit data, compares audits, and drafting proposals",
+        "reviews transit data, compared audits, and drafts proposals",
+        "reviewing transit data, compares audits, and drafts proposals"
+      ],
+      "correctAnswer": "A",
+      "explanation": "All verbs should share the same tense."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-090",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The committee evaluated the design brief, they also toured the prototype classroom. How should the clauses be combined?",
+      "options": [
+        "..., and they also toured ...",
+        "..., they toured ...",
+        "..., also touring ...",
+        "..., therefore they toured ..."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Use a conjunction to avoid a comma splice."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "run-on corrections"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-091",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Nina not only drafted the policy but also submitting the training plan. Select the correct revision.",
+      "options": [
+        "drafted ... submitted",
+        "drafts ... submitting",
+        "drafted ... submitting",
+        "drafting ... submitted"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Both verbs should be past tense."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-092",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "City Council adopted the ordinance after residents testified, this outcome surprised few observers. Which punctuation fixes the error?",
+      "options": [
+        "Replace the comma with a semicolon.",
+        "Add another comma.",
+        "Replace the comma with a colon.",
+        "Delete “after.”"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Use a semicolon between independent clauses."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "punctuation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-093",
+    "subject": "writing",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "The updated scheduling app is more responsive then the old version. Choose the correct word.",
+      "options": [
+        "then",
+        "than",
+        "there",
+        "their"
+      ],
+      "correctAnswer": "B",
+      "explanation": "“Than” indicates comparison."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "word choice"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-094",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The coordinator emails weekly reminders; including deadlines, webinars, and help-desk hours. Which revision is correct?",
+      "options": [
+        "..., including deadlines...",
+        "...; including deadlines...",
+        "..., including; deadlines...",
+        "..., and including deadlines..."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Use a comma before “including.”"
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "punctuation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-095",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Neither the bylaws nor the mentor guidelines mentions virtual attendance policies. Which change is needed?",
+      "options": [
+        "mentions → mention",
+        "neither → either",
+        "guidelines → guideline",
+        "policies → policy"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Verb agrees with the nearer plural subject."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-096",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The fellowship committee values applicants who articulate goals, demonstrate preparation, and outline community partnerships. Why is this sentence correct?",
+      "options": [
+        "All verbs share the same form.",
+        "It lacks a subject.",
+        "It contains a fragment.",
+        "It misplaces modifiers."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Parallel verbs create clarity."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-097",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Park rangers track invasive reeds because it’s seeds cling to boots. Choose the correct word.",
+      "options": [
+        "it’s",
+        "its",
+        "their",
+        "there"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Use the possessive “its.”"
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "apostrophes"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-098",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "There’s four different solar prototypes awaiting review. Which revision is correct?",
+      "options": [
+        "There’s four...",
+        "There are four...",
+        "Their four...",
+        "They’re four..."
+      ],
+      "correctAnswer": "B",
+      "explanation": "Plural subject needs “are.”"
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-099",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A report summarizes survey data on study lounges. Which sentence best introduces the chart showing 58% prefer shared lounges?",
+      "options": [
+        "Table 2 shows that nearly three-fifths of respondents favor shared lounges over private carrels.",
+        "Table 2 lists couch colors.",
+        "Table 2 explains why students dislike lounges.",
+        "Table 2 contains unrelated recipes."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It references the statistic and its meaning.",
+      "graph": {
+        "type": "bar",
+        "data": [
+          {
+            "space": "Shared Lounge",
+            "percent": 58
+          },
+          {
+            "space": "Private Carrel",
+            "percent": 25
+          },
+          {
+            "space": "Library Table",
+            "percent": 12
+          },
+          {
+            "space": "Other",
+            "percent": 5
+          }
+        ],
+        "config": {
+          "title": "Preferred Study Spaces",
+          "xLabel": "Space Type",
+          "yLabel": "Percent",
+          "dataKeys": [
+            "percent"
+          ],
+          "showGrid": true
+        }
+      }
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "using data"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-100",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Because the sensor network was recalibrated carefully, the engineers expected stable data, but the readings still fluctuated. Why is the sentence effective?",
+      "options": [
+        "It contrasts expectation and outcome within one sentence.",
+        "It contains a fragment.",
+        "It repeats the same clause twice.",
+        "It lacks a subject."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It balances dependent and independent clauses."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "sentence structure"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-101",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The museum director greeted the donors and guided them through the new holographic exhibit. What does this sentence demonstrate?",
+      "options": [
+        "Correct pronoun use and parallel verbs.",
+        "A run-on error.",
+        "Incorrect tense.",
+        "A fragment."
+      ],
+      "correctAnswer": "A",
+      "explanation": "“Them” correctly serves as object."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "pronouns"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-102",
+    "subject": "writing",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "The pilot study tracked twenty participants for six months; their improvements—measured by mobility scores—was presented to the review board. Which revision fixes the error?",
+      "options": [
+        "was → were",
+        "for → in",
+        "tracked → tracking",
+        "board → boards"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Subject “improvements” is plural."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-103",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "While the first composting method costs more, it captures methane that would otherwise escape. What does the sentence accomplish?",
+      "options": [
+        "It links cost and environmental benefit.",
+        "It introduces an unrelated anecdote.",
+        "It contradicts itself.",
+        "It forms a fragment."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It provides a logical transition."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "transitions"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-104",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Wrenched from the hillside by heavy rain, the footbridge demanded immediate repairs from the trail crew. What makes this revision effective?",
+      "options": [
+        "It clarifies that the bridge—not the crew—was wrenched loose.",
+        "It creates a fragment.",
+        "It removes all verbs.",
+        "It adds ambiguity."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Dangling modifier resolved."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "modifiers"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-105",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "An email invites volunteers to stabilize dunes. Which sentence best blends motivation with logistics?",
+      "options": [
+        "Bring gloves and meet at the south jetty at 9:00 a.m.; together we can anchor the dune grass before the next storm.",
+        "The dunes exist.",
+        "Please read about dunes on your own.",
+        "Sand is everywhere."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It encourages participation and specifies time/place."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "purpose"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-106",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The best time to prune blueberry shrubs is in late winter, when sap flow is minimal. Why is this sentence correct?",
+      "options": [
+        "Singular subject “time” pairs with “is.”",
+        "It lacks a verb.",
+        "It repeats the same idea twice.",
+        "It misuses commas."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Subject-verb agreement is correct."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-107",
+    "subject": "writing",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "The advisory board—which meets monthly and publishes detailed notes—have voted unanimously to extend the pilot. Which change is needed?",
+      "options": [
+        "have → has",
+        "meets → meet",
+        "publishes → publish",
+        "extend → extends"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Collective noun takes singular verb."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "collective nouns"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-108",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The cybersecurity club hosted a workshop, the event taught first-year students how to detect phishing links. How should this be revised?",
+      "options": [
+        "..., and the event taught ...",
+        "..., teaching the event ...",
+        "..., the event which ...",
+        "..., event teaching ..."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Add a conjunction to fix the comma splice."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "run-on corrections"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-109",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A grant proposal wraps up after describing pilot impacts. Which sentence provides a compelling conclusion?",
+      "options": [
+        "By funding this proposal, reviewers will help 140 apprentices access paid clean-energy placements across the delta.",
+        "The cafeteria closes at noon.",
+        "Some apprentices bike to class.",
+        "Attachments are printed on blue paper."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It reinforces impact and ties to funding."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "conclusions"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-110",
+    "subject": "writing",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "The analyst argues that the policy will reduce emissions; citing data from cities with similar programs. Which revision fixes the punctuation?",
+      "options": [
+        "..., citing data ...",
+        "...; citing data ...",
+        "...: citing data ...",
+        "..., and citing data ..."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Attach participial phrase with a comma."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "punctuation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-111",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Neither the policy brief nor the updated mentor guidelines mention virtual attendance procedures. Why is this correct?",
+      "options": [
+        "Verb agrees with nearer plural subject.",
+        "It lacks a verb.",
+        "It is a fragment.",
+        "It repeats a word."
+      ],
+      "correctAnswer": "A",
+      "explanation": "“Mention” matches plural “guidelines.”"
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-112",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Table 4 compares winter ridership to spring ridership, illustrating when maintenance crews must schedule additional mechanics. What does this sentence accomplish?",
+      "options": [
+        "It interprets the table for readers.",
+        "It adds unrelated anecdotes.",
+        "It argues against maintenance.",
+        "It forms a fragment."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It connects data to a staffing decision."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "using data"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-113",
+    "subject": "writing",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "The advisory board not only requested quarterly dashboards but also insisting on monthly listening sessions. Which revision fixes the error?",
+      "options": [
+        "requested ... but also insisted",
+        "requesting ... but also insisted",
+        "requested ... but also insisting",
+        "requests ... but also insisted"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Maintain parallel past tense verbs."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-114",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The maintenance checklist requires that every valve be inspected, lubricated, and temperature readings documented. What makes this revision effective?",
+      "options": [
+        "All items share the same passive structure.",
+        "It creates a fragment.",
+        "It removes verbs.",
+        "It misplaces modifiers."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Parallel passive verbs provide clarity."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-115",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "After drone footage confirmed erosion, the engineers installed fiber rolls; this decision reduced sand loss by 38 percent. What does this sentence illustrate?",
+      "options": [
+        "A cause-and-effect relationship supported by data.",
+        "A fragment.",
+        "An unrelated comment.",
+        "A tense shift."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Shows evidence leading to action."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "supporting evidence"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-116",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The presentation highlights apprentice testimonials, a map of partner sites, and enrollment benchmarks. Which change is needed?",
+      "options": [
+        "No change; list items are parallel.",
+        "Replace testimonials with testimonial.",
+        "Add a verb after map.",
+        "Remove benchmarks."
+      ],
+      "correctAnswer": "A",
+      "explanation": "All items are nouns."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-117",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Chart 4 shows peak bike-share usage in July, so the summary recommends expanding weekend maintenance crews. Why is this effective?",
+      "options": [
+        "It explains how the chart informs actions.",
+        "It repeats the chart’s title.",
+        "It contradicts the data.",
+        "It omits key numbers."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Connects evidence to recommendation."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "using data"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-118",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Because residents had already completed the survey, the planner thanked them for their responses. Why is this revision preferred?",
+      "options": [
+        "It removes contradictory transitions.",
+        "It creates a fragment.",
+        "It repeats “survey.”",
+        "It misuses commas."
+      ],
+      "correctAnswer": "A",
+      "explanation": "No conflicting conjunctions remain."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "sentence structure"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-119",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The innovation brief describes pilot sites, compares resident feedback, and explains how those results guide next steps. What does the sentence demonstrate?",
+      "options": [
+        "Parallel verbs and logical sequence.",
+        "A fragment.",
+        "A comma splice.",
+        "Ambiguous pronouns."
+      ],
+      "correctAnswer": "A",
+      "explanation": "All verbs align."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "organization"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch03-writing-120",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "A commencement speech urges graduates to experiment. Which sentence supports that theme?",
+      "options": [
+        "You will try, revise, and invite critique as you engineer better communities.",
+        "Please return your library books.",
+        "Graduation gowns are black.",
+        "The stadium seats are limited."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It mirrors the speech’s message."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "expression of ideas",
+      "purpose"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  }
+]

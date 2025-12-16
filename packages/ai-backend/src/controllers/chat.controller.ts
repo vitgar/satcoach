@@ -157,6 +157,42 @@ export class ChatController {
       res.status(500).json({ error: error.message || 'Failed to clarify concept' });
     }
   }
+
+  /**
+   * Generate clarifying questions about foundational concepts
+   * POST /api/v1/chat/clarifying-questions
+   */
+  async generateClarifyingQuestions(req: Request, res: Response): Promise<void> {
+    try {
+      const { questionContext, studentContext, chatHistory } = req.body;
+
+      if (!questionContext || !questionContext.questionText) {
+        res.status(400).json({ error: 'questionContext is required' });
+        return;
+      }
+
+      if (!studentContext || typeof studentContext.level !== 'number') {
+        res.status(400).json({ error: 'studentContext is required' });
+        return;
+      }
+
+      console.log(`[ChatController] Generating clarifying questions`);
+
+      const questions = await chatCoachService.generateClarifyingQuestions(
+        questionContext as QuestionContext,
+        studentContext as StudentContext,
+        chatHistory
+      );
+
+      res.status(200).json({
+        message: 'Clarifying questions generated',
+        questions,
+      });
+    } catch (error: any) {
+      console.error('[ChatController] Clarifying questions error:', error);
+      res.status(500).json({ error: error.message || 'Failed to generate clarifying questions' });
+    }
+  }
 }
 
 export const chatController = new ChatController();

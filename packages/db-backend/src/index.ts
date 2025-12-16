@@ -8,6 +8,7 @@ import questionRoutes from './routes/question.routes';
 import progressRoutes from './routes/progress.routes';
 import sessionRoutes from './routes/session.routes';
 import learningRoutes from './routes/learning.routes';
+import validationRoutes from './routes/validation.routes';
 import { errorHandler, notFound } from './middleware/errorHandler.middleware';
 
 // Validate environment variables
@@ -47,6 +48,7 @@ app.use('/api/v1/questions', questionRoutes);
 app.use('/api/v1/progress', progressRoutes);
 app.use('/api/v1/sessions', sessionRoutes);
 app.use('/api/v1/learning', learningRoutes);
+app.use('/api/v1/validation', validationRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -93,6 +95,11 @@ const startServer = async () => {
       console.log(`   GET  /api/v1/learning/question`);
       console.log(`   POST /api/v1/learning/attempt`);
       console.log(`   POST /api/v1/learning/explain`);
+      console.log('');
+      console.log(`   GET  /api/v1/validation/questions`);
+      console.log(`   POST /api/v1/validation/validate-question`);
+      console.log(`   POST /api/v1/validation/apply-changes`);
+      console.log(`   GET  /api/v1/validation/stats`);
       console.log('');
     });
   } catch (error) {

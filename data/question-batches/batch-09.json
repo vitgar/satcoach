@@ -1,0 +1,1225 @@
+[
+  {
+    "_id": "batch09-math-001",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Solve for x: 6x - 12 = 18.",
+      "options": [
+        "6",
+        "3",
+        "5",
+        "9"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Add 12 to both sides, then divide by 6 to get x = 5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-002",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Solve for x: -5x + 20 = -10.",
+      "options": [
+        "6",
+        "4",
+        "10",
+        "7"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Subtract 20 to both sides, then divide by -5 to get x = 6."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-003",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Solve for x: 8x + 16 = 48.",
+      "options": [
+        "5",
+        "2",
+        "4",
+        "8"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Subtract 16 to both sides, then divide by 8 to get x = 4."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-004",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: 12x - 24 = 48.",
+      "options": [
+        "7",
+        "6",
+        "4",
+        "10"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Add 24 to both sides, then divide by 12 to get x = 6."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-005",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: -9x - 18 = 9.",
+      "options": [
+        "-2",
+        "-5",
+        "1",
+        "-3"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Add 18 to both sides, then divide by -9 to get x = -3."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-006",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve for x: 13x + 26 = 39.",
+      "options": [
+        "5",
+        "2",
+        "1",
+        "-1"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Subtract 26 to both sides, then divide by 13 to get x = 1."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-007",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve for x: 4x - 28 = -12.",
+      "options": [
+        "5",
+        "8",
+        "4",
+        "2"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Add 28 to both sides, then divide by 4 to get x = 4."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-008",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve for x: -10x + 6 = 76.",
+      "options": [
+        "-6",
+        "-9",
+        "-3",
+        "-7"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Subtract 6 to both sides, then divide by -10 to get x = -7."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "linear equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-009",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Which value satisfies 15 - 5x ≥ -10?",
+      "options": [
+        "-2",
+        "1",
+        "4",
+        "2"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Isolate x to find x ≥ 2."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-010",
+    "subject": "math",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Which value satisfies 4x + 7 ≤ 27?",
+      "options": [
+        "8.75",
+        "-6.75",
+        "5.75",
+        "6.75"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Isolate x to find x ≤ 6.75."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-011",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Which value satisfies 9 - 3x ≥ 0?",
+      "options": [
+        "2",
+        "3",
+        "-1",
+        "0"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Isolate x to find x ≥ 0."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-012",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Which value satisfies 6x - 11 ≤ 37?",
+      "options": [
+        "6.17",
+        "5.17",
+        "8.17",
+        "-6.17"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Isolate x to find x ≤ 6.17."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "inequalities"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-013",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve the system: 4x + 3y = 50 and x - y = 5. What is x?",
+      "options": [
+        "9.29",
+        "-9.29",
+        "6.29",
+        "11.29"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Substitute x = y + 5 into the first equation to get y = 4.29 and x = 9.29."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-014",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Solve the system: 6x + 6y = 84 and x - y = 7. What is x?",
+      "options": [
+        "7.5",
+        "12.5",
+        "10.5",
+        "-10.5"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Substitute x = y + 7 into the first equation to get y = 3.5 and x = 10.5."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-015",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve the system: 8x + -4y = 44 and x - y = -3. What is x?",
+      "options": [
+        "14",
+        "-14",
+        "16",
+        "11"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Substitute x = y + -3 into the first equation to get y = 17 and x = 14."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-016",
+    "subject": "math",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "Solve the system: 5x + 2y = 28 and x - y = 4. What is x?",
+      "options": [
+        "2.14",
+        "-5.14",
+        "5.14",
+        "7.14"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Substitute x = y + 4 into the first equation to get y = 1.14 and x = 5.14."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "heart of algebra",
+      "systems of equations"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-math-017",
+    "subject": "math",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "What is the distance between (-4, 5) and (6, -3)?",
+      "options": [
+        "13.81",
+        "-12.81",
+        "12.81",
+        "11.81"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Apply the distance formula."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "coordinate geometry",
+      "distance"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-018",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"The renovated observatory now houses a digital telescope, where students track asteroids and measure light from distant galaxies.\" What is the main focus?",
+      "options": [
+        "Students use the observatory for astronomical research.",
+        "The observatory was destroyed last year.",
+        "Students dislike the new equipment.",
+        "Asteroids are no longer studied."
+      ],
+      "correctAnswer": "A",
+      "explanation": "The passage describes student research activities."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "main idea"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-019",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"When the director extended library hours, night-shift workers celebrated, recalling how early closures had forced them to study at cafes.\" What inference can be drawn?",
+      "options": [
+        "Extended hours help workers who study late.",
+        "Workers dislike libraries.",
+        "Libraries are now closed permanently.",
+        "Cafes replaced libraries."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Their celebration suggests the change addresses their needs."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "inference"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-020",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Dr. Chen describes her climate-modeling work with measured enthusiasm, noting that each simulation reveals both patterns and surprises.\" Which term best describes Dr. Chen's tone?",
+      "options": [
+        "Balanced",
+        "Dismissive",
+        "Melancholic",
+        "Indifferent"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Her measured approach shows balance."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "tone"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-021",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Because ancient pollen grains preserve in lake sediments, paleobotanists extract cores to reconstruct past vegetation.\" What is the purpose of the sentence?",
+      "options": [
+        "To explain how scientists study historical plant life.",
+        "To warn about lake pollution.",
+        "To describe modern diets.",
+        "To compare lakes to oceans."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It explains the research methodology."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "purpose"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-022",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Though the archive fills only two rooms, its digitized collections span centuries of local newspapers, photographs, and oral histories.\" Which word best replaces \"only\" without changing the meaning?",
+      "options": [
+        "Merely",
+        "Extensively",
+        "Temporarily",
+        "Vaguely"
+      ],
+      "correctAnswer": "A",
+      "explanation": "\"Merely\" matches the sense of small scale."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "vocabulary"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-023",
+    "subject": "reading",
+    "difficulty": "hard",
+    "difficultyScore": 8,
+    "content": {
+      "questionText": "\"At first, Sam thought the mural's geometric patterns were purely abstract; later he recognized the shapes mapped neighborhoods affected by highway construction.\" How does Sam's perspective change?",
+      "options": [
+        "He moves from seeing abstraction to recognizing social commentary.",
+        "He decides murals are obsolete.",
+        "He insists the artist change the design.",
+        "He stops supporting public art."
+      ],
+      "correctAnswer": "A",
+      "explanation": "He uncovers the deeper meaning."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "perspective"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-024",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Weather stations logged that robins arrived two weeks earlier than typical during the mildest winter in decades.\" What does the data suggest?",
+      "options": [
+        "Warmer winters may trigger earlier migrations.",
+        "Bird migrations are random.",
+        "Cold prevents migrations entirely.",
+        "Stations caused the migration."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Early arrival coincided with mild weather."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "data relationships"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-025",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Initially, the team's shared spreadsheet confused volunteers, yet it eventually answered every question about which tasks were complete.\" What can be concluded?",
+      "options": [
+        "The spreadsheet proved useful despite initial confusion.",
+        "Volunteers ignored the data.",
+        "The spreadsheet failed.",
+        "The spreadsheet was deleted."
+      ],
+      "correctAnswer": "A",
+      "explanation": "It resolved questions over time."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "function"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-026",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"Instead of following recipes, Chef Lin listens for the oil's sizzle and watches vegetables soften before adding the final spices.\" What does the figurative language imply?",
+      "options": [
+        "Cooking relies on sensory observation.",
+        "The chef refuses to use spices.",
+        "The kitchen is silent.",
+        "Recipes are banned."
+      ],
+      "correctAnswer": "A",
+      "explanation": "She relies on sound and visual cues."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "craft and structure",
+      "figurative language"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-027",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"After visiting the seed library, Jordan argued that preserving crop diversity requires restoring the farms where those varieties once grew.\" Which claim does Jordan make?",
+      "options": [
+        "Storage must be paired with farm restoration.",
+        "Seed libraries should close.",
+        "Labs alone can protect diversity.",
+        "Farms no longer matter."
+      ],
+      "correctAnswer": "A",
+      "explanation": "He emphasizes restoration plus storage."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "claims"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-028",
+    "subject": "reading",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "\"Coach Martinez's three-word reminder—\"Breathe, focus, execute\"—settled the debate team before finals.\" What effect did the coach's words have?",
+      "options": [
+        "They calmed the team.",
+        "They caused an argument.",
+        "They ended the competition.",
+        "They changed the lineup."
+      ],
+      "correctAnswer": "A",
+      "explanation": "The passage says the team settled."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "textual evidence"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-reading-029",
+    "subject": "reading",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "\"During testing, Alex replaced a heavy battery with a lighter one, saving eight ounces but cutting runtime by three hours.\" What trade-off occurs?",
+      "options": [
+        "Less weight but shorter runtime.",
+        "More weight and shorter runtime.",
+        "Less weight and longer runtime.",
+        "No change in runtime."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Weight decreases while runtime drops."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "reading",
+      "information and ideas",
+      "cause and effect"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-030",
+    "subject": "writing",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "The research assistants prepares each sample before analysis. Which change corrects the sentence?",
+      "options": [
+        "Prepares → prepare",
+        "Research → researches",
+        "Each → every",
+        "Before → after"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Plural subject \"assistants\" requires \"prepare.\""
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-031",
+    "subject": "writing",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "Participants must wear safety glasses while operating the 3D printer. Choose the correct revision.",
+      "options": [
+        "safety glasses",
+        "safety-glass",
+        "safely glasses",
+        "safety glass"
+      ],
+      "correctAnswer": "A",
+      "explanation": "No hyphen needed for this noun phrase."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "hyphenation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-032",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Because the team completed the survey early, therefore the results were analyzed ahead of schedule. Which revision is best?",
+      "options": [
+        "Because the team completed the survey early, the results were analyzed ahead of schedule.",
+        "Because the team completed the survey early, therefore the results were analyzed.",
+        "Because the team completed the survey early, so the results were analyzed.",
+        "Because the team completed the survey early, consequently the results were analyzed."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Remove redundant transitions."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "sentence structure"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-033",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The report analyzes budget data, compares department spending, and proposing cost-saving measures. Which option fixes the parallel structure?",
+      "options": [
+        "analyzes budget data, compares spending, and proposes measures",
+        "analyze budget data, compares spending, and proposing measures",
+        "analyzes budget data, compared spending, and proposes measures",
+        "analyzing budget data, compares spending, and proposes measures"
+      ],
+      "correctAnswer": "A",
+      "explanation": "All verbs should share the same tense."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-034",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The committee reviewed the proposal, they also toured the demonstration site. How should the clauses be combined?",
+      "options": [
+        "..., and they also toured ...",
+        "..., they toured ...",
+        "..., also touring ...",
+        "..., therefore they toured ..."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Use a conjunction to avoid a comma splice."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "run-on corrections"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-035",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Maria not only designed the website but also creating the mobile app. Select the correct revision.",
+      "options": [
+        "designed ... created",
+        "designs ... creating",
+        "designed ... creating",
+        "designing ... created"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Both verbs should be past tense."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-036",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "City Council approved the plan after residents testified, this outcome pleased many advocates. Which punctuation fixes the error?",
+      "options": [
+        "Replace the comma with a semicolon.",
+        "Add another comma.",
+        "Replace the comma with a colon.",
+        "Delete \"after.\""
+      ],
+      "correctAnswer": "A",
+      "explanation": "Use a semicolon between independent clauses."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "punctuation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-037",
+    "subject": "writing",
+    "difficulty": "easy",
+    "difficultyScore": 4,
+    "content": {
+      "questionText": "The new software is more efficient then the previous version. Choose the correct word.",
+      "options": [
+        "then",
+        "than",
+        "there",
+        "their"
+      ],
+      "correctAnswer": "B",
+      "explanation": "\"Than\" indicates comparison."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "word choice"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-038",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The coordinator sends weekly updates; including deadlines, workshops, and office hours. Which revision is correct?",
+      "options": [
+        "..., including deadlines...",
+        "...; including deadlines...",
+        "..., including; deadlines...",
+        "..., and including deadlines..."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Use a comma before \"including.\""
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "punctuation"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-039",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "Neither the guidelines nor the policy manual mention remote work options. Which change is needed?",
+      "options": [
+        "mention → mentions",
+        "neither → either",
+        "guidelines → guideline",
+        "options → option"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Verb agrees with the nearer plural subject."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "subject-verb agreement"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "batch09-writing-040",
+    "subject": "writing",
+    "difficulty": "medium",
+    "difficultyScore": 6,
+    "content": {
+      "questionText": "The selection committee values applicants who demonstrate skills, show preparation, and outline goals. Why is this sentence correct?",
+      "options": [
+        "All verbs share the same form.",
+        "It lacks a subject.",
+        "It contains a fragment.",
+        "It misplaces modifiers."
+      ],
+      "correctAnswer": "A",
+      "explanation": "Parallel verbs create clarity."
+    },
+    "metadata": {
+      "generatedBy": "manual",
+      "generatedAt": "2025-01-01T00:00:00.000Z",
+      "timesUsed": 0,
+      "averageAccuracy": 0,
+      "averageTimeSpent": 0
+    },
+    "tags": [
+      "writing",
+      "standard english conventions",
+      "parallelism"
+    ],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  }
+]

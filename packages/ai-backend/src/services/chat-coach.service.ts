@@ -4,6 +4,7 @@ import {
   HINT_GENERATION_PROMPT,
   EXPLANATION_PROMPT,
   CONCEPT_CLARIFICATION_PROMPT,
+  CLARIFYING_QUESTIONS_PROMPT,
 } from '../prompts/system-prompts';
 
 export interface QuestionContext {
@@ -155,6 +156,81 @@ export class ChatCoachService {
     } catch (error: any) {
       console.error('Concept clarification error:', error);
       throw new Error(`Failed to clarify concept: ${error.message}`);
+    }
+  }
+
+  /**
+   * Generate clarifying questions about foundational concepts
+   * Based on the question and conversation context
+   */
+  async generateClarifyingQuestions(
+    questionContext: QuestionContext,
+    studentContext: StudentContext,
+    chatHistory?: ChatMessage[]
+  ): Promise<string[]> {
+    // Build context from question and recent conversation
+    let contextText = `Question: ${questionContext.questionText}\n`;
+    contextText += `Subject: ${questionContext.subject}\n`;
+    contextText += `Explanation: ${questionContext.explanation}\n`;
+    contextText += `Student Level: ${studentContext.level}/10 (${this.getStudentLevelDescription(studentContext.level)})\n`;
+    
+    if (questionContext.tags && questionContext.tags.length > 0) {
+      contextText += `Topics: ${questionContext.tags.join(', ')}\n`;
+    }
+
+    // Add recent conversation context (last 3 messages)
+    if (chatHistory && chatHistory.length > 0) {
+      const recentMessages = chatHistory.slice(-3);
+      contextText += `\nRecent conversation:\n`;
+      recentMessages.forEach(msg => {
+        if (msg.role === 'user') {
+          contextText += `Student: ${msg.content}\n`;
+        } else if (msg.role === 'assistant') {
+          contextText += `Tutor: ${msg.content.substring(0, 200)}...\n`;
+        }
+      });
+    }
+
+    const messages: ChatMessage[] = [
+      { role: 'system', content: CLARIFYING_QUESTIONS_PROMPT },
+      {
+        role: 'user',
+        content: `Analyze this question and conversation context. Identify foundational concepts a student might need to clarify.\n\n${contextText}\n\nGenerate 3-5 clarifying questions as a JSON array of strings.`,
+      },
+    ];
+
+    try {
+      const response = await openaiService.generateStructuredData<{ questions: string[] }>({
+        messages,
+        temperature: 0.7,
+        maxTokens: 300,
+      }, {
+        name: 'generate_clarifying_questions',
+        description: 'Generate clarifying questions about foundational concepts',
+        parameters: {
+          type: 'object',
+          properties: {
+            questions: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Array of clarifying questions about foundational concepts',
+            },
+          },
+          required: ['questions'],
+        },
+      });
+
+      return response.questions || [];
+    } catch (error: any) {
+      console.error('Clarifying questions generation error:', error);
+      // Fallback: return basic questions based on tags
+      const fallbackQuestions: string[] = [];
+      if (questionContext.tags && questionContext.tags.length > 0) {
+        questionContext.tags.slice(0, 3).forEach(tag => {
+          fallbackQuestions.push(`What is ${tag}?`);
+        });
+      }
+      return fallbackQuestions.length > 0 ? fallbackQuestions : ['What concepts would you like me to explain?'];
     }
   }
 

@@ -15,5 +15,8 @@ router.post('/explain', (req, res) => chatController.generateExplanation(req, re
 // Clarify concept
 router.post('/clarify', (req, res) => chatController.clarifyConcept(req, res));
 
+// Generate clarifying questions
+router.post('/clarifying-questions', (req, res) => chatController.generateClarifyingQuestions(req, res));
+
 export default router;
 

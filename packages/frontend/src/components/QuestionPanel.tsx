@@ -112,17 +112,11 @@ export const QuestionPanel: React.FC<QuestionPanelProps> = ({
         {submitted && answerResult && (
           <div className="mt-6 p-4 rounded-lg bg-blue-50 border border-blue-200 space-y-2">
             <p className="font-semibold text-blue-800">
-              {answerResult.isCorrect ? 'Great job! You selected the correct answer.' : 'Not quite. Review the explanation below and try the next question!'}
+              {answerResult.isCorrect ? '✅ Great job! You selected the correct answer.' : '❌ Not quite. Review the answer below and try the next question!'}
             </p>
             <p className="text-sm text-blue-900">
               Correct Answer: <span className="font-semibold">{answerResult.correctAnswer}</span>
             </p>
-            {answerResult.explanation && (
-              <div className="text-sm text-blue-900">
-                <span className="font-medium">Explanation: </span>
-                <MathMarkdown content={answerResult.explanation} />
-              </div>
-            )}
           </div>
         )}
       </div>
