@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*", "api/**/*"],
-  "exclude": ["node_modules", "dist", "test-connection.js"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "api", "test-connection.js"]
 }
 
