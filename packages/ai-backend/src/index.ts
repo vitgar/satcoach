@@ -50,50 +50,55 @@ app.use(notFound);
 // Error handler
 app.use(errorHandler);
 
-// Start server
-const startServer = () => {
-  try {
-    app.listen(config.port, () => {
-      console.log('');
-      console.log('🤖 ================================');
-      console.log(`   SAT Coach AI Backend`);
-      console.log(`   Environment: ${config.nodeEnv}`);
-      console.log(`   Port: ${config.port}`);
-      console.log(`   URL: http://localhost:${config.port}`);
-      console.log(`   Model: ${config.openaiModel}`);
-      console.log('================================');
-      console.log('');
-      console.log('📍 Available endpoints:');
-      console.log(`   GET  /health`);
-      console.log('');
-      console.log(`   POST /api/v1/questions/generate`);
-      console.log(`   POST /api/v1/questions/generate-batch`);
-      console.log('');
-      console.log(`   POST /api/v1/chat/coach`);
-      console.log(`   POST /api/v1/chat/hint`);
-      console.log(`   POST /api/v1/chat/explain`);
-      console.log(`   POST /api/v1/chat/clarify`);
-      console.log('');
-      console.log(`   POST /api/v1/feynman/evaluate`);
-      console.log(`   POST /api/v1/feynman/prompts`);
-      console.log('');
-    });
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
-  }
-};
+// Start server only if not in serverless environment
+if (process.env.VERCEL !== '1') {
+  const startServer = () => {
+    try {
+      app.listen(config.port, () => {
+        console.log('');
+        console.log('🤖 ================================');
+        console.log(`   SAT Coach AI Backend`);
+        console.log(`   Environment: ${config.nodeEnv}`);
+        console.log(`   Port: ${config.port}`);
+        console.log(`   URL: http://localhost:${config.port}`);
+        console.log(`   Model: ${config.openaiModel}`);
+        console.log('================================');
+        console.log('');
+        console.log('📍 Available endpoints:');
+        console.log(`   GET  /health`);
+        console.log('');
+        console.log(`   POST /api/v1/questions/generate`);
+        console.log(`   POST /api/v1/questions/generate-batch`);
+        console.log('');
+        console.log(`   POST /api/v1/chat/coach`);
+        console.log(`   POST /api/v1/chat/hint`);
+        console.log(`   POST /api/v1/chat/explain`);
+        console.log(`   POST /api/v1/chat/clarify`);
+        console.log('');
+        console.log(`   POST /api/v1/feynman/evaluate`);
+        console.log(`   POST /api/v1/feynman/prompts`);
+        console.log('');
+      });
+    } catch (error) {
+      console.error('❌ Failed to start server:', error);
+      process.exit(1);
+    }
+  };
 
-// Handle shutdown gracefully
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  process.exit(0);
-});
+  // Handle shutdown gracefully
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully');
+    process.exit(0);
+  });
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
-  process.exit(0);
-});
+  process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down gracefully');
+    process.exit(0);
+  });
 
-startServer();
+  startServer();
+}
+
+// Export app for serverless functions
+export default app;
 

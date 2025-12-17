@@ -56,68 +56,88 @@ app.use(notFound);
 // Error handler
 app.use(errorHandler);
 
-// Start server
-const startServer = async () => {
-  try {
-    // Connect to database
+// Initialize database connection (for serverless, this will be called on first request)
+let dbConnected = false;
+const ensureDatabaseConnection = async () => {
+  if (!dbConnected) {
     await connectDatabase();
-
-    // Start listening
-    app.listen(config.port, () => {
-      console.log('');
-      console.log('🚀 ================================');
-      console.log(`   SAT Coach DB Backend`);
-      console.log(`   Environment: ${config.nodeEnv}`);
-      console.log(`   Port: ${config.port}`);
-      console.log(`   URL: http://localhost:${config.port}`);
-      console.log('================================');
-      console.log('');
-      console.log('📍 Available endpoints:');
-      console.log(`   GET  /health`);
-      console.log(`   POST /api/v1/auth/register`);
-      console.log(`   POST /api/v1/auth/login`);
-      console.log(`   GET  /api/v1/auth/me`);
-      console.log('');
-      console.log(`   GET  /api/v1/questions`);
-      console.log(`   GET  /api/v1/questions/next`);
-      console.log(`   GET  /api/v1/questions/:id`);
-      console.log(`   POST /api/v1/questions (admin)`);
-      console.log('');
-      console.log(`   POST /api/v1/progress/attempt`);
-      console.log(`   GET  /api/v1/progress/schedule`);
-      console.log(`   GET  /api/v1/progress/analytics`);
-      console.log('');
-      console.log(`   POST /api/v1/sessions/start`);
-      console.log(`   PUT  /api/v1/sessions/:id/end`);
-      console.log(`   GET  /api/v1/sessions/history`);
-      console.log('');
-      console.log(`   GET  /api/v1/learning/state`);
-      console.log(`   GET  /api/v1/learning/question`);
-      console.log(`   POST /api/v1/learning/attempt`);
-      console.log(`   POST /api/v1/learning/explain`);
-      console.log('');
-      console.log(`   GET  /api/v1/validation/questions`);
-      console.log(`   POST /api/v1/validation/validate-question`);
-      console.log(`   POST /api/v1/validation/apply-changes`);
-      console.log(`   GET  /api/v1/validation/stats`);
-      console.log('');
-    });
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
+    dbConnected = true;
   }
 };
 
-// Handle shutdown gracefully
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  process.exit(0);
-});
+// Start server only if not in serverless environment
+if (process.env.VERCEL !== '1') {
+  const startServer = async () => {
+    try {
+      // Connect to database
+      await connectDatabase();
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
-  process.exit(0);
-});
+      // Start listening
+      app.listen(config.port, () => {
+        console.log('');
+        console.log('🚀 ================================');
+        console.log(`   SAT Coach DB Backend`);
+        console.log(`   Environment: ${config.nodeEnv}`);
+        console.log(`   Port: ${config.port}`);
+        console.log(`   URL: http://localhost:${config.port}`);
+        console.log('================================');
+        console.log('');
+        console.log('📍 Available endpoints:');
+        console.log(`   GET  /health`);
+        console.log(`   POST /api/v1/auth/register`);
+        console.log(`   POST /api/v1/auth/login`);
+        console.log(`   GET  /api/v1/auth/me`);
+        console.log('');
+        console.log(`   GET  /api/v1/questions`);
+        console.log(`   GET  /api/v1/questions/next`);
+        console.log(`   GET  /api/v1/questions/:id`);
+        console.log(`   POST /api/v1/questions (admin)`);
+        console.log('');
+        console.log(`   POST /api/v1/progress/attempt`);
+        console.log(`   GET  /api/v1/progress/schedule`);
+        console.log(`   GET  /api/v1/progress/analytics`);
+        console.log('');
+        console.log(`   POST /api/v1/sessions/start`);
+        console.log(`   PUT  /api/v1/sessions/:id/end`);
+        console.log(`   GET  /api/v1/sessions/history`);
+        console.log('');
+        console.log(`   GET  /api/v1/learning/state`);
+        console.log(`   GET  /api/v1/learning/question`);
+        console.log(`   POST /api/v1/learning/attempt`);
+        console.log(`   POST /api/v1/learning/explain`);
+        console.log('');
+        console.log(`   GET  /api/v1/validation/questions`);
+        console.log(`   POST /api/v1/validation/validate-question`);
+        console.log(`   POST /api/v1/validation/apply-changes`);
+        console.log(`   GET  /api/v1/validation/stats`);
+        console.log('');
+      });
+    } catch (error) {
+      console.error('❌ Failed to start server:', error);
+      process.exit(1);
+    }
+  };
 
-startServer();
+  // Handle shutdown gracefully
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully');
+    process.exit(0);
+  });
+
+  process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down gracefully');
+    process.exit(0);
+  });
+
+  startServer();
+} else {
+  // For serverless: ensure DB connection on first request
+  app.use(async (req, res, next) => {
+    await ensureDatabaseConnection();
+    next();
+  });
+}
+
+// Export app for serverless functions
+export default app;
 
