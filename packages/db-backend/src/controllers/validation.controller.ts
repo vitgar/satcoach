@@ -3,9 +3,10 @@ import OpenAI from 'openai';
 import { Question } from '../models/Question.model';
 import { config } from '../config/environment';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// OpenAI is optional for validation - only needed for AI-powered validation
+const openai = process.env.OPENAI_API_KEY 
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 interface ValidationResult {
   questionId: string;
@@ -55,6 +56,14 @@ export class ValidationController {
    */
   async validateQuestion(req: Request, res: Response): Promise<void> {
     try {
+      // Check if OpenAI is available
+      if (!openai) {
+        res.status(503).json({ 
+          error: 'AI validation not available. OPENAI_API_KEY not configured.' 
+        });
+        return;
+      }
+
       const { questionId } = req.body;
 
       if (!questionId) {

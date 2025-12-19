@@ -81,7 +81,7 @@ const UserSchema = new Schema<IUser>(
 );
 
 // Create indexes
-UserSchema.index({ email: 1 });
+// Note: email index is already created by unique: true
 UserSchema.index({ createdAt: 1 });
 
 // Don't return password in JSON responses

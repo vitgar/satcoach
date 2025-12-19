@@ -177,7 +177,6 @@ const QuestionSchema = new Schema<IQuestion>(
     tags: {
       type: [String],
       default: [],
-      index: true,
     },
     
     // NEW: Bloom Taxonomy Level
