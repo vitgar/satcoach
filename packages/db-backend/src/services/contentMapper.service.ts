@@ -314,7 +314,7 @@ export class ContentMapperService {
     name: string,
     subject: Subject,
     tags: string[]
-  ): Promise<IConcept> {
+  ) {
     let concept = await Concept.findOne({ name, subject });
 
     if (!concept) {
