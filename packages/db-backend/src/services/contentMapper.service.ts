@@ -187,7 +187,7 @@ export class ContentMapperService {
     }));
 
     return {
-      conceptId: concept._id.toString(),
+      conceptId: String(concept._id),
       name: concept.name,
       subject: concept.subject,
       explanation: {
@@ -269,7 +269,7 @@ export class ContentMapperService {
       }
 
       return {
-        conceptId: concept._id.toString(),
+        conceptId: String(concept._id),
         conceptName: concept.name,
         subject: concept.subject,
         tags: concept.tags,
@@ -396,9 +396,11 @@ export class ContentMapperService {
       }
 
       // Link question to concept
-      question.conceptId = concept._id;
-      await question.save();
-      mapped++;
+      if (concept && concept._id) {
+        question.conceptId = concept._id as any;
+        await question.save();
+        mapped++;
+      }
     }
 
     return { mapped, conceptsCreated };
