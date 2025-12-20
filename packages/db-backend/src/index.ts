@@ -56,15 +56,6 @@ app.use(notFound);
 // Error handler
 app.use(errorHandler);
 
-// Initialize database connection (for serverless, this will be called on first request)
-let dbConnected = false;
-const ensureDatabaseConnection = async () => {
-  if (!dbConnected) {
-    await connectDatabase();
-    dbConnected = true;
-  }
-};
-
 // Start server only if not in serverless environment
 if (process.env.VERCEL !== '1') {
   const startServer = async () => {
@@ -132,9 +123,15 @@ if (process.env.VERCEL !== '1') {
   startServer();
 } else {
   // For serverless: ensure DB connection on first request
+  // The connectDatabase function handles caching internally
   app.use(async (req, res, next) => {
-    await ensureDatabaseConnection();
-    next();
+    try {
+      await connectDatabase();
+      next();
+    } catch (error) {
+      console.error('Database connection failed:', error);
+      next(error);
+    }
   });
 }
 
