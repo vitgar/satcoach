@@ -29,12 +29,14 @@ export const connectDatabase = async (): Promise<typeof mongoose> => {
 
     const opts = {
       bufferCommands: false,
-      // Reduce timeouts for serverless
-      serverSelectionTimeoutMS: 5000, // 5 seconds (down from 30s default)
-      socketTimeoutMS: 5000, // 5 seconds
-      // Connection pool settings for serverless
+      // Increased timeouts for better reliability in serverless cold starts
+      serverSelectionTimeoutMS: 15000, // 15 seconds to handle cold starts
+      socketTimeoutMS: 45000, // 45 seconds
+      connectTimeoutMS: 15000, // 15 seconds for initial connection
+      // Connection pool settings optimized for serverless
       maxPoolSize: 10,
       minPoolSize: 1,
+      maxIdleTimeMS: 10000, // Close idle connections after 10s
     };
 
     console.log('🔄 Creating new MongoDB connection...');

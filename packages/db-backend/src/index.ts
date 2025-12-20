@@ -25,6 +25,19 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// For serverless: ensure DB connection on first request BEFORE routes
+if (process.env.VERCEL === '1') {
+  app.use(async (req, res, next) => {
+    try {
+      await connectDatabase();
+      next();
+    } catch (error) {
+      console.error('Database connection failed:', error);
+      res.status(503).json({ error: 'Database connection failed. Please try again.' });
+    }
+  });
+}
+
 // Request logging (development only)
 if (config.nodeEnv === 'development') {
   app.use((req, res, next) => {
@@ -121,18 +134,6 @@ if (process.env.VERCEL !== '1') {
   });
 
   startServer();
-} else {
-  // For serverless: ensure DB connection on first request
-  // The connectDatabase function handles caching internally
-  app.use(async (req, res, next) => {
-    try {
-      await connectDatabase();
-      next();
-    } catch (error) {
-      console.error('Database connection failed:', error);
-      next(error);
-    }
-  });
 }
 
 // Export app for serverless functions
