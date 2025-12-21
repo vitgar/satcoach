@@ -6,21 +6,26 @@
 
 import axios from 'axios';
 
-const DB_API_URL = import.meta.env.VITE_DB_API_URL || 'http://localhost:4000';
-const AI_API_URL = import.meta.env.VITE_AI_API_URL || 'http://localhost:4001';
+// Get base URLs - normalize to ensure /api/v1 is included exactly once
+const getBaseUrl = (url: string | undefined, defaultUrl: string): string => {
+  const baseUrl = url || defaultUrl;
+  // Remove trailing /api/v1 if present, then add it back
+  const normalized = baseUrl.replace(/\/api\/v1\/?$/, '');
+  return `${normalized}/api/v1`;
+};
 
 const dbApi = axios.create({
-  baseURL: `${DB_API_URL}/api/v1`,
+  baseURL: getBaseUrl(import.meta.env.VITE_DB_API_URL, 'http://localhost:4000'),
   withCredentials: true,
 });
 
 const aiApi = axios.create({
-  baseURL: `${AI_API_URL}/api/v1`,
+  baseURL: getBaseUrl(import.meta.env.VITE_AI_API_URL, 'http://localhost:4001'),
 });
 
 // Add auth token to DB requests
 dbApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
