@@ -10,6 +10,7 @@ import sessionRoutes from './routes/session.routes';
 import learningRoutes from './routes/learning.routes';
 import validationRoutes from './routes/validation.routes';
 import chatSessionRoutes from './routes/chatSession.routes';
+import guidedSessionRoutes from './routes/guidedSession.routes';
 import { errorHandler, notFound } from './middleware/errorHandler.middleware';
 
 // Validate environment variables
@@ -64,6 +65,7 @@ app.use('/api/v1/sessions', sessionRoutes);
 app.use('/api/v1/learning', learningRoutes);
 app.use('/api/v1/validation', validationRoutes);
 app.use('/api/v1/chat-sessions', chatSessionRoutes);
+app.use('/api/v1/guided-sessions', guidedSessionRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -122,6 +124,12 @@ if (process.env.VERCEL !== '1') {
         console.log(`   PUT  /api/v1/chat-sessions/:id/insights`);
         console.log(`   PUT  /api/v1/chat-sessions/:id/end`);
         console.log(`   GET  /api/v1/chat-sessions/user/:userId/profile`);
+        console.log('');
+        console.log(`   POST /api/v1/guided-sessions`);
+        console.log(`   GET  /api/v1/guided-sessions/active`);
+        console.log(`   GET  /api/v1/guided-sessions/recommendations/:subject`);
+        console.log(`   PUT  /api/v1/guided-sessions/:id/message`);
+        console.log(`   PUT  /api/v1/guided-sessions/:id/end`);
         console.log('');
       });
     } catch (error) {

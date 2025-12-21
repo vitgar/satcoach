@@ -5,6 +5,7 @@ import { config, validateEnv } from './config/environment';
 import questionRoutes from './routes/question.routes';
 import chatRoutes from './routes/chat.routes';
 import feynmanRoutes from './routes/feynman.routes';
+import guidedReviewRoutes from './routes/guidedReview.routes';
 import { errorHandler, notFound } from './middleware/errorHandler.middleware';
 
 // Validate environment variables
@@ -43,6 +44,7 @@ app.get('/health', (_req, res) => {
 app.use('/api/v1/questions', questionRoutes);
 app.use('/api/v1/chat', chatRoutes);
 app.use('/api/v1/feynman', feynmanRoutes);
+app.use('/api/v1/guided-review', guidedReviewRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -77,6 +79,11 @@ if (process.env.VERCEL !== '1') {
         console.log('');
         console.log(`   POST /api/v1/feynman/evaluate`);
         console.log(`   POST /api/v1/feynman/prompts`);
+        console.log('');
+        console.log(`   POST /api/v1/guided-review/recommendations`);
+        console.log(`   POST /api/v1/guided-review/chat`);
+        console.log(`   POST /api/v1/guided-review/start-topic`);
+        console.log(`   POST /api/v1/guided-review/summarize`);
         console.log('');
       });
     } catch (error) {

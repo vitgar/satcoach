@@ -37,7 +37,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   to="/study"
                   className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-primary-600"
                 >
-                  Study
+                  Practice
+                </Link>
+                <Link
+                  to="/guided-review"
+                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-primary-600"
+                >
+                  Guided Review
                 </Link>
                 <Link
                   to="/validation"

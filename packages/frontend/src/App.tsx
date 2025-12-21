@@ -7,6 +7,7 @@ import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { StudyPage } from './pages/StudyPage';
 import { QuestionValidationPage } from './pages/QuestionValidationPage';
+import { GuidedReviewPage } from './pages/GuidedReviewPage';
 import './styles/index.css';
 
 const queryClient = new QueryClient({
@@ -47,6 +48,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <QuestionValidationPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/guided-review"
+              element={
+                <ProtectedRoute>
+                  <GuidedReviewPage />
                 </ProtectedRoute>
               }
             />
