@@ -63,6 +63,61 @@ const WEIGHTS = {
   engagement: 0.1,
 };
 
+// Default topics for new students with no practice history
+// These are ordered by recommended learning sequence for SAT prep
+const DEFAULT_TOPICS: Record<string, { topic: string; description: string; priority: number }[]> = {
+  Math: [
+    { topic: 'Linear Equations', description: 'Foundation of algebraic thinking', priority: 1 },
+    { topic: 'Ratios and Proportions', description: 'Essential for problem-solving', priority: 2 },
+    { topic: 'Percentages', description: 'Common in word problems', priority: 3 },
+    { topic: 'Quadratic Functions', description: 'Core algebra concept', priority: 4 },
+    { topic: 'Systems of Equations', description: 'Multi-step problem solving', priority: 5 },
+    { topic: 'Data Analysis', description: 'Interpreting charts and graphs', priority: 6 },
+    { topic: 'Geometry Basics', description: 'Angles, triangles, and circles', priority: 7 },
+  ],
+  math: [
+    { topic: 'Linear Equations', description: 'Foundation of algebraic thinking', priority: 1 },
+    { topic: 'Ratios and Proportions', description: 'Essential for problem-solving', priority: 2 },
+    { topic: 'Percentages', description: 'Common in word problems', priority: 3 },
+    { topic: 'Quadratic Functions', description: 'Core algebra concept', priority: 4 },
+    { topic: 'Systems of Equations', description: 'Multi-step problem solving', priority: 5 },
+    { topic: 'Data Analysis', description: 'Interpreting charts and graphs', priority: 6 },
+    { topic: 'Geometry Basics', description: 'Angles, triangles, and circles', priority: 7 },
+  ],
+  Reading: [
+    { topic: 'Main Idea', description: 'Identifying central themes', priority: 1 },
+    { topic: 'Evidence-Based Reading', description: 'Finding textual support', priority: 2 },
+    { topic: 'Inference', description: 'Drawing conclusions from text', priority: 3 },
+    { topic: 'Vocabulary in Context', description: 'Understanding word meanings', priority: 4 },
+    { topic: 'Author\'s Purpose', description: 'Analyzing intent and tone', priority: 5 },
+    { topic: 'Passage Structure', description: 'Understanding organization', priority: 6 },
+  ],
+  reading: [
+    { topic: 'Main Idea', description: 'Identifying central themes', priority: 1 },
+    { topic: 'Evidence-Based Reading', description: 'Finding textual support', priority: 2 },
+    { topic: 'Inference', description: 'Drawing conclusions from text', priority: 3 },
+    { topic: 'Vocabulary in Context', description: 'Understanding word meanings', priority: 4 },
+    { topic: 'Author\'s Purpose', description: 'Analyzing intent and tone', priority: 5 },
+    { topic: 'Passage Structure', description: 'Understanding organization', priority: 6 },
+  ],
+  Writing: [
+    { topic: 'Subject-Verb Agreement', description: 'Grammar fundamentals', priority: 1 },
+    { topic: 'Punctuation', description: 'Commas, semicolons, and more', priority: 2 },
+    { topic: 'Sentence Structure', description: 'Building clear sentences', priority: 3 },
+    { topic: 'Transitions', description: 'Connecting ideas smoothly', priority: 4 },
+    { topic: 'Pronoun Usage', description: 'Agreement and clarity', priority: 5 },
+    { topic: 'Conciseness', description: 'Eliminating redundancy', priority: 6 },
+  ],
+  writing: [
+    { topic: 'Subject-Verb Agreement', description: 'Grammar fundamentals', priority: 1 },
+    { topic: 'Punctuation', description: 'Commas, semicolons, and more', priority: 2 },
+    { topic: 'Sentence Structure', description: 'Building clear sentences', priority: 3 },
+    { topic: 'Transitions', description: 'Connecting ideas smoothly', priority: 4 },
+    { topic: 'Pronoun Usage', description: 'Agreement and clarity', priority: 5 },
+    { topic: 'Conciseness', description: 'Eliminating redundancy', priority: 6 },
+  ],
+};
+
 export class RecommendationEngineService {
   /**
    * Get recommended topics for a student in a specific subject
@@ -111,7 +166,12 @@ export class RecommendationEngineService {
 
     // Sort by score (descending) and limit
     scoredTopics.sort((a, b) => b.score - a.score);
-    const recommendations = scoredTopics.slice(0, limit);
+    let recommendations = scoredTopics.slice(0, limit);
+
+    // If no recommendations from question database, provide default topics
+    if (recommendations.length === 0) {
+      recommendations = this.getDefaultRecommendations(subject, limit);
+    }
 
     // Generate summary
     const summary = this.generateSummary(recommendations, performance, weakAreas.length, dueItems.length);
@@ -126,6 +186,32 @@ export class RecommendationEngineService {
         topicsToReview: dueItems.length,
       },
     };
+  }
+
+  /**
+   * Get default recommendations for new students
+   */
+  private getDefaultRecommendations(subject: string, limit: number): TopicRecommendation[] {
+    const defaultTopics = DEFAULT_TOPICS[subject] || DEFAULT_TOPICS['Math'];
+    
+    return defaultTopics.slice(0, limit).map((topic, index) => ({
+      topic: topic.topic,
+      subject,
+      score: 90 - (index * 10), // First topic gets 90, decreasing
+      reason: topic.description,
+      priority: index === 0 ? 'high' : index < 3 ? 'medium' : 'low',
+      estimatedDuration: 15,
+      breakdown: {
+        masteryScore: 40, // New topic
+        timingScore: 30, // Never practiced
+        errorScore: 0,
+        engagementScore: 20,
+      },
+      masteryLevel: 0,
+      daysSincePractice: 999, // Never practiced
+      weakAreas: [],
+      questionCount: 0, // Will be populated when questions exist
+    }));
   }
 
   /**
@@ -389,13 +475,19 @@ export class RecommendationEngineService {
     weakAreaCount: number,
     dueCount: number
   ): string {
-    const parts: string[] = [];
-
     if (recommendations.length === 0) {
       return "You're doing great! Keep practicing to maintain your skills.";
     }
 
     const topRec = recommendations[0];
+    const isNewStudent = performance.overallMastery === 0 && weakAreaCount === 0 && dueCount === 0;
+
+    if (isNewStudent) {
+      // New student - give encouraging starting message
+      return `Let's start with **${topRec.topic}** - ${topRec.reason}. This is a great foundation for SAT success!`;
+    }
+
+    const parts: string[] = [];
     parts.push(`I recommend starting with **${topRec.topic}**`);
 
     if (topRec.masteryLevel === 0) {
