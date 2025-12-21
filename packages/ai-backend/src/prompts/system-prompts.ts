@@ -524,3 +524,169 @@ Example: ["What is a noun phrase?", "What is a verb phrase?", "What is parallel 
 - Keep questions simple and direct
 - Focus on foundational understanding, not advanced topics
 - Return 3-5 questions maximum`;
+
+/**
+ * Message Analysis Suffix
+ * 
+ * Added to chat prompts to extract sentiment and concept analysis
+ * from the conversation. This piggybacks on the existing OpenAI call
+ * at zero additional cost.
+ */
+export const MESSAGE_ANALYSIS_SUFFIX = `
+
+**IMPORTANT - ANALYSIS REQUIREMENT:**
+After your tutoring response, you MUST include a hidden analysis tag. This tag will be stripped before showing your response to the student.
+
+Include this analysis based on the student's message:
+
+<analysis>
+{
+  "sentiment": "frustrated" | "confused" | "confident" | "bored" | "neutral",
+  "sentimentConfidence": 0.0-1.0,
+  "conceptsDiscussed": ["concept1", "concept2"],
+  "conceptGaps": ["concept the student seems unsure about"],
+  "emotionalState": "brief 5-word description of student state"
+}
+</analysis>
+
+**Sentiment Detection Guidelines:**
+- "frustrated": Student shows irritation, uses phrases like "I give up", "this makes no sense", "I've tried everything"
+- "confused": Student is lost but still trying, asks clarifying questions, says "I don't understand", "wait, what?"
+- "confident": Student shows understanding, uses phrases like "I think I get it", "oh I see", "that makes sense"
+- "bored": Student seems disengaged, gives short responses, says "this is easy", "I already know this"
+- "neutral": No clear emotional signals, normal interaction
+
+**Concept Detection Guidelines:**
+- conceptsDiscussed: List SAT concepts mentioned or needed for this question (e.g., "quadratic formula", "slope", "inference")
+- conceptGaps: Concepts the student seems unclear about based on their questions
+
+Your visible response should NOT mention this analysis - just provide your normal tutoring response, then add the analysis tag at the very end.`;
+
+/**
+ * Builds the full system prompt with analysis suffix
+ */
+export function buildAnalysisEnabledPrompt(basePrompt: string, enableAnalysis: boolean = true): string {
+  if (!enableAnalysis) {
+    return basePrompt;
+  }
+  return basePrompt + MESSAGE_ANALYSIS_SUFFIX;
+}
+
+/**
+ * Communication Profile Prompt Suffix
+ * 
+ * Appended to system prompts when we have communication profile data
+ * to personalize responses based on detected learning style and preferences.
+ */
+export interface CommunicationProfileContext {
+  learningStyle: 'visual' | 'verbal' | 'procedural' | 'conceptual' | 'mixed';
+  explanationStyle: 'simple' | 'detailed' | 'examples' | 'theory';
+  vocabularyLevel: number; // 1-12
+  frustrationRisk: 'low' | 'medium' | 'high';
+  conceptGaps: string[];
+  suggestedApproach: string;
+}
+
+/**
+ * Build a personalized prompt suffix based on communication profile
+ */
+export function buildCommunicationProfilePrompt(profile: CommunicationProfileContext): string {
+  let prompt = `
+
+**PERSONALIZATION CONTEXT (Based on this student's communication patterns):**
+
+`;
+
+  // Learning style adaptation
+  switch (profile.learningStyle) {
+    case 'visual':
+      prompt += `- **Learning Style: Visual** - This student prefers visual explanations. Use diagrams, graphs, charts when helpful. Describe what things "look like." Use spatial language.\n`;
+      break;
+    case 'verbal':
+      prompt += `- **Learning Style: Verbal** - This student prefers verbal explanations. Use analogies, metaphors, and storytelling. Explain concepts in multiple ways.\n`;
+      break;
+    case 'procedural':
+      prompt += `- **Learning Style: Step-by-Step** - This student prefers sequential, step-by-step guidance. Number your steps. Say "first", "then", "next", "finally".\n`;
+      break;
+    case 'conceptual':
+      prompt += `- **Learning Style: Conceptual** - This student wants to understand the "why". Connect concepts to broader principles. Explain the underlying theory.\n`;
+      break;
+    default:
+      prompt += `- **Learning Style: Mixed** - Use a balanced approach with clear steps and conceptual connections.\n`;
+  }
+
+  // Explanation style
+  switch (profile.explanationStyle) {
+    case 'simple':
+      prompt += `- **Explanation Preference: Simple** - Keep explanations brief and direct. Avoid jargon. Get to the point quickly.\n`;
+      break;
+    case 'detailed':
+      prompt += `- **Explanation Preference: Detailed** - This student appreciates thorough explanations. Feel free to elaborate on nuances.\n`;
+      break;
+    case 'examples':
+      prompt += `- **Explanation Preference: Examples** - Lead with concrete examples. Show, don't just tell. Use real numbers and scenarios.\n`;
+      break;
+    case 'theory':
+      prompt += `- **Explanation Preference: Theory** - This student wants deep understanding. Explain principles before procedures.\n`;
+      break;
+  }
+
+  // Vocabulary level
+  if (profile.vocabularyLevel <= 6) {
+    prompt += `- **Vocabulary Level: Basic (Grade ${profile.vocabularyLevel})** - Use simple, everyday language. Avoid technical terms or define them immediately.\n`;
+  } else if (profile.vocabularyLevel <= 9) {
+    prompt += `- **Vocabulary Level: Intermediate (Grade ${profile.vocabularyLevel})** - Standard academic language is fine. Define technical terms briefly.\n`;
+  } else {
+    prompt += `- **Vocabulary Level: Advanced (Grade ${profile.vocabularyLevel})** - Can handle sophisticated vocabulary. Technical terms are OK.\n`;
+  }
+
+  // Frustration handling
+  if (profile.frustrationRisk === 'high') {
+    prompt += `
+**⚠️ FRUSTRATION ALERT:** This student has shown signs of frustration recently.
+- Be extra encouraging and validating
+- Acknowledge their effort ("Good question!", "That's a common stumbling point")
+- Simplify your explanations more than usual
+- Offer to take a different approach if they're stuck
+- Suggest breaking problems into smaller pieces
+- Celebrate small wins
+`;
+  } else if (profile.frustrationRisk === 'medium') {
+    prompt += `- **Engagement Note:** Watch for frustration signals. Be encouraging and offer alternative explanations if needed.\n`;
+  }
+
+  // Known concept gaps
+  if (profile.conceptGaps && profile.conceptGaps.length > 0) {
+    prompt += `\n- **Known Concept Gaps:** This student has struggled with: ${profile.conceptGaps.join(', ')}. If the current question relates to these concepts, be extra thorough in explanations.\n`;
+  }
+
+  // Suggested approach
+  if (profile.suggestedApproach) {
+    prompt += `\n**Recommended Approach for this student:** ${profile.suggestedApproach}\n`;
+  }
+
+  return prompt;
+}
+
+/**
+ * Build complete personalized system prompt
+ */
+export function buildPersonalizedPrompt(
+  basePrompt: string,
+  communicationProfile: CommunicationProfileContext | null,
+  enableAnalysis: boolean = true
+): string {
+  let prompt = basePrompt;
+
+  // Add communication profile context if available
+  if (communicationProfile) {
+    prompt += buildCommunicationProfilePrompt(communicationProfile);
+  }
+
+  // Add analysis suffix
+  if (enableAnalysis) {
+    prompt += MESSAGE_ANALYSIS_SUFFIX;
+  }
+
+  return prompt;
+}

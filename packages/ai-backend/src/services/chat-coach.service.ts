@@ -5,7 +5,15 @@ import {
   EXPLANATION_PROMPT,
   CONCEPT_CLARIFICATION_PROMPT,
   CLARIFYING_QUESTIONS_PROMPT,
+  MESSAGE_ANALYSIS_SUFFIX,
+  buildCommunicationProfilePrompt,
+  CommunicationProfileContext,
 } from '../prompts/system-prompts';
+import { 
+  messageAnalyzerService, 
+  LocalMessageAnalysis,
+  LearningStyleSignals,
+} from './messageAnalyzer.service';
 
 export interface QuestionContext {
   questionText: string;
@@ -27,14 +35,65 @@ export interface ChatRequest {
   questionContext: QuestionContext;
   studentContext: StudentContext;
   chatHistory?: ChatMessage[];
+  enableAnalysis?: boolean;
+  communicationProfile?: CommunicationProfileContext;
+}
+
+export type Sentiment = 'frustrated' | 'confused' | 'confident' | 'bored' | 'neutral';
+
+export interface AIAnalysis {
+  sentiment: Sentiment;
+  sentimentConfidence: number;
+  conceptsDiscussed: string[];
+  conceptGaps: string[];
+  emotionalState: string;
+}
+
+export interface CombinedAnalysis {
+  aiAnalysis: AIAnalysis | null;
+  localAnalysis: LocalMessageAnalysis;
+  learningStyleSignals: LearningStyleSignals;
+}
+
+export interface ChatResponseWithAnalysis {
+  response: string;
+  analysis: CombinedAnalysis;
 }
 
 export class ChatCoachService {
   /**
-   * Generate a coaching response
+   * Generate a coaching response with optional analysis
    */
   async generateCoachingResponse(request: ChatRequest): Promise<string> {
-    const systemPrompt = this.buildSystemPrompt(request.studentContext);
+    const result = await this.generateCoachingResponseWithAnalysis(request);
+    return result.response;
+  }
+
+  /**
+   * Generate a coaching response with analysis data
+   */
+  async generateCoachingResponseWithAnalysis(request: ChatRequest): Promise<ChatResponseWithAnalysis> {
+    const enableAnalysis = request.enableAnalysis !== false; // Default to true
+    
+    // Perform local analysis immediately (no API cost)
+    const localAnalysis = messageAnalyzerService.analyzeMessage(request.userMessage);
+    
+    // Build system prompt
+    let systemPrompt = this.buildSystemPrompt(request.studentContext);
+    
+    // Add communication profile context if available
+    if (request.communicationProfile) {
+      systemPrompt += buildCommunicationProfilePrompt(request.communicationProfile);
+      console.log('[ChatCoach] Applied communication profile:', 
+        request.communicationProfile.learningStyle, 
+        request.communicationProfile.frustrationRisk);
+    }
+    
+    // Add analysis suffix if enabled (piggyback on existing call)
+    if (enableAnalysis) {
+      systemPrompt += MESSAGE_ANALYSIS_SUFFIX;
+    }
+    
     let contextPrompt = this.buildContextPrompt(request.questionContext);
     
     // Check if this is an approach question - add Socratic guidance
@@ -56,17 +115,81 @@ export class ChatCoachService {
     messages.push({ role: 'user', content: request.userMessage });
 
     try {
-      const response = await openaiService.generateChatCompletion({
+      const rawResponse = await openaiService.generateChatCompletion({
         messages,
         temperature: 0.7,
-        maxTokens: 800,
+        maxTokens: 1000, // Increased to accommodate analysis
       });
 
-      return response;
+      // Parse and strip analysis from response
+      const { cleanResponse, aiAnalysis } = this.parseAnalysisFromResponse(rawResponse);
+
+      return {
+        response: cleanResponse,
+        analysis: {
+          aiAnalysis,
+          localAnalysis,
+          learningStyleSignals: localAnalysis.learningStyleSignals,
+        },
+      };
     } catch (error: any) {
       console.error('Chat coaching error:', error);
       throw new Error(`Failed to generate coaching response: ${error.message}`);
     }
+  }
+
+  /**
+   * Parse analysis from AI response and strip it from visible response
+   */
+  private parseAnalysisFromResponse(rawResponse: string): { cleanResponse: string; aiAnalysis: AIAnalysis | null } {
+    // Look for <analysis>...</analysis> tag
+    const analysisMatch = rawResponse.match(/<analysis>([\s\S]*?)<\/analysis>/i);
+    
+    if (!analysisMatch) {
+      return { cleanResponse: rawResponse.trim(), aiAnalysis: null };
+    }
+
+    // Strip analysis tag from response
+    const cleanResponse = rawResponse.replace(/<analysis>[\s\S]*?<\/analysis>/gi, '').trim();
+    
+    // Parse the JSON inside the analysis tag
+    try {
+      const analysisJson = analysisMatch[1].trim();
+      const parsed = JSON.parse(analysisJson);
+      
+      const aiAnalysis: AIAnalysis = {
+        sentiment: this.validateSentiment(parsed.sentiment),
+        sentimentConfidence: typeof parsed.sentimentConfidence === 'number' 
+          ? Math.max(0, Math.min(1, parsed.sentimentConfidence)) 
+          : 0.5,
+        conceptsDiscussed: Array.isArray(parsed.conceptsDiscussed) 
+          ? parsed.conceptsDiscussed.filter((c: unknown) => typeof c === 'string')
+          : [],
+        conceptGaps: Array.isArray(parsed.conceptGaps)
+          ? parsed.conceptGaps.filter((g: unknown) => typeof g === 'string')
+          : [],
+        emotionalState: typeof parsed.emotionalState === 'string'
+          ? parsed.emotionalState.substring(0, 100)
+          : 'neutral engagement',
+      };
+
+      console.log('[ChatCoach] Parsed AI analysis:', aiAnalysis.sentiment, aiAnalysis.conceptsDiscussed);
+      return { cleanResponse, aiAnalysis };
+    } catch (parseError) {
+      console.warn('[ChatCoach] Failed to parse analysis JSON:', parseError);
+      return { cleanResponse, aiAnalysis: null };
+    }
+  }
+
+  /**
+   * Validate sentiment value
+   */
+  private validateSentiment(value: unknown): Sentiment {
+    const validSentiments: Sentiment[] = ['frustrated', 'confused', 'confident', 'bored', 'neutral'];
+    if (typeof value === 'string' && validSentiments.includes(value as Sentiment)) {
+      return value as Sentiment;
+    }
+    return 'neutral';
   }
 
   /**

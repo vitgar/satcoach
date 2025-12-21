@@ -29,16 +29,70 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface CommunicationProfileContext {
+  learningStyle: 'visual' | 'verbal' | 'procedural' | 'conceptual' | 'mixed';
+  explanationStyle: 'simple' | 'detailed' | 'examples' | 'theory';
+  vocabularyLevel: number;
+  frustrationRisk: 'low' | 'medium' | 'high';
+  conceptGaps: string[];
+  suggestedApproach: string;
+}
+
 export interface CoachingRequest {
   userMessage: string;
   questionContext: QuestionContext;
   studentContext: StudentContext;
   chatHistory?: ChatMessage[];
+  enableAnalysis?: boolean;
+  communicationProfile?: CommunicationProfileContext;
+}
+
+// Analysis types matching backend
+export type Sentiment = 'frustrated' | 'confused' | 'confident' | 'bored' | 'neutral';
+
+export interface LearningStyleSignals {
+  visual: number;
+  verbal: number;
+  procedural: number;
+  conceptual: number;
+}
+
+export interface AIAnalysis {
+  sentiment: Sentiment;
+  sentimentConfidence: number;
+  conceptsDiscussed: string[];
+  conceptGaps: string[];
+  emotionalState: string;
+}
+
+export interface LocalAnalysis {
+  learningStyleSignals: LearningStyleSignals;
+  vocabulary: {
+    gradeLevel: number;
+    complexity: 'simple' | 'moderate' | 'complex';
+  };
+  questionQuality: {
+    quality: 'vague' | 'specific' | 'mixed';
+    isQuestion: boolean;
+    specificity: number;
+  };
+  engagementScore: number;
+}
+
+export interface CombinedAnalysis {
+  aiAnalysis: AIAnalysis | null;
+  localAnalysis: LocalAnalysis;
+  learningStyleSignals: LearningStyleSignals;
+}
+
+export interface CoachingResponseWithAnalysis {
+  response: string;
+  analysis: CombinedAnalysis;
 }
 
 export const aiService = {
   /**
-   * Get coaching response from AI
+   * Get coaching response from AI (backward compatible)
    */
   async getCoachingResponse(request: CoachingRequest): Promise<string> {
     try {
@@ -47,6 +101,25 @@ export const aiService = {
     } catch (error: any) {
       console.error('[AIService] Coaching error:', error);
       throw new Error(error.response?.data?.error || 'Failed to get AI response');
+    }
+  },
+
+  /**
+   * Get coaching response with analysis data
+   */
+  async getCoachingResponseWithAnalysis(request: CoachingRequest): Promise<CoachingResponseWithAnalysis> {
+    try {
+      const response = await aiApi.post('/chat/coach?includeAnalysis=true', {
+        ...request,
+        enableAnalysis: true,
+      });
+      return {
+        response: response.data.response,
+        analysis: response.data.analysis,
+      };
+    } catch (error: any) {
+      console.error('[AIService] Coaching with analysis error:', error);
+      throw new Error(error.response?.data?.error || 'Failed to get AI response with analysis');
     }
   },
 

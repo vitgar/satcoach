@@ -10,13 +10,14 @@
  */
 
 import mongoose from 'mongoose';
-import { User } from '../models/User.model';
+import { User, CommunicationProfile, LearningStyleType, ExplanationStyleType } from '../models/User.model';
 import { StudentProgress } from '../models/StudentProgress.model';
 import { LearningSession } from '../models/LearningSession.model';
 import { LearnerExplanation } from '../models/LearnerExplanation.model';
 import { flowEngineService, FlowZone } from './flowEngine.service';
 import { bloomService, BLOOM_LEVEL_NAMES } from './bloomService';
 import { confidenceCalculatorService, StudentType } from './confidenceCalculator.service';
+import { chatSessionService, AggregatedCommunicationProfile } from './chatSession.service';
 
 export interface LearnerProfile {
   userId: string;
@@ -46,10 +47,22 @@ export interface LearnerProfile {
     optimalSessionDuration: number; // minutes
   };
   
+  // Communication profile (from chat analysis)
+  communicationProfile: CommunicationProfile | null;
+  
   // Recent activity
   streakDays: number;
   lastActiveDate: Date | null;
   recentSessionCount: number;
+}
+
+export interface AdaptedCoachingContext {
+  adjustedLevel: number;
+  explanationStyle: ExplanationStyleType;
+  learningStyle: LearningStyleType;
+  conceptsToReinforce: string[];
+  frustrationRisk: 'low' | 'medium' | 'high';
+  suggestedApproach: string;
 }
 
 export interface LearningRecommendations {
@@ -125,6 +138,9 @@ export class LearnerModelService {
     // Calculate streak
     const { streakDays, lastActiveDate } = this.calculateStreak(recentSessions);
 
+    // Get communication profile from user model (may be null if no chat data)
+    const communicationProfile = user.learningProfile.communicationProfile || null;
+
     return {
       userId,
       studentType,
@@ -135,6 +151,7 @@ export class LearnerModelService {
       totalStudyTime,
       subjectProfiles,
       learningPreferences,
+      communicationProfile,
       streakDays,
       lastActiveDate,
       recentSessionCount: recentSessions.length,
@@ -278,6 +295,101 @@ export class LearnerModelService {
 
     user.learningProfile.currentLevel = Math.round(newLevel);
     await user.save();
+  }
+
+  /**
+   * Get communication profile for a user
+   * Returns aggregated insights from chat sessions
+   */
+  async getCommunicationProfile(userId: string): Promise<AggregatedCommunicationProfile> {
+    return chatSessionService.getUserCommunicationProfile(userId);
+  }
+
+  /**
+   * Build adapted coaching context based on learner profile and communication data
+   * This provides context for the AI coach to personalize responses
+   */
+  async getAdaptedCoachingContext(userId: string): Promise<AdaptedCoachingContext> {
+    const profile = await this.buildLearnerProfile(userId);
+    const communicationProfile = await this.getCommunicationProfile(userId);
+
+    // Calculate adjusted level considering communication profile
+    let adjustedLevel = profile.currentLevel;
+
+    // If student shows frustration, slightly reduce challenge
+    if (communicationProfile.recentSentiments.includes('frustrated')) {
+      adjustedLevel = Math.max(1, adjustedLevel - 1);
+    }
+
+    // If student shows confidence, slightly increase challenge  
+    const confidentCount = communicationProfile.recentSentiments.filter(s => s === 'confident').length;
+    if (confidentCount >= 3) {
+      adjustedLevel = Math.min(10, adjustedLevel + 0.5);
+    }
+
+    // Determine frustration risk
+    const frustrationCount = communicationProfile.recentSentiments.filter(s => s === 'frustrated').length;
+    let frustrationRisk: 'low' | 'medium' | 'high' = 'low';
+    if (frustrationCount >= 3) {
+      frustrationRisk = 'high';
+    } else if (frustrationCount >= 1) {
+      frustrationRisk = 'medium';
+    }
+
+    // Generate suggested approach based on learning style and frustration
+    let suggestedApproach = '';
+    switch (communicationProfile.dominantLearningStyle) {
+      case 'visual':
+        suggestedApproach = 'Use diagrams, graphs, and visual examples. Show relationships visually.';
+        break;
+      case 'verbal':
+        suggestedApproach = 'Provide detailed explanations with analogies and metaphors.';
+        break;
+      case 'procedural':
+        suggestedApproach = 'Break down into clear step-by-step instructions. Number the steps.';
+        break;
+      case 'conceptual':
+        suggestedApproach = 'Explain the underlying theory and connect to broader principles.';
+        break;
+      default:
+        suggestedApproach = 'Use a balanced approach with examples and clear explanations.';
+    }
+
+    // Add frustration mitigation if needed
+    if (frustrationRisk !== 'low') {
+      suggestedApproach += ' Be encouraging and validate their effort. Simplify language.';
+    }
+
+    return {
+      adjustedLevel: Math.round(adjustedLevel),
+      explanationStyle: communicationProfile.preferredExplanationStyle,
+      learningStyle: communicationProfile.dominantLearningStyle,
+      conceptsToReinforce: communicationProfile.commonConceptGaps.slice(0, 5),
+      frustrationRisk,
+      suggestedApproach,
+    };
+  }
+
+  /**
+   * Check if a user has frustration triggers related to specific concepts
+   */
+  async getFrustrationContext(userId: string, conceptsInQuestion: string[]): Promise<{
+    hasRelatedFrustration: boolean;
+    relatedTriggers: string[];
+  }> {
+    const communicationProfile = await this.getCommunicationProfile(userId);
+
+    const relatedTriggers = communicationProfile.frustrationTriggers.filter(trigger =>
+      conceptsInQuestion.some(concept => 
+        concept.toLowerCase().includes(trigger.toLowerCase()) ||
+        trigger.toLowerCase().includes(concept.toLowerCase())
+      )
+    );
+
+    return {
+      hasRelatedFrustration: relatedTriggers.length > 0,
+      relatedTriggers,
+    };
   }
 
   // Private helper methods

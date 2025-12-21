@@ -1,5 +1,17 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
 
+export type LearningStyleType = 'visual' | 'verbal' | 'procedural' | 'conceptual' | 'mixed';
+export type ExplanationStyleType = 'simple' | 'detailed' | 'examples' | 'theory';
+
+export interface CommunicationProfile {
+  dominantLearningStyle: LearningStyleType;
+  averageVocabularyLevel: number;
+  commonConceptGaps: string[];
+  preferredExplanationStyle: ExplanationStyleType;
+  frustrationTriggers: string[];
+  lastUpdated: Date | null;
+}
+
 export interface IUser extends Document {
   _id: Types.ObjectId;
   email: string;
@@ -14,6 +26,7 @@ export interface IUser extends Document {
       autoAdjust: boolean;
       adjustmentSpeed: number;
     };
+    communicationProfile: CommunicationProfile;
   };
   createdAt: Date;
   updatedAt: Date;
@@ -71,6 +84,36 @@ const UserSchema = new Schema<IUser>(
           default: 3,
           min: 1,
           max: 5,
+        },
+      },
+      communicationProfile: {
+        dominantLearningStyle: {
+          type: String,
+          enum: ['visual', 'verbal', 'procedural', 'conceptual', 'mixed'],
+          default: 'mixed',
+        },
+        averageVocabularyLevel: {
+          type: Number,
+          default: 8,
+          min: 1,
+          max: 12,
+        },
+        commonConceptGaps: [{
+          type: String,
+          trim: true,
+        }],
+        preferredExplanationStyle: {
+          type: String,
+          enum: ['simple', 'detailed', 'examples', 'theory'],
+          default: 'examples',
+        },
+        frustrationTriggers: [{
+          type: String,
+          trim: true,
+        }],
+        lastUpdated: {
+          type: Date,
+          default: null,
         },
       },
     },

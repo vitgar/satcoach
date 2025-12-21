@@ -9,6 +9,7 @@ import progressRoutes from './routes/progress.routes';
 import sessionRoutes from './routes/session.routes';
 import learningRoutes from './routes/learning.routes';
 import validationRoutes from './routes/validation.routes';
+import chatSessionRoutes from './routes/chatSession.routes';
 import { errorHandler, notFound } from './middleware/errorHandler.middleware';
 
 // Validate environment variables
@@ -62,6 +63,7 @@ app.use('/api/v1/progress', progressRoutes);
 app.use('/api/v1/sessions', sessionRoutes);
 app.use('/api/v1/learning', learningRoutes);
 app.use('/api/v1/validation', validationRoutes);
+app.use('/api/v1/chat-sessions', chatSessionRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -114,6 +116,12 @@ if (process.env.VERCEL !== '1') {
         console.log(`   POST /api/v1/validation/validate-question`);
         console.log(`   POST /api/v1/validation/apply-changes`);
         console.log(`   GET  /api/v1/validation/stats`);
+        console.log('');
+        console.log(`   POST /api/v1/chat-sessions`);
+        console.log(`   GET  /api/v1/chat-sessions/active`);
+        console.log(`   PUT  /api/v1/chat-sessions/:id/insights`);
+        console.log(`   PUT  /api/v1/chat-sessions/:id/end`);
+        console.log(`   GET  /api/v1/chat-sessions/user/:userId/profile`);
         console.log('');
       });
     } catch (error) {

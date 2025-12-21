@@ -1,15 +1,27 @@
 import { Request, Response } from 'express';
-import { chatCoachService, QuestionContext, StudentContext } from '../services/chat-coach.service';
+import { chatCoachService, QuestionContext, StudentContext, CombinedAnalysis } from '../services/chat-coach.service';
 import { ChatMessage } from '../services/openai.service';
+import { CommunicationProfileContext } from '../prompts/system-prompts';
 
 export class ChatController {
   /**
    * Generate a coaching response
    * POST /api/v1/chat/coach
+   * 
+   * Optional query param: ?includeAnalysis=true to include analysis in response
+   * Optional body param: communicationProfile to personalize responses
    */
   async generateCoachingResponse(req: Request, res: Response): Promise<void> {
     try {
-      const { userMessage, questionContext, studentContext, chatHistory } = req.body;
+      const { 
+        userMessage, 
+        questionContext, 
+        studentContext, 
+        chatHistory, 
+        enableAnalysis,
+        communicationProfile 
+      } = req.body;
+      const includeAnalysis = req.query.includeAnalysis === 'true' || enableAnalysis === true;
 
       // Validate required fields
       if (!userMessage || typeof userMessage !== 'string') {
@@ -27,20 +39,49 @@ export class ChatController {
         return;
       }
 
-      console.log(`[ChatController] Generating coaching response for level ${studentContext.level} student`);
+      // Validate communication profile if provided
+      let validatedProfile: CommunicationProfileContext | undefined;
+      if (communicationProfile) {
+        validatedProfile = {
+          learningStyle: communicationProfile.learningStyle || 'mixed',
+          explanationStyle: communicationProfile.explanationStyle || 'examples',
+          vocabularyLevel: communicationProfile.vocabularyLevel || 8,
+          frustrationRisk: communicationProfile.frustrationRisk || 'low',
+          conceptGaps: communicationProfile.conceptGaps || [],
+          suggestedApproach: communicationProfile.suggestedApproach || '',
+        };
+      }
 
-      const response = await chatCoachService.generateCoachingResponse({
+      console.log(`[ChatController] Generating coaching response for level ${studentContext.level} student, analysis: ${includeAnalysis}, hasProfile: ${!!validatedProfile}`);
+
+      // Always use the analysis-enabled version internally
+      const result = await chatCoachService.generateCoachingResponseWithAnalysis({
         userMessage,
         questionContext: questionContext as QuestionContext,
         studentContext: studentContext as StudentContext,
         chatHistory: chatHistory as ChatMessage[] | undefined,
+        enableAnalysis: true, // Always enable for internal use
+        communicationProfile: validatedProfile,
       });
 
-      res.status(200).json({
+      // Build response based on whether client wants analysis
+      const responseBody: {
+        message: string;
+        response: string;
+        timestamp: string;
+        analysis?: CombinedAnalysis;
+      } = {
         message: 'Coaching response generated',
-        response,
+        response: result.response,
         timestamp: new Date().toISOString(),
-      });
+      };
+
+      // Only include analysis if requested
+      if (includeAnalysis) {
+        responseBody.analysis = result.analysis;
+      }
+
+      res.status(200).json(responseBody);
     } catch (error: any) {
       console.error('[ChatController] Error:', error);
       res.status(500).json({ error: error.message || 'Failed to generate coaching response' });

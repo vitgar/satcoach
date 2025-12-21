@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Question } from '../types';
-import { aiService, QuestionContext, StudentContext, ChatMessage } from '../services/ai.service';
+import { aiService, QuestionContext, StudentContext, ChatMessage, CombinedAnalysis } from '../services/ai.service';
+import { chatSessionService, ChatSession, UpdateInsightsData } from '../services/chatSession.service';
 import { useAuth } from '../contexts/AuthContext';
 import { MathMarkdown } from './MathMarkdown';
 import { MathSymbolPicker } from './MathSymbolPicker';
@@ -46,8 +47,45 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const [loading, setLoading] = useState(false);
   const [clarifyingQuestions, setClarifyingQuestions] = useState<string[]>([]);
   const [loadingClarifyingQuestions, setLoadingClarifyingQuestions] = useState(false);
+  const [chatSession, setChatSession] = useState<ChatSession | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const sessionEndedRef = useRef(false);
+
+  // End session helper - wrapped in useCallback to avoid dependency issues
+  const endCurrentSession = useCallback(async () => {
+    if (chatSession && !sessionEndedRef.current) {
+      sessionEndedRef.current = true;
+      try {
+        await chatSessionService.endSession(chatSession._id);
+        console.log('[ChatPanel] Session ended:', chatSession._id);
+      } catch (error) {
+        console.error('[ChatPanel] Failed to end session:', error);
+      }
+    }
+  }, [chatSession]);
+
+  // Update session with analysis data
+  const updateSessionWithAnalysis = useCallback(async (analysis: CombinedAnalysis) => {
+    if (!chatSession) return;
+
+    try {
+      const updateData: UpdateInsightsData = {
+        sentiment: analysis.aiAnalysis?.sentiment,
+        conceptsAsked: analysis.aiAnalysis?.conceptsDiscussed,
+        conceptGaps: analysis.aiAnalysis?.conceptGaps,
+        learningStyleSignals: analysis.learningStyleSignals,
+        vocabularyLevel: analysis.localAnalysis?.vocabulary?.gradeLevel,
+        questionQuality: analysis.localAnalysis?.questionQuality?.quality,
+        engagementScore: analysis.localAnalysis?.engagementScore,
+      };
+
+      await chatSessionService.updateSessionInsights(chatSession._id, updateData);
+      console.log('[ChatPanel] Session insights updated');
+    } catch (error) {
+      console.error('[ChatPanel] Failed to update session insights:', error);
+    }
+  }, [chatSession]);
 
   useEffect(() => {
     // Reset chat when question changes
@@ -74,7 +112,37 @@ What would you like to know?`;
       },
     ]);
     setInput('');
-  }, [question._id, demoMode]);
+    
+    // End previous session and start new one
+    const initSession = async () => {
+      // End previous session if exists
+      if (chatSession) {
+        await endCurrentSession();
+      }
+      
+      // Reset session state
+      setChatSession(null);
+      sessionEndedRef.current = false;
+      
+      // Create new session (only in non-demo mode with authenticated user)
+      if (!demoMode && user) {
+        try {
+          const newSession = await chatSessionService.getOrCreateSession(question._id);
+          setChatSession(newSession);
+          console.log('[ChatPanel] Session created:', newSession._id);
+        } catch (error) {
+          console.error('[ChatPanel] Failed to create session:', error);
+        }
+      }
+    };
+    
+    initSession();
+    
+    // Cleanup: end session on unmount
+    return () => {
+      endCurrentSession();
+    };
+  }, [question._id, demoMode, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // Inject answer result into chat
@@ -233,22 +301,28 @@ Would you like me to help you understand this? Feel free to ask questions about:
           content: msg.content,
         }));
 
-      // Get AI response
-      const aiResponse = await aiService.getCoachingResponse({
+      // Get AI response with analysis
+      const result = await aiService.getCoachingResponseWithAnalysis({
         userMessage: currentInput,
         questionContext,
         studentContext,
         chatHistory,
+        enableAnalysis: true,
       });
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: aiResponse,
+        content: result.response,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+      
+      // Update session with analysis data (fire-and-forget)
+      if (result.analysis) {
+        updateSessionWithAnalysis(result.analysis);
+      }
     } catch (error: any) {
       console.error('Failed to get AI response:', error);
       
