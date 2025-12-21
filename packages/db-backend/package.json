@@ -7,7 +7,9 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "echo \"Tests coming soon\" && exit 0"
+    "test": "echo \"Tests coming soon\" && exit 0",
+    "migrate": "ts-node scripts/migrate-to-cloud.ts",
+    "migrate:drop": "ts-node scripts/migrate-to-cloud.ts --drop-existing"
   },
   "keywords": [
     "sat",

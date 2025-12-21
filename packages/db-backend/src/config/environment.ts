@@ -11,9 +11,34 @@ interface Config {
   jwtExpiresIn: string;
   jwtRefreshSecret: string;
   jwtRefreshExpiresIn: string;
-  corsOrigin: string;
+  corsOrigin: string | string[];
   bcryptRounds: number;
 }
+
+// Parse CORS origins - supports comma-separated list or single origin
+const parseCorsOrigin = (): string | string[] => {
+  const corsEnv = process.env.CORS_ORIGIN;
+  
+  // Default origins for development and production
+  const defaultOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://satcoach.vercel.app',
+    'https://satcoach-frontend.vercel.app'
+  ];
+  
+  if (!corsEnv) {
+    return defaultOrigins;
+  }
+  
+  // If it contains a comma, split into array
+  if (corsEnv.includes(',')) {
+    return corsEnv.split(',').map(origin => origin.trim());
+  }
+  
+  // Single origin provided
+  return corsEnv;
+};
 
 export const config: Config = {
   port: parseInt(process.env.PORT || '3001', 10),
@@ -23,7 +48,7 @@ export const config: Config = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || '',
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  corsOrigin: parseCorsOrigin(),
   bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS || '10', 10),
 };
 
