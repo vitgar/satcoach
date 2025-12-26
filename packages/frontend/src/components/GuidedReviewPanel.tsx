@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { SubjectSelector } from './SubjectSelector';
 import { GuidedChatInterface } from './GuidedChatInterface';
+import { LessonPreparation } from './LessonPreparation';
 import { 
   guidedReviewService, 
-  TopicRecommendation, 
   EmbeddedQuestion,
-  SessionSummary 
+  SessionSummary,
+  ChatResponseGraph,
+  SmartTopicResult,
+  TopicListItem
 } from '../services/guidedReview.service';
 
 interface Message {
@@ -16,9 +19,10 @@ interface Message {
   content: string;
   timestamp: Date;
   embeddedQuestion?: EmbeddedQuestion | null;
+  graph?: ChatResponseGraph | null;
 }
 
-type ViewState = 'subject-selection' | 'recommendations' | 'chat' | 'summary';
+type ViewState = 'subject-selection' | 'preparing-lesson' | 'chat' | 'summary';
 
 export const GuidedReviewPanel = () => {
   const { user } = useAuth();
@@ -28,8 +32,8 @@ export const GuidedReviewPanel = () => {
   const [viewState, setViewState] = useState<ViewState>('subject-selection');
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-  const [recommendations, setRecommendations] = useState<TopicRecommendation[]>([]);
-  const [aiExplanation, setAiExplanation] = useState<string>('');
+  const [smartTopicResult, setSmartTopicResult] = useState<SmartTopicResult | null>(null);
+  const [allTopics, setAllTopics] = useState<TopicListItem[]>([]);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [questionsAttempted, setQuestionsAttempted] = useState(0);
@@ -40,67 +44,112 @@ export const GuidedReviewPanel = () => {
   const [loading, setLoading] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [preparationComplete, setPreparationComplete] = useState(false);
 
-  // Load recommendations when subject is selected
+  // Load smart topic when subject is selected
   useEffect(() => {
-    if (selectedSubject) {
-      loadRecommendations(selectedSubject);
+    if (selectedSubject && viewState === 'preparing-lesson') {
+      loadSmartTopic(selectedSubject);
     }
-  }, [selectedSubject]);
+  }, [selectedSubject, viewState]);
 
-  const loadRecommendations = async (subject: string) => {
-    setLoading(true);
+  // Start session when preparation is complete and we have a smart topic
+  useEffect(() => {
+    if (preparationComplete && smartTopicResult && selectedSubject) {
+      startSessionWithTopic(smartTopicResult.topic);
+    }
+  }, [preparationComplete, smartTopicResult, selectedSubject]);
+
+  const loadSmartTopic = async (subject: string) => {
     setError(null);
 
     try {
-      // Get recommendations from DB
-      const result = await guidedReviewService.getRecommendations(subject);
-      setRecommendations(result.recommendations);
-
-      // Get AI-enhanced explanation
-      const aiResult = await guidedReviewService.getAIRecommendations(
-        subject,
-        result.recommendations,
-        { level: user?.learningProfile?.currentLevel || 5 },
-        result.studentContext
-      );
-      setAiExplanation(aiResult.explanation);
-
-      setViewState('recommendations');
+      // Get AI-selected optimal topic
+      const result = await guidedReviewService.getSmartTopic(subject);
+      setSmartTopicResult(result);
+      setSelectedTopic(result.topic);
+      
+      // Also load all topics for the override dropdown (lazy load)
+      const topics = await guidedReviewService.getAllTopics(subject);
+      setAllTopics(topics);
     } catch (err: any) {
-      setError(err.message || 'Failed to load recommendations');
-      console.error('Failed to load recommendations:', err);
-    } finally {
-      setLoading(false);
+      setError(err.message || 'Failed to select topic');
+      console.error('Failed to load smart topic:', err);
+      setViewState('subject-selection');
     }
   };
 
   const handleSubjectSelect = (subject: string) => {
     setSelectedSubject(subject);
     setSelectedTopic(null);
+    setSmartTopicResult(null);
+    setPreparationComplete(false);
     setMessages([]);
     setQuestionsAttempted(0);
     setQuestionsCorrect(0);
     setConceptsCovered([]);
+    setViewState('preparing-lesson');
   };
 
-  const handleTopicSelect = async (topic: string) => {
+  const handlePreparationComplete = () => {
+    setPreparationComplete(true);
+  };
+
+  const startSessionWithTopic = async (topic: string) => {
+    if (!selectedSubject) return;
+    
     setSelectedTopic(topic);
     setLoading(true);
     setError(null);
 
     try {
+      // Check for previous sessions on this topic
+      const previousHistory = await guidedReviewService.getPreviousTopicSessions(
+        selectedSubject,
+        topic
+      );
+
       // Start session in DB
-      const session = await guidedReviewService.startSession(selectedSubject!, topic);
+      const session = await guidedReviewService.startSession(selectedSubject, topic);
       setSessionId(session._id);
       setSessionStartTime(new Date());
 
-      // Get topic introduction from AI
-      const introduction = await guidedReviewService.startTopic({
-        subject: selectedSubject!,
+      // Get mastery level from smart topic result or previous history
+      const topicMastery = smartTopicResult?.masteryLevel || 0;
+      
+      // Build session context with enhanced AI context from smart topic selection
+      const sessionContext = {
+        subject: selectedSubject,
         topic,
         studentLevel: user?.learningProfile?.currentLevel || 5,
-        masteryLevel: recommendations.find(r => r.topic === topic)?.masteryLevel || 0,
+        masteryLevel: topicMastery,
+        previousSessions: {
+          hasHistory: previousHistory.hasHistory || topicMastery > 0,
+          totalSessions: previousHistory.totalSessions || 0,
+          lastSessionDate: previousHistory.lastSession?.date,
+          lastSessionAccuracy: previousHistory.lastSession 
+            ? Math.round((previousHistory.lastSession.questionsCorrect / 
+                Math.max(1, previousHistory.lastSession.questionsAttempted)) * 100)
+            : undefined,
+          conceptsCovered: previousHistory.lastSession?.conceptsCovered,
+          conceptsWithMastery: previousHistory.conceptsWithMastery,
+          conceptsDueForReview: previousHistory.conceptsDueForReview,
+          recommendedStartingPoint: previousHistory.recommendedStartingPoint,
+        },
+        // Enhanced context from intelligent topic selection
+        aiContext: smartTopicResult?.aiContext,
+        selectionReason: smartTopicResult?.reason,
+        focusAreas: smartTopicResult?.focusAreas,
+      };
+
+      // Get topic introduction from AI
+      const introduction = await guidedReviewService.startTopic(sessionContext);
+
+      // Save introduction message to session with concepts covered
+      await guidedReviewService.addMessageToSession(session._id, {
+        role: 'assistant',
+        content: introduction.response,
+        conceptsCovered: introduction.conceptsCovered,
       });
 
       // Add introduction as first message
@@ -110,6 +159,7 @@ export const GuidedReviewPanel = () => {
         content: introduction.response,
         timestamp: new Date(),
         embeddedQuestion: introduction.embeddedQuestion,
+        graph: introduction.graph,
       };
       setMessages([introMessage]);
 
@@ -121,9 +171,24 @@ export const GuidedReviewPanel = () => {
     } catch (err: any) {
       setError(err.message || 'Failed to start topic');
       console.error('Failed to start topic:', err);
+      setViewState('subject-selection');
     } finally {
       setLoading(false);
     }
+  };
+
+  // Handle manual topic override from dropdown
+  const handleTopicOverride = async (topic: string) => {
+    if (topic === selectedTopic) return;
+    
+    // Reset and start with the new topic
+    setSelectedTopic(topic);
+    setSmartTopicResult(null);
+    setPreparationComplete(false);
+    setMessages([]);
+    
+    // Directly start session with the overridden topic
+    await startSessionWithTopic(topic);
   };
 
   const handleSendMessage = useCallback(async (message: string) => {
@@ -160,6 +225,7 @@ export const GuidedReviewPanel = () => {
         content: response.response,
         timestamp: new Date(),
         embeddedQuestion: response.embeddedQuestion,
+        graph: response.graph,
       };
       setMessages(prev => [...prev, aiMessage]);
 
@@ -210,6 +276,7 @@ export const GuidedReviewPanel = () => {
         content: result.feedback.response,
         timestamp: new Date(),
         embeddedQuestion: result.feedback.embeddedQuestion,
+        graph: result.feedback.graph,
       };
       setMessages(prev => [...prev, feedbackMessage]);
 
@@ -262,21 +329,12 @@ export const GuidedReviewPanel = () => {
     }
   };
 
-  const handleBackToRecommendations = () => {
-    setSelectedTopic(null);
-    setMessages([]);
-    setSessionId(null);
-    setQuestionsAttempted(0);
-    setQuestionsCorrect(0);
-    setConceptsCovered([]);
-    setViewState('recommendations');
-  };
-
   const handleBackToSubjects = () => {
     setSelectedSubject(null);
     setSelectedTopic(null);
-    setRecommendations([]);
-    setAiExplanation('');
+    setSmartTopicResult(null);
+    setAllTopics([]);
+    setPreparationComplete(false);
     setMessages([]);
     setSessionId(null);
     setViewState('subject-selection');
@@ -284,7 +342,20 @@ export const GuidedReviewPanel = () => {
 
   const handleStartNewSession = () => {
     setSessionSummary(null);
-    handleBackToRecommendations();
+    setSelectedTopic(null);
+    setSmartTopicResult(null);
+    setPreparationComplete(false);
+    setMessages([]);
+    setSessionId(null);
+    setQuestionsAttempted(0);
+    setQuestionsCorrect(0);
+    setConceptsCovered([]);
+    // Go back to preparing lesson for the same subject
+    if (selectedSubject) {
+      setViewState('preparing-lesson');
+    } else {
+      setViewState('subject-selection');
+    }
   };
 
   // Render subject selection
@@ -319,11 +390,12 @@ export const GuidedReviewPanel = () => {
     );
   }
 
-  // Render recommendations
-  if (viewState === 'recommendations') {
+  // Render preparing lesson
+  if (viewState === 'preparing-lesson') {
     return (
-      <div className="max-w-4xl mx-auto py-8 px-4">
-        <div className="flex items-center justify-between mb-6">
+      <div className="h-full flex flex-col">
+        {/* Back button */}
+        <div className="max-w-4xl mx-auto w-full py-2 px-4 flex-shrink-0">
           <button
             onClick={handleBackToSubjects}
             className="flex items-center text-gray-600 hover:text-gray-900"
@@ -333,87 +405,21 @@ export const GuidedReviewPanel = () => {
             </svg>
             Change Subject
           </button>
-          <h1 className="text-xl font-bold text-gray-900">{selectedSubject} Review</h1>
-          <div className="w-24"></div>
         </div>
 
-        {/* AI Explanation */}
-        {aiExplanation && (
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-5 mb-6">
-            <div className="flex items-start gap-3">
-              <div className="text-emerald-600 mt-0.5">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-medium text-gray-900 mb-1">AI Recommendation</h3>
-                <p className="text-gray-700">
-                  {formatBoldText(aiExplanation)}
-                </p>
-              </div>
+        {/* Lesson Preparation Animation */}
+        <div className="flex-1">
+          <LessonPreparation 
+            subject={selectedSubject || ''} 
+            onComplete={handlePreparationComplete}
+          />
+        </div>
+
+        {error && (
+          <div className="max-w-md mx-auto px-4 pb-4">
+            <div className="p-4 bg-red-50 text-red-700 rounded-lg text-center">
+              {error}
             </div>
-          </div>
-        )}
-
-        {/* Topic Cards */}
-        {recommendations.length > 0 ? (
-          <div className="grid gap-4">
-            <h2 className="text-lg font-semibold text-gray-800">Recommended Topics</h2>
-            {recommendations.map((rec, index) => (
-              <button
-                key={rec.topic}
-                onClick={() => handleTopicSelect(rec.topic)}
-                disabled={loading}
-                className="w-full text-left p-4 bg-white border border-gray-200 rounded-xl hover:border-primary-300 hover:shadow-md transition-all disabled:opacity-50"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                        rec.priority === 'high' 
-                          ? 'bg-red-100 text-red-700'
-                          : rec.priority === 'medium'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-green-100 text-green-700'
-                      }`}>
-                        {rec.priority} priority
-                      </span>
-                      {index === 0 && (
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-primary-100 text-primary-700">
-                          Top pick
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">{rec.topic}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{rec.reason}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>Mastery: {rec.masteryLevel}%</span>
-                      <span>{rec.questionCount} questions available</span>
-                      <span>~{rec.estimatedDuration} min</span>
-                    </div>
-                  </div>
-                  <div className="text-primary-600 ml-4">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-xl">
-            <p className="text-gray-600 mb-4">No specific recommendations yet.</p>
-            <p className="text-sm text-gray-500">
-              Start practicing to get personalized topic recommendations!
-            </p>
-          </div>
-        )}
-
-        {loading && (
-          <div className="flex justify-center mt-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         )}
       </div>
@@ -423,30 +429,37 @@ export const GuidedReviewPanel = () => {
   // Render chat
   if (viewState === 'chat') {
     return (
-      <div className="max-w-4xl mx-auto py-4 px-4 h-[calc(100vh-120px)]">
-        <div className="flex items-center mb-4">
+      <div className="h-full flex flex-col overflow-hidden">
+        <div className="max-w-4xl mx-auto w-full py-2 px-4 flex-shrink-0">
           <button
-            onClick={handleBackToRecommendations}
-            className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
+            onClick={handleBackToSubjects}
+            className="flex items-center text-gray-600 hover:text-gray-900"
           >
             <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back
+            Exit Session
           </button>
         </div>
 
-        <GuidedChatInterface
-          messages={messages}
-          onSendMessage={handleSendMessage}
-          onAnswerQuestion={handleAnswerQuestion}
-          isLoading={chatLoading}
-          topic={selectedTopic || ''}
-          subject={selectedSubject || ''}
-          questionsAttempted={questionsAttempted}
-          questionsCorrect={questionsCorrect}
-          onEndSession={handleEndSession}
-        />
+        <div className="flex-1 min-h-0 overflow-hidden px-4 pb-4">
+          <div className="max-w-4xl mx-auto h-full">
+            <GuidedChatInterface
+              messages={messages}
+              onSendMessage={handleSendMessage}
+              onAnswerQuestion={handleAnswerQuestion}
+              isLoading={chatLoading}
+              topic={selectedTopic || ''}
+              subject={selectedSubject || ''}
+              questionsAttempted={questionsAttempted}
+              questionsCorrect={questionsCorrect}
+              onEndSession={handleEndSession}
+              allTopics={allTopics}
+              onTopicChange={handleTopicOverride}
+              selectionReason={smartTopicResult?.reason}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -559,15 +572,3 @@ export const GuidedReviewPanel = () => {
 
   return null;
 };
-
-// Helper to format bold text (**text**)
-function formatBoldText(text: string): React.ReactNode {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={index}>{part.slice(2, -2)}</strong>;
-    }
-    return part;
-  });
-}
-

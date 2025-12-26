@@ -214,9 +214,27 @@ export const computeRelativeAngleLabelPosition = (
     return null;
   }
 
-  const bisector = computeAngleBisector(vertexInfo.index, points);
+  let bisector = computeAngleBisector(vertexInfo.index, points);
   if (!bisector) {
     return null;
+  }
+
+  // Compute centroid to ensure bisector points INSIDE the polygon
+  const centroid = computePolygonCentroid(points);
+  if (centroid) {
+    // Vector from vertex to centroid (points toward interior)
+    const toCenter = {
+      x: centroid.x - vertexInfo.point.x,
+      y: centroid.y - vertexInfo.point.y,
+    };
+    
+    // Check if bisector points toward centroid (dot product > 0)
+    const dotProduct = bisector.x * toCenter.x + bisector.y * toCenter.y;
+    
+    // If bisector points away from centroid, flip it
+    if (dotProduct < 0) {
+      bisector = { x: -bisector.x, y: -bisector.y };
+    }
   }
 
   let distanceFactor = clamp(label.radialOffset ?? DEFAULT_RADIAL_OFFSET, 0.05, 0.3);

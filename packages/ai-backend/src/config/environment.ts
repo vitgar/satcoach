@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load environment variables
+// Load environment variables - .env.local takes precedence over .env
+dotenv.config({ path: path.join(__dirname, '../../.env.local') });
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 interface Config {
@@ -41,7 +42,7 @@ const parseCorsOrigin = (): string | string[] => {
 
 export const config: Config = {
   nodeEnv: process.env.NODE_ENV || 'development',
-  port: parseInt(process.env.PORT || '3002', 10),
+  port: parseInt(process.env.PORT || '4001', 10),
   openaiApiKey: process.env.OPENAI_API_KEY || '',
   openaiModel: process.env.OPENAI_MODEL || 'gpt-4o-mini',
   corsOrigin: parseCorsOrigin(),

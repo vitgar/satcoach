@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { EmbeddedQuestion } from '../services/guidedReview.service';
+import { EmbeddedQuestion, ChatResponseGraph, TopicListItem } from '../services/guidedReview.service';
+import { MathMarkdown } from './MathMarkdown';
+import { GraphRenderer } from './GraphRenderer';
+import { GraphData } from '../types';
 
 interface Message {
   id: string;
@@ -7,6 +10,7 @@ interface Message {
   content: string;
   timestamp: Date;
   embeddedQuestion?: EmbeddedQuestion | null;
+  graph?: ChatResponseGraph | null;
 }
 
 interface GuidedChatInterfaceProps {
@@ -20,6 +24,9 @@ interface GuidedChatInterfaceProps {
   questionsCorrect: number;
   onEndSession: () => void;
   disabled?: boolean;
+  allTopics?: TopicListItem[];
+  onTopicChange?: (topic: string) => void;
+  selectionReason?: string;
 }
 
 export const GuidedChatInterface = ({
@@ -33,25 +40,40 @@ export const GuidedChatInterface = ({
   questionsCorrect,
   onEndSession,
   disabled = false,
+  allTopics = [],
+  onTopicChange,
+  selectionReason,
 }: GuidedChatInterfaceProps) => {
   const [inputValue, setInputValue] = useState('');
-  const [activeQuestion, setActiveQuestion] = useState<EmbeddedQuestion | null>(null);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
+  const [selectedAnswers, setSelectedAnswers] = useState<Map<string, string>>(new Map());
+  const [showTopicDropdown, setShowTopicDropdown] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Check for embedded questions in the latest message
+  // Close dropdown when clicking outside
   useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage?.role === 'assistant' && lastMessage.embeddedQuestion) {
-      setActiveQuestion(lastMessage.embeddedQuestion);
-      setSelectedAnswer(null);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowTopicDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleTopicSelect = (selectedTopic: string) => {
+    setShowTopicDropdown(false);
+    if (onTopicChange && selectedTopic !== topic) {
+      onTopicChange(selectedTopic);
     }
-  }, [messages]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,12 +84,13 @@ export const GuidedChatInterface = ({
     await onSendMessage(message);
   };
 
-  const handleAnswerSubmit = async () => {
-    if (!activeQuestion || !selectedAnswer || isLoading) return;
+  const handleAnswerSubmit = async (messageId: string, question: EmbeddedQuestion, answer: string) => {
+    if (isLoading) return;
 
-    await onAnswerQuestion(activeQuestion, selectedAnswer);
-    setActiveQuestion(null);
-    setSelectedAnswer(null);
+    // Mark question as answered
+    setAnsweredQuestions(prev => new Set(prev).add(messageId));
+
+    await onAnswerQuestion(question, answer);
   };
 
   const accuracy = questionsAttempted > 0 
@@ -75,12 +98,73 @@ export const GuidedChatInterface = ({
     : 0;
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-t-xl">
-        <div>
-          <h3 className="font-semibold text-gray-900">{topic}</h3>
-          <p className="text-sm text-gray-500">{subject}</p>
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-t-xl flex-shrink-0">
+        <div className="relative" ref={dropdownRef}>
+          {/* Topic with optional dropdown */}
+          <button
+            onClick={() => allTopics.length > 0 && setShowTopicDropdown(!showTopicDropdown)}
+            className={`text-left group ${allTopics.length > 0 ? 'cursor-pointer hover:bg-white/50 rounded-lg p-1 -m-1 transition-colors' : ''}`}
+            disabled={allTopics.length === 0}
+          >
+            <div className="flex items-center gap-1">
+              <h3 className="font-semibold text-gray-900">{topic}</h3>
+              {allTopics.length > 0 && (
+                <svg 
+                  className={`w-4 h-4 text-gray-500 transition-transform ${showTopicDropdown ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+            </div>
+            <p className="text-sm text-gray-500">{subject}</p>
+            {selectionReason && (
+              <p className="text-xs text-emerald-600 mt-0.5 max-w-xs truncate" title={selectionReason}>
+                {selectionReason.length > 50 ? selectionReason.slice(0, 50) + '...' : selectionReason}
+              </p>
+            )}
+          </button>
+
+          {/* Topic Dropdown */}
+          {showTopicDropdown && allTopics.length > 0 && (
+            <div className="absolute top-full left-0 mt-2 w-80 max-h-80 overflow-y-auto bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+              <div className="p-2 border-b border-gray-100">
+                <p className="text-xs text-gray-500 font-medium">Switch Topic</p>
+              </div>
+              <div className="py-1">
+                {allTopics.map((t) => (
+                  <button
+                    key={t.topic}
+                    onClick={() => handleTopicSelect(t.topic)}
+                    className={`w-full text-left px-3 py-2 hover:bg-gray-50 transition-colors ${
+                      t.topic === topic ? 'bg-emerald-50' : ''
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-medium text-sm truncate ${t.topic === topic ? 'text-emerald-700' : 'text-gray-900'}`}>
+                          {t.topic}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">{t.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2 ml-2">
+                        <span className="text-xs text-gray-400">{t.masteryLevel}%</span>
+                        {t.topic === topic && (
+                          <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex items-center space-x-4">
           {/* Progress Indicators */}
@@ -102,82 +186,122 @@ export const GuidedChatInterface = ({
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] max-h-[500px]">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
         {messages.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             <p>Starting guided review session...</p>
           </div>
         )}
 
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[80%] rounded-xl px-4 py-3 ${
-                message.role === 'user'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-900'
-              }`}
-            >
-              {/* Parse and render message with markdown-like formatting */}
-              <div className="prose prose-sm max-w-none">
-                {message.content.split('\n').map((line, i) => (
-                  <p key={i} className={`${i > 0 ? 'mt-2' : ''} ${message.role === 'user' ? 'text-white' : ''}`}>
-                    {formatMessageContent(line, message.role === 'user')}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
+        {messages.map((message) => {
+          const hasQuestion = message.role === 'assistant' && message.embeddedQuestion;
+          const isQuestionAnswered = answeredQuestions.has(message.id);
+          const selectedAnswer = selectedAnswers.get(message.id);
 
-        {/* Active Question Widget */}
-        {activeQuestion && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mx-2">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-blue-600">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </span>
-              <span className="font-medium text-blue-900">Practice Question</span>
-            </div>
-            
-            <p className="text-gray-800 mb-4">{activeQuestion.text}</p>
-            
-            <div className="space-y-2 mb-4">
-              {activeQuestion.options.map((option) => (
-                <button
-                  key={option.label}
-                  onClick={() => setSelectedAnswer(option.label)}
-                  disabled={isLoading}
-                  className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
-                    selectedAnswer === option.label
-                      ? 'border-blue-500 bg-blue-100'
-                      : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
-                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          return (
+            <div key={message.id}>
+              <div
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-xl px-4 py-3 ${
+                    message.role === 'user'
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-gray-100 text-gray-900'
+                  }`}
                 >
-                  <span className="font-medium mr-2">{option.label})</span>
-                  {option.text}
-                </button>
-              ))}
+                  {/* Render message with full markdown and LaTeX support */}
+                  {message.role === 'user' ? (
+                    <div className="prose prose-sm max-w-none text-white">
+                      {message.content.split('\n').map((line, i) => (
+                        <p key={i} className={`${i > 0 ? 'mt-2' : ''} text-white`}>
+                          {formatMessageContent(line, true)}
+                        </p>
+                      ))}
+                    </div>
+                  ) : (
+                    <MathMarkdown content={message.content} />
+                  )}
+                  
+                  {/* Render graph if present */}
+                  {message.role === 'assistant' && message.graph && (
+                    <div className="mt-4">
+                      <GraphRenderer graphData={message.graph as GraphData} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Embedded Question - shown inline with the message */}
+              {hasQuestion && message.embeddedQuestion && (
+                <div className="ml-4 mt-3 max-w-[75%]">
+                  <div className={`rounded-xl p-4 ${
+                    isQuestionAnswered 
+                      ? 'bg-gray-50 border border-gray-200' 
+                      : 'bg-blue-50 border border-blue-200'
+                  }`}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={isQuestionAnswered ? 'text-gray-600' : 'text-blue-600'}>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </span>
+                      <span className={`font-medium ${isQuestionAnswered ? 'text-gray-700' : 'text-blue-900'}`}>
+                        Practice Question
+                      </span>
+                    </div>
+                    
+                    <div className="text-gray-800 mb-4">
+                      <MathMarkdown content={message.embeddedQuestion.text} />
+                    </div>
+                    
+                    {!isQuestionAnswered ? (
+                      <>
+                        <div className="space-y-2 mb-4">
+                          {message.embeddedQuestion.options.map((option) => (
+                            <button
+                              key={option.label}
+                              onClick={() => setSelectedAnswers(prev => new Map(prev).set(message.id, option.label))}
+                              disabled={isLoading}
+                              className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
+                                selectedAnswer === option.label
+                                  ? 'border-blue-500 bg-blue-100'
+                                  : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                              } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            >
+                              <div className="flex items-start">
+                                <span className="font-medium mr-2 flex-shrink-0">{option.label})</span>
+                                <div className="flex-1">
+                                  <MathMarkdown content={option.text} />
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                        
+                        <button
+                          onClick={() => selectedAnswer && handleAnswerSubmit(message.id, message.embeddedQuestion!, selectedAnswer)}
+                          disabled={!selectedAnswer || isLoading}
+                          className={`w-full py-2.5 rounded-lg font-medium transition-colors ${
+                            selectedAnswer && !isLoading
+                              ? 'bg-blue-600 text-white hover:bg-blue-700'
+                              : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                          }`}
+                        >
+                          {isLoading ? 'Checking...' : 'Submit Answer'}
+                        </button>
+                      </>
+                    ) : (
+                      <div className="text-sm text-gray-600 italic">
+                        Question answered ✓
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-            
-            <button
-              onClick={handleAnswerSubmit}
-              disabled={!selectedAnswer || isLoading}
-              className={`w-full py-2.5 rounded-lg font-medium transition-colors ${
-                selectedAnswer && !isLoading
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              {isLoading ? 'Checking...' : 'Submit Answer'}
-            </button>
-          </div>
-        )}
+          );
+        })}
 
         {/* Loading indicator */}
         {isLoading && (
@@ -196,13 +320,13 @@ export const GuidedChatInterface = ({
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200">
+      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 flex-shrink-0">
         <div className="flex space-x-3">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder={activeQuestion ? "Answer the question above, or type a message..." : "Ask a question or type your response..."}
+            placeholder="Ask a question or type your response..."
             disabled={isLoading || disabled}
             className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
           />

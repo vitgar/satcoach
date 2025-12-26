@@ -96,6 +96,14 @@ export interface GraphPolygonConfig {
   height?: number;
 }
 
+// Annotation for highlighting specific points on graphs (e.g., y-intercept)
+export interface GraphPointAnnotation {
+  x: number;
+  y: number;
+  label?: string;
+  color?: string;
+}
+
 export interface GraphData {
   type: GraphType;
   data?: Array<Record<string, number | string>>;
@@ -110,8 +118,11 @@ export interface GraphData {
     showGrid?: boolean;
     showLegend?: boolean;
     dataKeys?: string[]; // For multiple data series
+    xKey?: string; // For scatter plots: key to use for x-axis (default: 'x')
+    yKey?: string; // For scatter plots: key to use for y-axis (default: 'y')
     rectangleConfig?: GraphRectangleConfig;
     polygonConfig?: GraphPolygonConfig;
+    annotations?: GraphPointAnnotation[]; // For highlighting specific points (e.g., y-intercept)
   };
 }
 

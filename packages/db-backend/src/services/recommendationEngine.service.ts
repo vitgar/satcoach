@@ -64,58 +64,126 @@ const WEIGHTS = {
 };
 
 // Default topics for new students with no practice history
-// These are ordered by recommended learning sequence for SAT prep
+// Comprehensive SAT topics organized by College Board domains
+
+// ============================================
+// HEART OF ALGEBRA (Linear equations focus)
+// ============================================
+const HEART_OF_ALGEBRA_TOPICS = [
+  { topic: 'Linear Equations', description: 'Solving one-variable equations', priority: 1 },
+  { topic: 'Linear Inequalities', description: 'Solving and graphing inequalities', priority: 2 },
+  { topic: 'Systems of Linear Equations', description: 'Solving systems algebraically', priority: 3 },
+  { topic: 'Graphing Linear Equations', description: 'Slope-intercept and point-slope forms', priority: 4 },
+  { topic: 'Linear Functions', description: 'Function notation and interpretation', priority: 5 },
+  { topic: 'Absolute Value Equations', description: 'Equations with absolute values', priority: 6 },
+];
+
+// ============================================
+// PROBLEM SOLVING AND DATA ANALYSIS
+// ============================================
+const DATA_ANALYSIS_TOPICS = [
+  { topic: 'Ratios and Proportions', description: 'Setting up and solving ratios', priority: 7 },
+  { topic: 'Rates', description: 'Unit rates and rate problems', priority: 8 },
+  { topic: 'Percentages', description: 'Percent increase, decrease, and applications', priority: 9 },
+  { topic: 'Unit Conversions', description: 'Converting between units', priority: 10 },
+  { topic: 'Statistics - Mean, Median, Mode', description: 'Measures of central tendency', priority: 11 },
+  { topic: 'Statistics - Standard Deviation', description: 'Measures of spread', priority: 12 },
+  { topic: 'Data Interpretation - Tables', description: 'Reading and analyzing tables', priority: 13 },
+  { topic: 'Data Interpretation - Graphs', description: 'Bar, line, and pie charts', priority: 14 },
+  { topic: 'Scatterplots and Line of Best Fit', description: 'Correlation and trend analysis', priority: 15 },
+  { topic: 'Probability', description: 'Basic and conditional probability', priority: 16 },
+  { topic: 'Exponential Growth and Decay', description: 'Modeling real-world growth patterns', priority: 17 },
+];
+
+// ============================================
+// PASSPORT TO ADVANCED MATH
+// ============================================
+const ADVANCED_MATH_TOPICS = [
+  { topic: 'Quadratic Functions', description: 'Parabolas, vertex, and roots', priority: 18 },
+  { topic: 'Quadratic Equations', description: 'Solving by factoring, formula, completing square', priority: 19 },
+  { topic: 'Polynomial Operations', description: 'Adding, subtracting, multiplying polynomials', priority: 20 },
+  { topic: 'Factoring Polynomials', description: 'GCF, difference of squares, trinomials', priority: 21 },
+  { topic: 'Rational Expressions', description: 'Simplifying and operations with fractions', priority: 22 },
+  { topic: 'Rational Equations', description: 'Solving equations with fractions', priority: 23 },
+  { topic: 'Radicals and Rational Exponents', description: 'Simplifying and operations with roots', priority: 24 },
+  { topic: 'Exponential Functions', description: 'Exponential equations and graphs', priority: 25 },
+  { topic: 'Function Notation', description: 'Evaluating and interpreting functions', priority: 26 },
+  { topic: 'Function Transformations', description: 'Shifts, reflections, and stretches', priority: 27 },
+  { topic: 'Combining Functions', description: 'Adding, composing, and inverting functions', priority: 28 },
+];
+
+// ============================================
+// ADDITIONAL TOPICS IN MATH
+// ============================================
+const ADDITIONAL_MATH_TOPICS = [
+  { topic: 'Geometry - Angles', description: 'Complementary, supplementary, vertical angles', priority: 29 },
+  { topic: 'Geometry - Triangles', description: 'Properties, similarity, and congruence', priority: 30 },
+  { topic: 'Geometry - Right Triangles', description: 'Pythagorean theorem applications', priority: 31 },
+  { topic: 'Geometry - Circles', description: 'Area, circumference, arcs, and sectors', priority: 32 },
+  { topic: 'Geometry - Area and Perimeter', description: 'Calculating for various shapes', priority: 33 },
+  { topic: 'Geometry - Volume', description: '3D shapes: prisms, cylinders, spheres', priority: 34 },
+  { topic: 'Coordinate Geometry', description: 'Distance, midpoint, and slope', priority: 35 },
+  { topic: 'Complex Numbers', description: 'Operations with imaginary numbers', priority: 36 },
+  { topic: 'Trigonometry - Sine, Cosine, Tangent', description: 'Right triangle trig ratios', priority: 37 },
+  { topic: 'Trigonometry - Unit Circle', description: 'Radians and the unit circle', priority: 38 },
+  { topic: 'Trigonometry - Applications', description: 'Real-world trig problems', priority: 39 },
+];
+
+// Combine all Math topics
+const ALL_MATH_TOPICS = [
+  ...HEART_OF_ALGEBRA_TOPICS,
+  ...DATA_ANALYSIS_TOPICS,
+  ...ADVANCED_MATH_TOPICS,
+  ...ADDITIONAL_MATH_TOPICS,
+];
+
+// ============================================
+// READING TOPICS
+// ============================================
+const READING_TOPICS = [
+  { topic: 'Main Idea and Central Themes', description: 'Identifying the central argument', priority: 1 },
+  { topic: 'Evidence-Based Reading', description: 'Finding textual support for answers', priority: 2 },
+  { topic: 'Inference and Implicit Meaning', description: 'Drawing conclusions from text', priority: 3 },
+  { topic: 'Vocabulary in Context', description: 'Understanding word meanings in passages', priority: 4 },
+  { topic: "Author's Purpose and Tone", description: 'Analyzing intent and attitude', priority: 5 },
+  { topic: 'Passage Structure and Organization', description: 'Understanding how arguments develop', priority: 6 },
+  { topic: 'Analyzing Arguments', description: 'Evaluating claims and reasoning', priority: 7 },
+  { topic: 'Paired Passages', description: 'Comparing and contrasting viewpoints', priority: 8 },
+  { topic: 'Data and Graphics in Reading', description: 'Interpreting charts within passages', priority: 9 },
+  { topic: 'Literary Analysis', description: 'Analyzing narrative techniques', priority: 10 },
+  { topic: 'Historical Documents', description: 'Founding documents and great speeches', priority: 11 },
+  { topic: 'Science Passages', description: 'Reading scientific texts and studies', priority: 12 },
+];
+
+// ============================================
+// WRITING AND LANGUAGE TOPICS
+// ============================================
+const WRITING_TOPICS = [
+  { topic: 'Subject-Verb Agreement', description: 'Ensuring subjects and verbs match', priority: 1 },
+  { topic: 'Pronoun Agreement and Clarity', description: 'Clear and correct pronoun usage', priority: 2 },
+  { topic: 'Verb Tense and Mood', description: 'Consistent and correct tense usage', priority: 3 },
+  { topic: 'Punctuation - Commas', description: 'Comma rules and applications', priority: 4 },
+  { topic: 'Punctuation - Semicolons and Colons', description: 'Advanced punctuation usage', priority: 5 },
+  { topic: 'Punctuation - Apostrophes', description: 'Possessives and contractions', priority: 6 },
+  { topic: 'Sentence Structure', description: 'Complete sentences and fragments', priority: 7 },
+  { topic: 'Parallel Structure', description: 'Maintaining consistent form in lists', priority: 8 },
+  { topic: 'Modifier Placement', description: 'Avoiding dangling and misplaced modifiers', priority: 9 },
+  { topic: 'Transitions and Logical Flow', description: 'Connecting ideas smoothly', priority: 10 },
+  { topic: 'Conciseness and Wordiness', description: 'Eliminating redundancy', priority: 11 },
+  { topic: 'Word Choice and Precision', description: 'Selecting the most effective words', priority: 12 },
+  { topic: 'Sentence Combining', description: 'Merging sentences effectively', priority: 13 },
+  { topic: 'Organization and Development', description: 'Logical ordering of ideas', priority: 14 },
+  { topic: 'Effective Language Use', description: 'Style and tone consistency', priority: 15 },
+];
+
+// Build the DEFAULT_TOPICS object
 const DEFAULT_TOPICS: Record<string, { topic: string; description: string; priority: number }[]> = {
-  Math: [
-    { topic: 'Linear Equations', description: 'Foundation of algebraic thinking', priority: 1 },
-    { topic: 'Ratios and Proportions', description: 'Essential for problem-solving', priority: 2 },
-    { topic: 'Percentages', description: 'Common in word problems', priority: 3 },
-    { topic: 'Quadratic Functions', description: 'Core algebra concept', priority: 4 },
-    { topic: 'Systems of Equations', description: 'Multi-step problem solving', priority: 5 },
-    { topic: 'Data Analysis', description: 'Interpreting charts and graphs', priority: 6 },
-    { topic: 'Geometry Basics', description: 'Angles, triangles, and circles', priority: 7 },
-  ],
-  math: [
-    { topic: 'Linear Equations', description: 'Foundation of algebraic thinking', priority: 1 },
-    { topic: 'Ratios and Proportions', description: 'Essential for problem-solving', priority: 2 },
-    { topic: 'Percentages', description: 'Common in word problems', priority: 3 },
-    { topic: 'Quadratic Functions', description: 'Core algebra concept', priority: 4 },
-    { topic: 'Systems of Equations', description: 'Multi-step problem solving', priority: 5 },
-    { topic: 'Data Analysis', description: 'Interpreting charts and graphs', priority: 6 },
-    { topic: 'Geometry Basics', description: 'Angles, triangles, and circles', priority: 7 },
-  ],
-  Reading: [
-    { topic: 'Main Idea', description: 'Identifying central themes', priority: 1 },
-    { topic: 'Evidence-Based Reading', description: 'Finding textual support', priority: 2 },
-    { topic: 'Inference', description: 'Drawing conclusions from text', priority: 3 },
-    { topic: 'Vocabulary in Context', description: 'Understanding word meanings', priority: 4 },
-    { topic: 'Author\'s Purpose', description: 'Analyzing intent and tone', priority: 5 },
-    { topic: 'Passage Structure', description: 'Understanding organization', priority: 6 },
-  ],
-  reading: [
-    { topic: 'Main Idea', description: 'Identifying central themes', priority: 1 },
-    { topic: 'Evidence-Based Reading', description: 'Finding textual support', priority: 2 },
-    { topic: 'Inference', description: 'Drawing conclusions from text', priority: 3 },
-    { topic: 'Vocabulary in Context', description: 'Understanding word meanings', priority: 4 },
-    { topic: 'Author\'s Purpose', description: 'Analyzing intent and tone', priority: 5 },
-    { topic: 'Passage Structure', description: 'Understanding organization', priority: 6 },
-  ],
-  Writing: [
-    { topic: 'Subject-Verb Agreement', description: 'Grammar fundamentals', priority: 1 },
-    { topic: 'Punctuation', description: 'Commas, semicolons, and more', priority: 2 },
-    { topic: 'Sentence Structure', description: 'Building clear sentences', priority: 3 },
-    { topic: 'Transitions', description: 'Connecting ideas smoothly', priority: 4 },
-    { topic: 'Pronoun Usage', description: 'Agreement and clarity', priority: 5 },
-    { topic: 'Conciseness', description: 'Eliminating redundancy', priority: 6 },
-  ],
-  writing: [
-    { topic: 'Subject-Verb Agreement', description: 'Grammar fundamentals', priority: 1 },
-    { topic: 'Punctuation', description: 'Commas, semicolons, and more', priority: 2 },
-    { topic: 'Sentence Structure', description: 'Building clear sentences', priority: 3 },
-    { topic: 'Transitions', description: 'Connecting ideas smoothly', priority: 4 },
-    { topic: 'Pronoun Usage', description: 'Agreement and clarity', priority: 5 },
-    { topic: 'Conciseness', description: 'Eliminating redundancy', priority: 6 },
-  ],
+  Math: ALL_MATH_TOPICS,
+  math: ALL_MATH_TOPICS,
+  Reading: READING_TOPICS,
+  reading: READING_TOPICS,
+  Writing: WRITING_TOPICS,
+  writing: WRITING_TOPICS,
 };
 
 export class RecommendationEngineService {
@@ -133,8 +201,26 @@ export class RecommendationEngineService {
     const weakAreas = await performanceAggregatorService.getWeakAreas(userId, subject, 10);
     const dueItems = await performanceAggregatorService.getSpacedRepetitionDue(userId, subject, 10);
 
-    // Get all available topics for this subject
-    const availableTopics = await this.getAvailableTopicsWithQuestions(subject);
+    // Get topics that have questions in the database
+    const topicsWithQuestions = await this.getAvailableTopicsWithQuestions(subject);
+    
+    // Get all default topics for this subject
+    const defaultTopics = DEFAULT_TOPICS[subject] || DEFAULT_TOPICS['math'] || [];
+    
+    // Create a map of topics with questions for quick lookup
+    const topicsWithQuestionsMap = new Map(
+      topicsWithQuestions.map(t => [t.topic, t])
+    );
+    
+    // Combine: Start with all default topics, merge in question counts where available
+    const allTopics = defaultTopics.map(defaultTopic => {
+      const topicWithQuestions = topicsWithQuestionsMap.get(defaultTopic.topic);
+      return {
+        topic: defaultTopic.topic,
+        questionCount: topicWithQuestions?.questionCount || 0,
+        difficulties: topicWithQuestions?.difficulties || [],
+      };
+    });
 
     // Get user communication profile for personalization
     const user = await User.findById(userId);
@@ -143,7 +229,7 @@ export class RecommendationEngineService {
     // Score each topic
     const scoredTopics: TopicRecommendation[] = [];
 
-    for (const topicInfo of availableTopics) {
+    for (const topicInfo of allTopics) {
       if (excludeTopics?.includes(topicInfo.topic)) continue;
 
       const topicMastery = performance.topicMasteries.find(tm => tm.topic === topicInfo.topic);
@@ -166,12 +252,7 @@ export class RecommendationEngineService {
 
     // Sort by score (descending) and limit
     scoredTopics.sort((a, b) => b.score - a.score);
-    let recommendations = scoredTopics.slice(0, limit);
-
-    // If no recommendations from question database, provide default topics
-    if (recommendations.length === 0) {
-      recommendations = this.getDefaultRecommendations(subject, limit);
-    }
+    const recommendations = scoredTopics.slice(0, limit);
 
     // Generate summary
     const summary = this.generateSummary(recommendations, performance, weakAreas.length, dueItems.length);

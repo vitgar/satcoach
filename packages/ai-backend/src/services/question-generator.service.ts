@@ -38,18 +38,25 @@ export interface GeneratedQuestion {
   tags: string[];
 }
 
+export interface GenerationOptions {
+  topic?: string;
+  includeGraph?: boolean; // Only applicable for math
+}
+
 export class QuestionGeneratorService {
   /**
    * Generate a new SAT question using function calling for guaranteed structure
+   * @param includeGraph - If true (and subject is math), force graph data to be included
    */
   async generateQuestion(
     subject: Subject,
     difficulty: Difficulty,
-    topic?: string
+    topic?: string,
+    includeGraph?: boolean
   ): Promise<GeneratedQuestion> {
     const difficultyScore = this.mapDifficultyToScore(difficulty);
     
-    const userPrompt = this.buildQuestionPrompt(subject, difficulty, difficultyScore, topic);
+    const userPrompt = this.buildQuestionPrompt(subject, difficulty, difficultyScore, topic, includeGraph);
     
     const messages: ChatMessage[] = [
       { role: 'system', content: QUESTION_GENERATION_PROMPT },
@@ -58,7 +65,8 @@ export class QuestionGeneratorService {
 
     try {
       // Use function calling with JSON schema enforcement
-      const functionSchema = this.getQuestionSchema(subject);
+      // Pass includeGraph to schema builder for math questions
+      const functionSchema = this.getQuestionSchema(subject, includeGraph);
       
       const response = await openaiService.generateStructuredData(
         {
@@ -79,7 +87,7 @@ export class QuestionGeneratorService {
           options: response.options,
           correctAnswer: response.correctAnswer,
           explanation: response.explanation,
-          graph: response.graph, // Now guaranteed to be present for function questions
+          graph: response.graph, // Present if includeGraph was true
         },
         tags: response.tags || [],
       };
@@ -91,28 +99,32 @@ export class QuestionGeneratorService {
 
   /**
    * Generate multiple questions in batch
+   * @param includeGraph - If true (and subject is math), force graph data in all questions
    */
   async generateQuestions(
     subject: Subject,
     difficulty: Difficulty,
     count: number,
-    topic?: string
+    topic?: string,
+    includeGraph?: boolean
   ): Promise<GeneratedQuestion[]> {
     const promises = Array(count)
       .fill(null)
-      .map(() => this.generateQuestion(subject, difficulty, topic));
+      .map(() => this.generateQuestion(subject, difficulty, topic, includeGraph));
 
     return Promise.all(promises);
   }
 
   /**
    * Build the prompt for question generation
+   * @param includeGraph - If true, explicitly require graph data in the question
    */
   private buildQuestionPrompt(
     subject: Subject,
     difficulty: Difficulty,
     difficultyScore: number,
-    topic?: string
+    topic?: string,
+    includeGraph?: boolean
   ): string {
     let prompt = `Generate a ${difficulty} difficulty ${subject} SAT question`;
     
@@ -122,39 +134,61 @@ export class QuestionGeneratorService {
     
     prompt += `.\n\nDifficulty Score: ${difficultyScore}/10\n\n`;
     
-    prompt += `Return the question in this exact JSON format:
+    // Build JSON format example based on graph requirement
+    if (subject === 'math' && includeGraph) {
+      prompt += `Return the question in this exact JSON format:
 {
-  "questionText": "The question text here...",
+  "questionText": "The question text here (must reference the graph/chart)...",
   "options": ["Option A", "Option B", "Option C", "Option D"],
   "correctAnswer": "A",
   "explanation": "Step-by-step explanation of why A is correct...",
   "tags": ["tag1", "tag2", "tag3"],
   "graph": {
     "type": "line",
-    "data": [{"x": -3, "y": 9}, ...],
-    "config": {"xLabel": "x", "yLabel": "y", "title": "Graph Title"}
+    "data": [{"x": -3, "y": 9}, {"x": -2, "y": 4}, {"x": -1, "y": 1}, {"x": 0, "y": 0}, {"x": 1, "y": 1}, {"x": 2, "y": 4}, {"x": 3, "y": 9}],
+    "config": {"xLabel": "x", "yLabel": "y", "title": "Graph of f(x)"}
   }
+}
+
+CRITICAL REQUIREMENTS:
+- correctAnswer must be ONLY the letter (A, B, C, or D)
+- options must be an array of exactly 4 strings
+- tags should be 2-3 relevant topic keywords
+- ⚠️ graph is REQUIRED - This question MUST include visual graph/chart data
+- The question text MUST reference the graph (e.g., "According to the graph shown...", "Based on the function graphed above...")
+- Include 7-10 accurate data points that correspond to the mathematical function
+- Graph types: line (for functions), bar (for data comparison), scatter (for correlations), area (for cumulative data)
+- Make the question authentic to the official SAT format`;
+    } else {
+      prompt += `Return the question in this exact JSON format:
+{
+  "questionText": "The question text here...",
+  "options": ["Option A", "Option B", "Option C", "Option D"],
+  "correctAnswer": "A",
+  "explanation": "Step-by-step explanation of why A is correct...",
+  "tags": ["tag1", "tag2", "tag3"]
 }
 
 Important:
 - correctAnswer must be ONLY the letter (A, B, C, or D)
 - options must be an array of exactly 4 strings
 - tags should be 2-3 relevant topic keywords
-- ⚠️ TESTING: graph is REQUIRED for ALL function-related questions (quadratic, linear, exponential, etc.) - include 7-10 data points
 - Make the question authentic to the official SAT format`;
+    }
 
     return prompt;
   }
 
 
   /**
-   * Get JSON schema for function calling based on subject
+   * Get JSON schema for function calling based on subject and graph requirement
+   * @param includeGraph - If true (and subject is math), make graph field REQUIRED
    */
-  private getQuestionSchema(subject: Subject) {
-    // For math questions about functions, make graph REQUIRED
-    const isMathFunctionQuestion = subject === 'math';
+  private getQuestionSchema(subject: Subject, includeGraph?: boolean) {
+    // Graph is required only if explicitly requested for math questions
+    const requireGraph = subject === 'math' && includeGraph === true;
 
-    return {
+    const baseSchema = {
       name: 'generate_sat_question',
       description: 'Generate an SAT practice question with all required fields',
       parameters: {
@@ -189,7 +223,9 @@ Important:
           },
           graph: {
             type: 'object',
-            description: 'Graph data for visual representation (REQUIRED for math function questions)',
+            description: requireGraph 
+              ? 'Graph data for visual representation (REQUIRED - question must reference this graph)'
+              : 'Optional graph data for visual representation',
             properties: {
               type: {
                 type: 'string',
@@ -235,11 +271,13 @@ Important:
             required: ['type', 'data', 'config'],
           },
         },
-        required: isMathFunctionQuestion 
-          ? ['questionText', 'options', 'correctAnswer', 'explanation', 'tags', 'graph'] // GRAPH REQUIRED for math
-          : ['questionText', 'options', 'correctAnswer', 'explanation', 'tags'], // Optional for other subjects
+        required: requireGraph 
+          ? ['questionText', 'options', 'correctAnswer', 'explanation', 'tags', 'graph'] // GRAPH REQUIRED when requested
+          : ['questionText', 'options', 'correctAnswer', 'explanation', 'tags'], // Graph optional otherwise
       },
     };
+
+    return baseSchema;
   }
 
   /**

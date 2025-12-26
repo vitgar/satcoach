@@ -8,6 +8,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { StudyPage } from './pages/StudyPage';
 import { QuestionValidationPage } from './pages/QuestionValidationPage';
 import { GuidedReviewPage } from './pages/GuidedReviewPage';
+import { QuestionGenerationPage } from './pages/QuestionGenerationPage';
 import './styles/index.css';
 
 const queryClient = new QueryClient({
@@ -56,6 +57,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <GuidedReviewPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/question-generator"
+              element={
+                <ProtectedRoute>
+                  <QuestionGenerationPage />
                 </ProtectedRoute>
               }
             />

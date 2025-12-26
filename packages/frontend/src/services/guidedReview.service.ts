@@ -89,11 +89,31 @@ export interface EmbeddedQuestion {
   explanation: string;
 }
 
+export interface ChatResponseGraph {
+  type: 'line' | 'bar' | 'scatter' | 'pie' | 'area' | 'histogram' | 'polygon' | 'fraction-rectangle';
+  data?: Array<Record<string, number | string>>;
+  config?: {
+    title?: string;
+    xLabel?: string;
+    yLabel?: string;
+    xDomain?: [number, number];
+    yDomain?: [number, number];
+    showGrid?: boolean;
+    showLegend?: boolean;
+    dataKeys?: string[];
+    xKey?: string;
+    yKey?: string;
+    polygonConfig?: any;
+    rectangleConfig?: any;
+  };
+}
+
 export interface ChatResponse {
   response: string;
   embeddedQuestion: EmbeddedQuestion | null;
   conceptsCovered: string[];
   suggestedFollowUp: string | null;
+  graph?: ChatResponseGraph | null;
 }
 
 export interface SessionSummary {
@@ -104,7 +124,66 @@ export interface SessionSummary {
   overallProgress: string;
 }
 
+export interface SmartTopicResult {
+  topic: string;
+  subject: string;
+  reason: string;
+  selectionType: 'spaced_repetition' | 'new_topic' | 'continuation' | 'struggling_support' | 'bloom_progression';
+  focusAreas: string[];
+  bloomLevel: number;
+  estimatedDuration: number;
+  masteryLevel: number;
+  scoring: {
+    spacedRepetitionScore: number;
+    bloomScore: number;
+    flowScore: number;
+    continuityScore: number;
+    totalScore: number;
+  };
+  aiContext: {
+    isReturningStudent: boolean;
+    daysAway: number;
+    previousConceptsCovered: string[];
+    conceptsNeedingWork: string[];
+    recommendedApproach: string;
+    difficultyAdjustment: 'easier' | 'standard' | 'challenging';
+  };
+}
+
+export interface TopicListItem {
+  topic: string;
+  description: string;
+  masteryLevel: number;
+}
+
 class GuidedReviewService {
+  /**
+   * Get AI-selected optimal topic for a subject
+   * Uses spaced repetition, Bloom's taxonomy, Flow state, and learning continuity
+   */
+  async getSmartTopic(subject: string): Promise<SmartTopicResult> {
+    try {
+      const response = await dbApi.get(`/guided-sessions/smart-topic/${subject}`);
+      return response.data;
+    } catch (error: any) {
+      console.error('[GuidedReview] Error getting smart topic:', error);
+      throw new Error(error.response?.data?.error || 'Failed to select topic');
+    }
+  }
+
+  /**
+   * Get all topics for a subject (for override dropdown)
+   */
+  async getAllTopics(subject: string): Promise<TopicListItem[]> {
+    try {
+      const response = await dbApi.get(`/guided-sessions/all-topics/${subject}`);
+      return response.data.topics;
+    } catch (error: any) {
+      console.error('[GuidedReview] Error getting all topics:', error);
+      throw new Error(error.response?.data?.error || 'Failed to get topics');
+    }
+  }
+
   /**
    * Get topic recommendations for a subject
    */
@@ -185,6 +264,25 @@ class GuidedReviewService {
   }
 
   /**
+   * Add a message to session (for tracking purposes)
+   */
+  async addMessageToSession(
+    sessionId: string,
+    messageData: {
+      role: 'user' | 'assistant';
+      content: string;
+      conceptsCovered?: string[];
+    }
+  ): Promise<void> {
+    try {
+      await dbApi.put(`/guided-sessions/${sessionId}/message`, messageData);
+    } catch (error: any) {
+      console.error('[GuidedReview] Error adding message to session:', error);
+      // Don't throw - this is for tracking, shouldn't break the flow
+    }
+  }
+
+  /**
    * Send a chat message and get AI response
    */
   async sendMessage(
@@ -209,27 +307,64 @@ class GuidedReviewService {
         sessionContext,
       });
 
-      // Save message to session
+      const conceptsCovered = aiResponse.data.conceptsCovered || [];
+
+      // Save user message to session
       await dbApi.put(`/guided-sessions/${sessionId}/message`, {
         role: 'user',
         content: message,
       });
 
-      // Save AI response to session
+      // Save AI response to session WITH concepts covered for tracking
       await dbApi.put(`/guided-sessions/${sessionId}/message`, {
         role: 'assistant',
         content: aiResponse.data.response,
+        conceptsCovered, // Track which concepts were discussed in this response
       });
 
       return {
         response: aiResponse.data.response,
         embeddedQuestion: aiResponse.data.embeddedQuestion,
-        conceptsCovered: aiResponse.data.conceptsCovered || [],
+        conceptsCovered,
         suggestedFollowUp: aiResponse.data.suggestedFollowUp,
+        graph: aiResponse.data.graph || null,
       };
     } catch (error: any) {
       console.error('[GuidedReview] Error sending message:', error);
       throw new Error(error.response?.data?.error || 'Failed to send message');
+    }
+  }
+
+  /**
+   * Get previous session history for a specific topic
+   */
+  async getPreviousTopicSessions(subject: string, topic: string): Promise<{
+    hasHistory: boolean;
+    totalSessions: number;
+    lastSession?: {
+      date: string;
+      questionsAttempted: number;
+      questionsCorrect: number;
+      conceptsCovered: string[];
+    };
+    // Enhanced concept tracking
+    conceptsWithMastery?: Array<{
+      concept: string;
+      mastery: 'introduced' | 'practicing' | 'understood' | 'mastered';
+      lastCovered: string;
+      timesReviewed: number;
+    }>;
+    conceptsDueForReview?: string[];
+    recommendedStartingPoint?: string;
+  }> {
+    try {
+      const response = await dbApi.get(`/guided-sessions/topic-history`, {
+        params: { subject, topic },
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('[GuidedReview] Error getting topic history:', error);
+      return { hasHistory: false, totalSessions: 0 };
     }
   }
 
@@ -242,6 +377,32 @@ class GuidedReviewService {
     studentLevel: number;
     learningStyle?: string;
     masteryLevel?: number;
+    previousSessions?: {
+      hasHistory: boolean;
+      totalSessions: number;
+      lastSessionDate?: string;
+      lastSessionAccuracy?: number;
+      conceptsCovered?: string[];
+      conceptsWithMastery?: Array<{
+        concept: string;
+        mastery: 'introduced' | 'practicing' | 'understood' | 'mastered';
+        lastCovered: string;
+        timesReviewed: number;
+      }>;
+      conceptsDueForReview?: string[];
+      recommendedStartingPoint?: string;
+    };
+    // Enhanced context from intelligent topic selection
+    aiContext?: {
+      isReturningStudent: boolean;
+      daysAway: number;
+      previousConceptsCovered: string[];
+      conceptsNeedingWork: string[];
+      recommendedApproach: string;
+      difficultyAdjustment: 'easier' | 'standard' | 'challenging';
+    };
+    selectionReason?: string;
+    focusAreas?: string[];
   }): Promise<ChatResponse> {
     try {
       const response = await aiApi.post('/guided-review/start-topic', { sessionContext });
@@ -250,6 +411,7 @@ class GuidedReviewService {
         embeddedQuestion: response.data.embeddedQuestion,
         conceptsCovered: response.data.conceptsCovered || [],
         suggestedFollowUp: response.data.suggestedFollowUp,
+        graph: response.data.graph || null,
       };
     } catch (error: any) {
       console.error('[GuidedReview] Error starting topic:', error);
@@ -303,6 +465,7 @@ class GuidedReviewService {
           embeddedQuestion: response.data.embeddedQuestion,
           conceptsCovered: response.data.conceptsCovered || [],
           suggestedFollowUp: response.data.suggestedFollowUp,
+          graph: response.data.graph || null,
         },
         isCorrect,
       };

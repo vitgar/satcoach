@@ -4,6 +4,18 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 
+// Configure remark-math to handle single dollar signs for inline math
+const remarkMathOptions = {
+  singleDollarTextMath: true,
+};
+
+// Configure KaTeX to handle errors gracefully
+const rehypeKatexOptions = {
+  throwOnError: false,
+  errorColor: '#cc0000',
+  strict: false,
+};
+
 interface MathMarkdownProps {
   content: string;
   className?: string;
@@ -58,8 +70,8 @@ export const MathMarkdown: React.FC<MathMarkdownProps> = ({ content, className =
   return (
     <div className={`math-markdown ${className}`}>
       <ReactMarkdown
-        remarkPlugins={[remarkMath]}
-        rehypePlugins={[rehypeKatex]}
+        remarkPlugins={[[remarkMath, remarkMathOptions]]}
+        rehypePlugins={[[rehypeKatex, rehypeKatexOptions]]}
         components={{
           // Paragraph styling
           p: ({ children }) => (

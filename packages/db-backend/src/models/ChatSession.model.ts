@@ -214,3 +214,4 @@ ChatSessionSchema.methods.getDominantLearningStyle = function (): LearningStyle 
 
 export const ChatSession = mongoose.model<IChatSession>('ChatSession', ChatSessionSchema);
 
+

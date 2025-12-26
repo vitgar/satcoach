@@ -29,11 +29,32 @@ router.get('/active', (req, res) => guidedSessionController.getActiveSession(req
 router.get('/recommendations/:subject', (req, res) => guidedSessionController.getRecommendations(req, res));
 
 /**
+ * @route GET /api/v1/guided-sessions/topic-history
+ * @desc Get previous session history for a specific topic
+ * @access Private
+ */
+router.get('/topic-history', (req, res) => guidedSessionController.getTopicHistory(req, res));
+
+/**
  * @route GET /api/v1/guided-sessions/performance/:subject
  * @desc Get performance summary for a subject
  * @access Private
  */
 router.get('/performance/:subject', (req, res) => guidedSessionController.getPerformanceSummary(req, res));
+
+/**
+ * @route GET /api/v1/guided-sessions/smart-topic/:subject
+ * @desc Get AI-selected optimal topic for a subject
+ * @access Private
+ */
+router.get('/smart-topic/:subject', (req, res) => guidedSessionController.getSmartTopic(req, res));
+
+/**
+ * @route GET /api/v1/guided-sessions/all-topics/:subject
+ * @desc Get all available topics for a subject (for override dropdown)
+ * @access Private
+ */
+router.get('/all-topics/:subject', (req, res) => guidedSessionController.getAllTopics(req, res));
 
 /**
  * @route GET /api/v1/guided-sessions/user/:userId/history

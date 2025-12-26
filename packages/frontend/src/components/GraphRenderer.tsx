@@ -17,6 +17,9 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceDot,
+  ReferenceLine,
+  Label,
 } from 'recharts';
 import { GraphData, GraphAngleLabel, GraphSideLabel } from '../types';
 import {
@@ -48,6 +51,41 @@ const CustomTooltip = ({ active, payload, label }: any) => {
             {entry.name}: <span className="font-semibold">{entry.value}</span>
           </p>
         ))}
+      </div>
+    );
+  }
+  return null;
+};
+
+// Custom tooltip for scatter plots to show all data fields
+const ScatterTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0]?.payload;
+    if (!data) return null;
+    
+    // Extract all fields except x and y (which are transformed)
+    const displayFields = Object.entries(data)
+      .filter(([key]) => key !== 'x' && key !== 'y')
+      .map(([key, value]) => ({ key, value }));
+    
+    return (
+      <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-3">
+        {displayFields.map((field, index) => (
+          <p key={index} className="text-sm text-gray-700">
+            <span className="font-semibold capitalize">{field.key}:</span>{' '}
+            <span>{String(field.value)}</span>
+          </p>
+        ))}
+        {payload[0] && (
+          <>
+            <p className="text-sm text-gray-700 mt-1">
+              <span className="font-semibold">X:</span> <span>{payload[0].value}</span>
+            </p>
+            <p className="text-sm text-gray-700">
+              <span className="font-semibold">Y:</span> <span>{payload[0].payload.y}</span>
+            </p>
+          </>
+        )}
       </div>
     );
   }
@@ -91,13 +129,41 @@ export const GraphRenderer: React.FC<GraphRendererProps> = ({ graphData, classNa
         case 'line': {
           // Line chart for functions and trends
           const baseKeys = chartData[0] ? Object.keys(chartData[0]) : [];
-          const keys = dataKeys.length > 0 ? dataKeys : baseKeys.filter(k => k !== 'x' && k !== 'name');
+          
+          // Auto-detect x-axis key (use config.xKey if specified)
+          let xAxisKey = config.xKey || 'x';
+          if (!config.xKey && !baseKeys.includes('x')) {
+            // Look for common x-axis keys
+            if (baseKeys.includes('week')) xAxisKey = 'week';
+            else if (baseKeys.includes('month')) xAxisKey = 'month';
+            else if (baseKeys.includes('year')) xAxisKey = 'year';
+            else if (baseKeys.includes('day')) xAxisKey = 'day';
+            else if (baseKeys.includes('date')) xAxisKey = 'date';
+            else if (baseKeys.includes('time')) xAxisKey = 'time';
+            else if (baseKeys.includes('period')) xAxisKey = 'period';
+            else if (baseKeys.includes('index')) xAxisKey = 'index';
+            else {
+              // Find first key that's not in dataKeys and not 'name'
+              const yKeys = new Set(dataKeys);
+              const potentialXKey = baseKeys.find(k => 
+                k !== 'name' && k !== 'label' && !yKeys.has(k)
+              );
+              if (potentialXKey) xAxisKey = potentialXKey;
+            }
+          }
+          
+          const keys = dataKeys.length > 0 ? dataKeys : baseKeys.filter(k => k !== xAxisKey && k !== 'name');
+          
+          // Determine if domain includes origin (for mathematical graphs)
+          const xDomainIncludesZero = xDomain && xDomain[0] <= 0 && xDomain[1] >= 0;
+          const yDomainIncludesZero = yDomain && yDomain[0] <= 0 && yDomain[1] >= 0;
+          const showOriginAxes = xDomainIncludesZero && yDomainIncludesZero;
           
           return (
             <LineChart data={chartData} margin={commonMargin}>
               {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />}
               <XAxis
-                dataKey="x"
+                dataKey={xAxisKey}
                 label={xLabel ? { value: xLabel, position: 'insideBottom', offset: -5 } : undefined}
                 domain={xDomain}
                 type="number"
@@ -108,6 +174,13 @@ export const GraphRenderer: React.FC<GraphRendererProps> = ({ graphData, classNa
                 domain={yDomain}
                 stroke="#666"
               />
+              {/* Draw bold axes at origin (0, 0) for mathematical clarity */}
+              {showOriginAxes && (
+                <>
+                  <ReferenceLine x={0} stroke="#333" strokeWidth={2} />
+                  <ReferenceLine y={0} stroke="#333" strokeWidth={2} />
+                </>
+              )}
               <Tooltip content={<CustomTooltip />} />
               {showLegend && <Legend />}
               {keys.map((key, index) => (
@@ -120,6 +193,29 @@ export const GraphRenderer: React.FC<GraphRendererProps> = ({ graphData, classNa
                   dot={{ r: 3 }}
                   activeDot={{ r: 5 }}
                 />
+              ))}
+              {/* Render annotations (e.g., y-intercept points) */}
+              {config.annotations?.map((annotation, idx) => (
+                <ReferenceDot
+                  key={`annotation-${idx}`}
+                  x={annotation.x}
+                  y={annotation.y}
+                  r={6}
+                  fill={annotation.color || '#ef4444'}
+                  stroke="#fff"
+                  strokeWidth={2}
+                >
+                  {annotation.label && (
+                    <Label
+                      value={annotation.label}
+                      position="top"
+                      offset={10}
+                      fill={annotation.color || '#ef4444'}
+                      fontSize={12}
+                      fontWeight="bold"
+                    />
+                  )}
+                </ReferenceDot>
               ))}
             </LineChart>
           );
@@ -156,8 +252,119 @@ export const GraphRenderer: React.FC<GraphRendererProps> = ({ graphData, classNa
           );
         }
 
+        case 'histogram': {
+          // Histogram for frequency distributions
+          // Auto-detect keys: look for bin/range/category and count/frequency/value
+          const firstItem = chartData[0] || {};
+          const allKeys = Object.keys(firstItem);
+          
+          // Detect x-axis key (bin/range label)
+          let binKey = 'bin';
+          if (allKeys.includes('bin')) binKey = 'bin';
+          else if (allKeys.includes('range')) binKey = 'range';
+          else if (allKeys.includes('category')) binKey = 'category';
+          else if (allKeys.includes('label')) binKey = 'label';
+          else if (allKeys.includes('name')) binKey = 'name';
+          else if (allKeys.length > 0) binKey = allKeys[0];
+          
+          // Detect y-axis key (frequency/count)
+          let countKey = 'count';
+          if (allKeys.includes('count')) countKey = 'count';
+          else if (allKeys.includes('frequency')) countKey = 'frequency';
+          else if (allKeys.includes('value')) countKey = 'value';
+          else {
+            // Find first numeric key that's not the bin key
+            const numericKey = allKeys.find(k => 
+              k !== binKey && typeof firstItem[k] === 'number'
+            );
+            if (numericKey) countKey = numericKey;
+          }
+          
+          return (
+            <BarChart 
+              data={chartData} 
+              margin={commonMargin}
+              barCategoryGap={0} // No gap between bars for histogram
+            >
+              {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />}
+              <XAxis
+                dataKey={binKey}
+                label={xLabel ? { value: xLabel, position: 'insideBottom', offset: -5 } : undefined}
+                stroke="#666"
+              />
+              <YAxis
+                label={yLabel ? { value: yLabel, angle: -90, position: 'insideLeft' } : undefined}
+                domain={yDomain}
+                stroke="#666"
+              />
+              <Tooltip content={<CustomTooltip />} />
+              {showLegend && <Legend />}
+              <Bar
+                dataKey={countKey}
+                fill={COLORS[0]}
+                stroke={COLORS[0]}
+                strokeWidth={1}
+              />
+            </BarChart>
+          );
+        }
+
         case 'scatter': {
           // Scatter plot for correlation and relationships
+          // Transform data to use x/y keys if custom keys are specified
+          let xKey = config.xKey || 'x';
+          let yKey = config.yKey || 'y';
+          
+          // Auto-detect keys if not specified and data doesn't have x/y
+          if (!config.xKey && !config.yKey && chartData.length > 0) {
+            const firstItem = chartData[0];
+            if (!('x' in firstItem) || !('y' in firstItem)) {
+              // Try to infer from common field names
+              const keys = Object.keys(firstItem).filter(k => 
+                k !== 'name' && k !== 'label' && k !== 'student' && k !== 'id'
+              );
+              
+              // Common patterns: hours/score, xValue/yValue, x/y, etc.
+              if (keys.includes('hours') && keys.includes('score')) {
+                xKey = 'hours';
+                yKey = 'score';
+              } else if (keys.includes('xValue') && keys.includes('yValue')) {
+                xKey = 'xValue';
+                yKey = 'yValue';
+              } else if (keys.length >= 2) {
+                // Use first two numeric keys
+                const numericKeys = keys.filter(k => 
+                  typeof firstItem[k] === 'number' || !isNaN(Number(firstItem[k]))
+                );
+                if (numericKeys.length >= 2) {
+                  xKey = numericKeys[0];
+                  yKey = numericKeys[1];
+                }
+              }
+            }
+          }
+          
+          // Transform data: if data doesn't already have x/y, map from xKey/yKey
+          const transformedData = chartData.map((item) => {
+            // If data already has x and y, use as-is
+            if ('x' in item && 'y' in item && typeof item.x === 'number' && typeof item.y === 'number') {
+              return item;
+            }
+            // Otherwise, transform from specified keys
+            const xValue = item[xKey];
+            const yValue = item[yKey];
+            
+            if (xValue === undefined || yValue === undefined) {
+              console.warn(`Scatter plot: Missing keys ${xKey} or ${yKey} in data item`, item);
+            }
+            
+            return {
+              ...item,
+              x: typeof xValue === 'number' ? xValue : Number(xValue),
+              y: typeof yValue === 'number' ? yValue : Number(yValue),
+            };
+          });
+
           return (
             <ScatterChart margin={commonMargin}>
               {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />}
@@ -175,11 +382,11 @@ export const GraphRenderer: React.FC<GraphRendererProps> = ({ graphData, classNa
                 domain={yDomain}
                 stroke="#666"
               />
-              <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
+              <Tooltip content={<ScatterTooltip />} cursor={{ strokeDasharray: '3 3' }} />
               {showLegend && <Legend />}
-            <Scatter
+              <Scatter
                 name="Data Points"
-                data={chartData}
+                data={transformedData}
                 fill={COLORS[0]}
               />
             </ScatterChart>
@@ -188,13 +395,37 @@ export const GraphRenderer: React.FC<GraphRendererProps> = ({ graphData, classNa
 
         case 'area': {
           // Area chart for cumulative data
-          const keys = dataKeys.length > 0 ? dataKeys : Object.keys(chartData[0]).filter(k => k !== 'x' && k !== 'name');
+          const areaBaseKeys = chartData[0] ? Object.keys(chartData[0]) : [];
+          
+          // Auto-detect x-axis key (use config.xKey if specified)
+          let areaXAxisKey = config.xKey || 'x';
+          if (!config.xKey && !areaBaseKeys.includes('x')) {
+            // Look for common x-axis keys
+            if (areaBaseKeys.includes('week')) areaXAxisKey = 'week';
+            else if (areaBaseKeys.includes('month')) areaXAxisKey = 'month';
+            else if (areaBaseKeys.includes('year')) areaXAxisKey = 'year';
+            else if (areaBaseKeys.includes('day')) areaXAxisKey = 'day';
+            else if (areaBaseKeys.includes('date')) areaXAxisKey = 'date';
+            else if (areaBaseKeys.includes('time')) areaXAxisKey = 'time';
+            else if (areaBaseKeys.includes('period')) areaXAxisKey = 'period';
+            else if (areaBaseKeys.includes('index')) areaXAxisKey = 'index';
+            else {
+              // Find first key that's not in dataKeys and not 'name'
+              const yKeys = new Set(dataKeys);
+              const potentialXKey = areaBaseKeys.find(k => 
+                k !== 'name' && k !== 'label' && !yKeys.has(k)
+              );
+              if (potentialXKey) areaXAxisKey = potentialXKey;
+            }
+          }
+          
+          const keys = dataKeys.length > 0 ? dataKeys : areaBaseKeys.filter(k => k !== areaXAxisKey && k !== 'name');
           
           return (
             <AreaChart data={chartData} margin={commonMargin}>
               {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />}
               <XAxis
-                dataKey="x"
+                dataKey={areaXAxisKey}
                 label={xLabel ? { value: xLabel, position: 'insideBottom', offset: -5 } : undefined}
                 domain={xDomain}
                 stroke="#666"
