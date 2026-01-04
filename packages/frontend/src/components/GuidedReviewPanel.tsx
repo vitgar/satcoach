@@ -61,7 +61,7 @@ export const GuidedReviewPanel = () => {
   }, [preparationComplete, smartTopicResult, selectedSubject]);
 
   // Debounced auto-save (every 30 seconds)
-  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const autoSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastSaveRef = useRef<number>(0);
 
   useEffect(() => {
