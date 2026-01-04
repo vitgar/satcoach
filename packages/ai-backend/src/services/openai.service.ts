@@ -20,16 +20,35 @@ export interface ChatCompletionOptions {
 
 export class OpenAIService {
   /**
+   * Check if model requires max_completion_tokens instead of max_tokens
+   */
+  private requiresMaxCompletionTokens(model: string): boolean {
+    // Models that require max_completion_tokens (o1 series, gpt-5.2, etc.)
+    return model.startsWith('o1') || model.includes('gpt-5');
+  }
+
+  /**
    * Generate a chat completion using OpenAI
    */
   async generateChatCompletion(options: ChatCompletionOptions): Promise<string> {
     try {
-      const response = await openai.chat.completions.create({
-        model: options.model || config.openaiModel,
+      const model = options.model || config.openaiModel;
+      const maxTokens = options.maxTokens || config.maxTokens;
+      
+      const requestParams: any = {
+        model,
         messages: options.messages,
         temperature: options.temperature ?? config.temperature,
-        max_tokens: options.maxTokens || config.maxTokens,
-      });
+      };
+
+      // Use max_completion_tokens for models that require it (o1, gpt-5.x)
+      if (this.requiresMaxCompletionTokens(model)) {
+        requestParams.max_completion_tokens = maxTokens;
+      } else {
+        requestParams.max_tokens = maxTokens;
+      }
+
+      const response = await openai.chat.completions.create(requestParams);
 
       const content = response.choices[0]?.message?.content;
       
@@ -49,13 +68,24 @@ export class OpenAIService {
    */
   async *generateStreamingCompletion(options: ChatCompletionOptions): AsyncGenerator<string> {
     try {
-      const stream = await openai.chat.completions.create({
-        model: options.model || config.openaiModel,
+      const model = options.model || config.openaiModel;
+      const maxTokens = options.maxTokens || config.maxTokens;
+      
+      const requestParams: any = {
+        model,
         messages: options.messages,
         temperature: options.temperature ?? config.temperature,
-        max_tokens: options.maxTokens || config.maxTokens,
         stream: true,
-      });
+      };
+
+      // Use max_completion_tokens for models that require it (o1, gpt-5.x)
+      if (this.requiresMaxCompletionTokens(model)) {
+        requestParams.max_completion_tokens = maxTokens;
+      } else {
+        requestParams.max_tokens = maxTokens;
+      }
+
+      const stream = await openai.chat.completions.create(requestParams);
 
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content;
@@ -81,14 +111,25 @@ export class OpenAIService {
     }
   ): Promise<T> {
     try {
-      const response = await openai.chat.completions.create({
-        model: options.model || config.openaiModel,
+      const model = options.model || config.openaiModel;
+      const maxTokens = options.maxTokens || 2000; // Increased for graph data
+      
+      const requestParams: any = {
+        model,
         messages: options.messages,
         temperature: options.temperature ?? config.temperature,
-        max_tokens: options.maxTokens || 2000, // Increased for graph data
         functions: [functionSchema],
         function_call: { name: functionSchema.name },
-      });
+      };
+
+      // Use max_completion_tokens for models that require it (o1, gpt-5.x)
+      if (this.requiresMaxCompletionTokens(model)) {
+        requestParams.max_completion_tokens = maxTokens;
+      } else {
+        requestParams.max_tokens = maxTokens;
+      }
+
+      const response = await openai.chat.completions.create(requestParams);
 
       const functionCall = response.choices[0]?.message?.function_call;
       
