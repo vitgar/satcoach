@@ -22,6 +22,22 @@ interface ValidationResult {
   improvedExplanation: string;
   reasoning: string;
   accepted?: boolean;
+  grammarIssues?: string[];
+  wordingSuggestions?: string[];
+  satFormatAlignment?: {
+    aligned: boolean;
+    issues: string[];
+    suggestions: string[];
+  };
+  complexityAssessment?: {
+    level: 'too-easy' | 'appropriate' | 'too-hard';
+    reasoning: string;
+    suggestions?: string;
+  };
+  overallQuality?: {
+    score: number;
+    feedback: string;
+  };
 }
 
 interface Stats {
@@ -63,7 +79,7 @@ export const QuestionValidationPage = () => {
       const response = await api.get('/validation/questions', {
         params: {
           subject: selectedSubject,
-          limit: 50,
+          limit: 100,
           skip: skip,
         },
       });
@@ -235,21 +251,21 @@ export const QuestionValidationPage = () => {
             {totalQuestions > 0 && (
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => loadQuestions(currentSkip - 50)}
+                  onClick={() => loadQuestions(currentSkip - 100)}
                   disabled={currentSkip === 0 || loading || validating}
                   className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  ← Previous 50
+                  ← Previous 100
                 </button>
                 <span className="text-sm text-gray-600 whitespace-nowrap">
-                  {currentSkip + 1}-{Math.min(currentSkip + 50, totalQuestions)} of {totalQuestions}
+                  {currentSkip + 1}-{Math.min(currentSkip + 100, totalQuestions)} of {totalQuestions}
                 </span>
                 <button
-                  onClick={() => loadQuestions(currentSkip + 50)}
-                  disabled={currentSkip + 50 >= totalQuestions || loading || validating}
+                  onClick={() => loadQuestions(currentSkip + 100)}
+                  disabled={currentSkip + 100 >= totalQuestions || loading || validating}
                   className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Next 50 →
+                  Next 100 →
                 </button>
               </div>
             )}
@@ -259,7 +275,7 @@ export const QuestionValidationPage = () => {
               disabled={loading}
               className="btn-primary"
             >
-              {loading ? 'Loading...' : 'Load 50 Questions'}
+              {loading ? 'Loading...' : 'Load 100 Questions'}
             </button>
 
             {questions.length > 0 && (
@@ -412,6 +428,114 @@ export const QuestionValidationPage = () => {
                       <p className="text-xs font-medium text-blue-900 mb-1">AI Reasoning</p>
                       <p className="text-xs text-blue-700">{result.reasoning}</p>
                     </div>
+
+                    {/* Grammar Issues */}
+                    {result.grammarIssues && result.grammarIssues.length > 0 && (
+                      <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <p className="text-xs font-medium text-yellow-900 mb-2">Grammar Issues</p>
+                        <ul className="text-xs text-yellow-700 list-disc list-inside space-y-1">
+                          {result.grammarIssues.map((issue, idx) => (
+                            <li key={idx}>{issue}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Wording Suggestions */}
+                    {result.wordingSuggestions && result.wordingSuggestions.length > 0 && (
+                      <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                        <p className="text-xs font-medium text-purple-900 mb-2">Wording Suggestions</p>
+                        <ul className="text-xs text-purple-700 list-disc list-inside space-y-1">
+                          {result.wordingSuggestions.map((suggestion, idx) => (
+                            <li key={idx}>{suggestion}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* SAT Format Alignment */}
+                    {result.satFormatAlignment && (
+                      <div className={`mt-4 p-3 border rounded-lg ${
+                        result.satFormatAlignment.aligned 
+                          ? 'bg-green-50 border-green-200' 
+                          : 'bg-orange-50 border-orange-200'
+                      }`}>
+                        <p className={`text-xs font-medium mb-2 ${
+                          result.satFormatAlignment.aligned ? 'text-green-900' : 'text-orange-900'
+                        }`}>
+                          SAT Format Alignment: {result.satFormatAlignment.aligned ? '✓ Aligned' : '⚠ Needs Improvement'}
+                        </p>
+                        {result.satFormatAlignment.issues.length > 0 && (
+                          <div className="mb-2">
+                            <p className="text-xs font-medium text-orange-900 mb-1">Issues:</p>
+                            <ul className="text-xs text-orange-700 list-disc list-inside space-y-1">
+                              {result.satFormatAlignment.issues.map((issue, idx) => (
+                                <li key={idx}>{issue}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {result.satFormatAlignment.suggestions.length > 0 && (
+                          <div>
+                            <p className="text-xs font-medium text-green-900 mb-1">Suggestions:</p>
+                            <ul className="text-xs text-green-700 list-disc list-inside space-y-1">
+                              {result.satFormatAlignment.suggestions.map((suggestion, idx) => (
+                                <li key={idx}>{suggestion}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Complexity Assessment */}
+                    {result.complexityAssessment && (
+                      <div className="mt-4 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                        <p className="text-xs font-medium text-indigo-900 mb-1">
+                          Complexity Level: 
+                          <span className={`ml-2 ${
+                            result.complexityAssessment.level === 'too-easy' ? 'text-yellow-700' :
+                            result.complexityAssessment.level === 'too-hard' ? 'text-red-700' :
+                            'text-green-700'
+                          }`}>
+                            {result.complexityAssessment.level === 'too-easy' ? 'Too Easy' :
+                             result.complexityAssessment.level === 'too-hard' ? 'Too Hard' :
+                             'Appropriate'}
+                          </span>
+                        </p>
+                        <p className="text-xs text-indigo-700 mt-1">{result.complexityAssessment.reasoning}</p>
+                        {result.complexityAssessment.suggestions && (
+                          <p className="text-xs text-indigo-600 mt-1 italic">
+                            {result.complexityAssessment.suggestions}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Overall Quality */}
+                    {result.overallQuality && (
+                      <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs font-medium text-gray-900">Overall Quality Score</p>
+                          <div className="flex items-center gap-2">
+                            <div className="w-24 bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full ${
+                                  result.overallQuality.score >= 8 ? 'bg-green-500' :
+                                  result.overallQuality.score >= 6 ? 'bg-yellow-500' :
+                                  'bg-red-500'
+                                }`}
+                                style={{ width: `${(result.overallQuality.score / 10) * 100}%` }}
+                              ></div>
+                            </div>
+                            <span className="text-xs font-bold text-gray-900">
+                              {result.overallQuality.score}/10
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-xs text-gray-700">{result.overallQuality.feedback}</p>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -424,7 +548,7 @@ export const QuestionValidationPage = () => {
           <div className="card text-center py-12">
             <p className="text-gray-500 mb-4">No questions loaded yet</p>
             <p className="text-sm text-gray-400">
-              Select a subject filter and click "Load 50 Questions" to begin
+              Select a subject filter and click "Load 100 Questions" to begin
             </p>
           </div>
         )}

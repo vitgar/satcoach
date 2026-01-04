@@ -124,6 +124,31 @@ export interface SessionSummary {
   overallProgress: string;
 }
 
+/**
+ * Types for conversation state tracking
+ * Used for pacing control, checkpoints, and adaptive tutoring
+ */
+export type QuestionType = 'computation' | 'recognition' | 'conceptual' | 'application' | 'reverse' | 'prediction';
+export type ErrorType = 'arithmetic' | 'notation_misread' | 'concept_confusion' | 'procedure_error' | 'careless' | 'unknown';
+export type ScaffoldingLevel = 0 | 1 | 2 | 3;
+
+export interface ConversationState {
+  consecutiveCorrect: number;
+  lastQuestionType?: QuestionType;
+  questionTypesUsed: QuestionType[];
+  questionsThisConcept: number;
+  currentConcept?: string;
+  lastErrorType?: ErrorType;
+  errorCount: number;
+  conceptCheckpoints: number;
+  lastCheckpointExchange?: number;
+  exchangeCount: number;
+  studentInterests?: string[];
+  scaffoldingLevel: ScaffoldingLevel;
+  awaitingReasoning?: boolean;
+  lastIncorrectAnswer?: string;
+}
+
 export interface SmartTopicResult {
   topic: string;
   subject: string;
@@ -283,7 +308,46 @@ class GuidedReviewService {
   }
 
   /**
+   * Pause a session (save progress without ending)
+   */
+  async pauseSession(
+    sessionId: string,
+    progress?: {
+      questionsAttempted?: number;
+      questionsCorrect?: number;
+      conceptsCovered?: string[];
+    }
+  ): Promise<void> {
+    try {
+      await dbApi.put(`/guided-sessions/${sessionId}/pause`, progress || {});
+    } catch (error: any) {
+      console.error('[GuidedReview] Error pausing session:', error);
+      // Don't throw - this is non-blocking
+    }
+  }
+
+  /**
+   * Update session progress (for auto-save)
+   */
+  async updateSessionProgress(
+    sessionId: string,
+    progress: {
+      questionsAttempted?: number;
+      questionsCorrect?: number;
+      conceptsCovered?: string[];
+    }
+  ): Promise<void> {
+    try {
+      await dbApi.put(`/guided-sessions/${sessionId}/progress`, progress);
+    } catch (error: any) {
+      console.error('[GuidedReview] Error updating session progress:', error);
+      // Don't throw - this is non-blocking for auto-save
+    }
+  }
+
+  /**
    * Send a chat message and get AI response
+   * Returns updated conversation state for pacing and checkpoint tracking
    */
   async sendMessage(
     sessionId: string,
@@ -298,13 +362,24 @@ class GuidedReviewService {
       chatHistory?: Array<{ role: string; content: string }>;
       questionsAttempted?: number;
       questionsCorrect?: number;
+      conversationState?: ConversationState;
     }
-  ): Promise<ChatResponse> {
+  ): Promise<ChatResponse & { updatedState?: ConversationState }> {
     try {
-      // Get AI response
+      // Initialize or update conversation state
+      const currentState = sessionContext.conversationState || this.initializeConversationState();
+      const updatedState = {
+        ...currentState,
+        exchangeCount: currentState.exchangeCount + 1,
+      };
+
+      // Get AI response with conversation state
       const aiResponse = await aiApi.post('/guided-review/chat', {
         message,
-        sessionContext,
+        sessionContext: {
+          ...sessionContext,
+          conversationState: updatedState,
+        },
       });
 
       const conceptsCovered = aiResponse.data.conceptsCovered || [];
@@ -328,11 +403,115 @@ class GuidedReviewService {
         conceptsCovered,
         suggestedFollowUp: aiResponse.data.suggestedFollowUp,
         graph: aiResponse.data.graph || null,
+        updatedState,
       };
     } catch (error: any) {
       console.error('[GuidedReview] Error sending message:', error);
       throw new Error(error.response?.data?.error || 'Failed to send message');
     }
+  }
+
+  /**
+   * Initialize conversation state with default values
+   */
+  private initializeConversationState(): ConversationState {
+    return {
+      consecutiveCorrect: 0,
+      questionTypesUsed: [],
+      questionsThisConcept: 0,
+      errorCount: 0,
+      conceptCheckpoints: 0,
+      exchangeCount: 0,
+      scaffoldingLevel: 0,
+    };
+  }
+
+  /**
+   * Update conversation state after question answer
+   */
+  updateStateAfterAnswer(
+    currentState: ConversationState,
+    isCorrect: boolean,
+    questionType?: QuestionType
+  ): ConversationState {
+    const updated = { ...currentState };
+
+    if (isCorrect) {
+      updated.consecutiveCorrect += 1;
+      updated.scaffoldingLevel = 0; // Reset scaffolding on correct answer
+    } else {
+      updated.consecutiveCorrect = 0;
+      updated.errorCount += 1;
+    }
+
+    updated.questionsThisConcept += 1;
+
+    if (questionType) {
+      updated.lastQuestionType = questionType;
+      if (!updated.questionTypesUsed.includes(questionType)) {
+        updated.questionTypesUsed = [...updated.questionTypesUsed, questionType];
+      }
+    }
+
+    return updated;
+  }
+
+  /**
+   * Update state when advancing to a new concept
+   */
+  advanceConceptState(
+    currentState: ConversationState,
+    newConcept: string
+  ): ConversationState {
+    return {
+      ...currentState,
+      consecutiveCorrect: 0,
+      questionsThisConcept: 0,
+      questionTypesUsed: [],
+      currentConcept: newConcept,
+      errorCount: 0,
+      scaffoldingLevel: 0,
+    };
+  }
+
+  /**
+   * Record that a conceptual checkpoint was done
+   */
+  recordCheckpoint(currentState: ConversationState): ConversationState {
+    return {
+      ...currentState,
+      conceptCheckpoints: currentState.conceptCheckpoints + 1,
+      lastCheckpointExchange: currentState.exchangeCount,
+    };
+  }
+
+  /**
+   * Check if a checkpoint is due based on exchanges since last one
+   */
+  isCheckpointDue(state: ConversationState): boolean {
+    const exchangesSinceCheckpoint = state.exchangeCount - (state.lastCheckpointExchange ?? 0);
+    return exchangesSinceCheckpoint >= 4;
+  }
+
+  /**
+   * Check if student has mastered current concept (for pacing)
+   */
+  hasReachedMastery(state: ConversationState): boolean {
+    return state.consecutiveCorrect >= 3 && state.questionsThisConcept >= 3;
+  }
+
+  /**
+   * Add a student interest for personalized examples
+   */
+  addStudentInterest(currentState: ConversationState, interest: string): ConversationState {
+    const interests = currentState.studentInterests || [];
+    if (!interests.includes(interest)) {
+      return {
+        ...currentState,
+        studentInterests: [...interests, interest],
+      };
+    }
+    return currentState;
   }
 
   /**
@@ -370,6 +549,7 @@ class GuidedReviewService {
 
   /**
    * Get topic introduction when starting a topic
+   * Returns initial conversation state for tracking
    */
   async startTopic(sessionContext: {
     subject: string;
@@ -403,30 +583,44 @@ class GuidedReviewService {
     };
     selectionReason?: string;
     focusAreas?: string[];
-  }): Promise<ChatResponse> {
+  }): Promise<ChatResponse & { initialState: ConversationState }> {
+    // Initialize fresh conversation state for new topic
+    const initialState: ConversationState = {
+      ...this.initializeConversationState(),
+      currentConcept: sessionContext.topic,
+    };
+
     try {
-      const response = await aiApi.post('/guided-review/start-topic', { sessionContext });
+      const response = await aiApi.post('/guided-review/start-topic', { 
+        sessionContext: {
+          ...sessionContext,
+          conversationState: initialState,
+        },
+      });
       return {
         response: response.data.response,
         embeddedQuestion: response.data.embeddedQuestion,
         conceptsCovered: response.data.conceptsCovered || [],
         suggestedFollowUp: response.data.suggestedFollowUp,
         graph: response.data.graph || null,
+        initialState,
       };
     } catch (error: any) {
       console.error('[GuidedReview] Error starting topic:', error);
-      // Return fallback introduction
+      // Return fallback introduction with initial state
       return {
         response: `Let's work on **${sessionContext.topic}** together! What would you like to start with?`,
         embeddedQuestion: null,
         conceptsCovered: [sessionContext.topic],
         suggestedFollowUp: null,
+        initialState,
       };
     }
   }
 
   /**
    * Submit answer to embedded question
+   * Returns updated conversation state for pacing tracking
    */
   async submitQuestionAnswer(
     sessionId: string,
@@ -436,9 +630,19 @@ class GuidedReviewService {
       subject: string;
       topic: string;
       studentLevel: number;
-    }
-  ): Promise<{ feedback: ChatResponse; isCorrect: boolean }> {
+      conversationState?: ConversationState;
+    },
+    questionType?: QuestionType
+  ): Promise<{ 
+    feedback: ChatResponse; 
+    isCorrect: boolean; 
+    updatedState?: ConversationState;
+  }> {
     const isCorrect = studentAnswer.toUpperCase() === question.correctAnswer.toUpperCase();
+
+    // Update conversation state based on answer
+    const currentState = sessionContext.conversationState || this.initializeConversationState();
+    const updatedState = this.updateStateAfterAnswer(currentState, isCorrect, questionType);
 
     try {
       // Record the question attempt
@@ -451,12 +655,15 @@ class GuidedReviewService {
         timeSpent: 0, // Could track actual time
       });
 
-      // Get AI feedback
+      // Get AI feedback with conversation state
       const response = await aiApi.post('/guided-review/question-feedback', {
         studentAnswer,
         question,
         isCorrect,
-        sessionContext,
+        sessionContext: {
+          ...sessionContext,
+          conversationState: updatedState,
+        },
       });
 
       return {
@@ -468,10 +675,11 @@ class GuidedReviewService {
           graph: response.data.graph || null,
         },
         isCorrect,
+        updatedState,
       };
     } catch (error: any) {
       console.error('[GuidedReview] Error submitting answer:', error);
-      // Return fallback feedback
+      // Return fallback feedback with state update
       return {
         feedback: {
           response: isCorrect 
@@ -482,6 +690,7 @@ class GuidedReviewService {
           suggestedFollowUp: 'Would you like to continue?',
         },
         isCorrect,
+        updatedState,
       };
     }
   }

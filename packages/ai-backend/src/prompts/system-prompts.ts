@@ -137,23 +137,6 @@ When students ask "How do I approach this?", "How should I solve this?", or simi
 
 export const QUESTION_GENERATION_PROMPT = `You are an expert SAT question writer. Generate authentic, high-quality SAT practice questions that match the official SAT format and difficulty level.
 
-⚠️ TEMPORARY TESTING INSTRUCTION - REMOVE AFTER TESTING ⚠️
-
-For ALL math questions about functions, graphs, data analysis, or coordinate geometry:
-ALWAYS include a "graph" object in your response.
-
-Topics that MUST have graphs:
-- Quadratic functions → include parabola graph
-- Linear functions → include line graph  
-- Exponential functions → include curve graph
-- Data analysis → include bar chart or scatter plot
-- Coordinate geometry → include coordinate plane graph
-- Function interpretation → include the function graph
-
-This is CRITICAL for testing the new graph rendering feature.
-
-⚠️ END TEMPORARY TESTING INSTRUCTION ⚠️
-
 **Question Requirements:**
 - Follow official SAT question format exactly
 - Include 4 multiple choice options (A, B, C, D)
@@ -175,8 +158,20 @@ This is CRITICAL for testing the new graph rendering feature.
 5. **Tags**: 2-3 relevant topic tags
 6. **Graph** (OPTIONAL - for visual math questions): Include graph data when appropriate
 
-**Graph Generation (for Math questions requiring visualization):**
-When a question involves functions, data analysis, or coordinate geometry, include a "graph" object:
+**Graph Generation (ONLY when visualization is essential):**
+Include a "graph" object ONLY when the question genuinely requires visual representation to be answered. Do NOT include graphs for questions that can be solved without visualization, even if they involve mathematical concepts.
+
+Include graphs ONLY when:
+- The question explicitly asks about interpreting a graph or chart
+- The question requires analyzing visual data (bar charts, scatter plots, etc.)
+- The question involves coordinate geometry that requires seeing plotted points or shapes
+- The question asks about function behavior that must be visualized (e.g., "What is the minimum value shown in the graph?")
+
+Do NOT include graphs for:
+- Pure algebraic problems that don't reference visual data
+- Word problems that can be solved with equations
+- Questions about formulas or calculations without visual context
+- Problems that mention functions but don't require graph interpretation
 
 IMPORTANT: Always set xDomain and yDomain to create a "natural" graph view:
 - Include the origin (0, 0) if it makes sense contextually (most linear/quadratic functions should show it)
@@ -234,11 +229,7 @@ Example for scatter plot (correlation):
 - "pie": For proportions and percentages
 - "area": For cumulative data
 
-Include graphs when:
-- Question involves interpreting a function graph
-- Data analysis requires visual representation
-- Coordinate geometry problems
-- Statistical data comparison
+CRITICAL: Only include graphs when the question text explicitly requires visual interpretation. If a question can be answered using algebra, formulas, or calculations alone, do NOT include a graph even if it's a math question.
 
 **Quality Standards:**
 - No ambiguous wording

@@ -14,6 +14,22 @@ interface ValidationResult {
   suggestedAnswer?: string;
   improvedExplanation: string;
   reasoning: string;
+  grammarIssues?: string[];
+  wordingSuggestions?: string[];
+  satFormatAlignment?: {
+    aligned: boolean;
+    issues: string[];
+    suggestions: string[];
+  };
+  complexityAssessment?: {
+    level: 'too-easy' | 'appropriate' | 'too-hard';
+    reasoning: string;
+    suggestions?: string;
+  };
+  overallQuality?: {
+    score: number; // 1-10
+    feedback: string;
+  };
 }
 
 export class ValidationController {
@@ -23,7 +39,7 @@ export class ValidationController {
    */
   async getQuestionsForValidation(req: Request, res: Response): Promise<void> {
     try {
-      const { subject, limit = 50, skip = 0 } = req.query;
+      const { subject, limit = 100, skip = 0 } = req.query;
       
       const filter: any = {};
       if (subject && subject !== 'all') {
@@ -77,10 +93,8 @@ export class ValidationController {
         return;
       }
 
-      // Prepare the validation prompt
-      const prompt = `You are an expert SAT tutor reviewing a practice question. Your task is to:
-1. Verify if the marked correct answer is actually correct
-2. Provide a clearer, simpler explanation suitable for high school students
+      // Prepare the comprehensive validation prompt
+      const prompt = `You are an expert SAT tutor and test question reviewer. Your task is to comprehensively review this practice question across multiple dimensions:
 
 Question Details:
 Subject: ${question.subject}
@@ -97,20 +111,58 @@ D) ${question.content.options[3]}
 Currently Marked Correct Answer: ${question.content.correctAnswer}
 Current Explanation: ${question.content.explanation}
 
+Please evaluate the following aspects and respond in JSON format:
+
+1. ANSWER CORRECTNESS: Verify if the marked correct answer is actually correct. If wrong, suggest the correct answer.
+
+2. GRAMMAR: Check for any grammatical errors in the question text, options, or explanation. List any issues found.
+
+3. WORDING & CLARITY: Review the wording for clarity, precision, and appropriateness for high school students. Suggest improvements if needed.
+
+4. SAT FORMAT ALIGNMENT: Verify the question aligns with official SAT format standards:
+   - Question structure matches SAT style
+   - Options are parallel in structure
+   - Language and terminology are appropriate
+   - Question type matches SAT question types
+   - Distractors are plausible and well-constructed
+
+5. COMPLEXITY LEVEL: Assess if the difficulty level is appropriate for the stated difficulty:
+   - Too easy: Question is simpler than expected for the difficulty level
+   - Appropriate: Question matches the difficulty level
+   - Too hard: Question is more complex than expected for the difficulty level
+
+6. OVERALL QUALITY: Provide an overall quality score (1-10) and comprehensive feedback.
+
 Please respond in JSON format:
 {
   "isAnswerCorrect": true/false,
-  "suggestedAnswer": "A/B/C/D" (only if current answer is wrong),
+  "suggestedAnswer": "A/B/C/D" (only if current answer is wrong, otherwise null),
   "improvedExplanation": "A clear, simple explanation for high school students",
-  "reasoning": "Brief explanation of why you made these suggestions"
+  "reasoning": "Brief explanation of answer correctness",
+  "grammarIssues": ["list of any grammatical errors found", "or empty array if none"],
+  "wordingSuggestions": ["suggestions for improving clarity and wording", "or empty array if none"],
+  "satFormatAlignment": {
+    "aligned": true/false,
+    "issues": ["list of format issues", "or empty array if none"],
+    "suggestions": ["suggestions for better alignment", "or empty array if none"]
+  },
+  "complexityAssessment": {
+    "level": "too-easy" | "appropriate" | "too-hard",
+    "reasoning": "explanation of complexity assessment",
+    "suggestions": "optional suggestions for adjusting complexity"
+  },
+  "overallQuality": {
+    "score": 1-10,
+    "feedback": "comprehensive feedback on overall question quality"
+  }
 }`;
 
       const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5.2',
         messages: [
           {
             role: 'system',
-            content: 'You are an expert SAT tutor. Respond only with valid JSON.',
+            content: 'You are an expert SAT tutor and test question reviewer with deep knowledge of SAT format, standards, and question construction. You evaluate questions across grammar, wording, format alignment, complexity, and overall quality. Respond only with valid JSON.',
           },
           {
             role: 'user',
@@ -129,6 +181,21 @@ Please respond in JSON format:
         suggestedAnswer: result.suggestedAnswer,
         improvedExplanation: result.improvedExplanation,
         reasoning: result.reasoning,
+        grammarIssues: result.grammarIssues || [],
+        wordingSuggestions: result.wordingSuggestions || [],
+        satFormatAlignment: result.satFormatAlignment || {
+          aligned: true,
+          issues: [],
+          suggestions: [],
+        },
+        complexityAssessment: result.complexityAssessment || {
+          level: 'appropriate',
+          reasoning: '',
+        },
+        overallQuality: result.overallQuality || {
+          score: 5,
+          feedback: '',
+        },
       };
 
       res.json(validationResult);

@@ -48,13 +48,82 @@ export const GuidedChatInterface = ({
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
   const [selectedAnswers, setSelectedAnswers] = useState<Map<string, string>>(new Map());
   const [showTopicDropdown, setShowTopicDropdown] = useState(false);
+  const [visibleMessageCount, setVisibleMessageCount] = useState(15); // Show last 15 messages initially
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const previousMessageCountRef = useRef(0);
+  const isInitialLoadRef = useRef(true);
+  const shouldScrollRef = useRef(false);
 
-  // Scroll to bottom when new messages arrive
+  // Track message count changes and handle scrolling
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    const currentCount = messages.length;
+    const previousCount = previousMessageCountRef.current;
+    
+    // If messages increased (new message added), ensure they're visible
+    if (currentCount > previousCount && !isInitialLoadRef.current) {
+      // For new messages during active chat, always show them (expand if needed)
+      // This ensures new messages are always visible without layout shifts
+      if (currentCount > visibleMessageCount) {
+        setVisibleMessageCount(currentCount);
+        shouldScrollRef.current = true;
+      } else {
+        // New message is already in visible range, just scroll
+        shouldScrollRef.current = true;
+      }
+    }
+    
+    previousMessageCountRef.current = currentCount;
+    
+    // Handle initial load
+    if (isInitialLoadRef.current && currentCount > 0) {
+      // For initial load, show only recent messages
+      const initialVisibleCount = Math.min(15, currentCount);
+      setVisibleMessageCount(initialVisibleCount);
+      // Set initial scroll position to bottom
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+          }
+          isInitialLoadRef.current = false;
+        });
+      });
+    }
+  }, [messages, visibleMessageCount]);
+
+  // Separate effect to handle scrolling after visibleMessageCount or messages update
+  useEffect(() => {
+    if (shouldScrollRef.current && !isInitialLoadRef.current && messagesContainerRef.current) {
+      shouldScrollRef.current = false;
+      // Use a longer delay to ensure all layout calculations are complete
+      const scrollToBottom = () => {
+        const container = messagesContainerRef.current;
+        if (container) {
+          // Force scroll to absolute bottom
+          container.scrollTop = container.scrollHeight;
+        }
+      };
+      // Multiple animation frames to ensure layout is stable
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          scrollToBottom();
+          // One more frame to ensure it sticks
+          requestAnimationFrame(scrollToBottom);
+        });
+      });
+    }
+  }, [visibleMessageCount, messages.length]);
+
+  // Reset initial load flag when messages are cleared
+  useEffect(() => {
+    if (messages.length === 0) {
+      isInitialLoadRef.current = true;
+      setVisibleMessageCount(15);
+      previousMessageCountRef.current = 0;
+    }
+  }, [messages.length]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -186,14 +255,30 @@ export const GuidedChatInterface = ({
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+      <div 
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0"
+      >
         {messages.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             <p>Starting guided review session...</p>
           </div>
         )}
 
-        {messages.map((message) => {
+        {/* Show "Load older messages" indicator if there are more messages */}
+        {messages.length > visibleMessageCount && (
+          <div className="flex justify-center py-2">
+            <button
+              onClick={() => setVisibleMessageCount(prev => Math.min(prev + 10, messages.length))}
+              className="text-sm text-gray-500 hover:text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              ↑ Load older messages ({messages.length - visibleMessageCount} older)
+            </button>
+          </div>
+        )}
+
+        {/* Show only the most recent messages */}
+        {messages.slice(-visibleMessageCount).map((message) => {
           const hasQuestion = message.role === 'assistant' && message.embeddedQuestion;
           const isQuestionAnswered = answeredQuestions.has(message.id);
           const selectedAnswer = selectedAnswers.get(message.id);

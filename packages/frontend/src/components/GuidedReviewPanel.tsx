@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { SubjectSelector } from './SubjectSelector';
@@ -60,6 +60,89 @@ export const GuidedReviewPanel = () => {
     }
   }, [preparationComplete, smartTopicResult, selectedSubject]);
 
+  // Debounced auto-save (every 30 seconds)
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSaveRef = useRef<number>(0);
+
+  useEffect(() => {
+    // Only auto-save if we have an active session in chat view
+    if (!sessionId || viewState !== 'chat') {
+      return;
+    }
+
+    // Clear existing timeout
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+
+    // Debounce: wait 30 seconds after last change
+    autoSaveTimeoutRef.current = setTimeout(async () => {
+      const now = Date.now();
+      // Only save if at least 30 seconds have passed since last save
+      if (now - lastSaveRef.current >= 30000) {
+        try {
+          await guidedReviewService.updateSessionProgress(sessionId, {
+            questionsAttempted,
+            questionsCorrect,
+            conceptsCovered,
+          });
+          lastSaveRef.current = now;
+          console.log('[GuidedReview] Auto-saved session progress');
+        } catch (err) {
+          console.error('[GuidedReview] Auto-save failed:', err);
+        }
+      }
+    }, 30000);
+
+    // Cleanup on unmount or when dependencies change
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, [sessionId, viewState, messages.length, questionsAttempted, questionsCorrect, conceptsCovered.length]);
+
+  // Page unload safety net - save on beforeunload
+  useEffect(() => {
+    if (!sessionId || viewState !== 'chat') {
+      return;
+    }
+
+    const handleBeforeUnload = () => {
+      // Save progress using fetch with keepalive (reliable for unload events)
+      // Note: sendBeacon doesn't support custom headers, so we use fetch with keepalive
+      const token = localStorage.getItem('accessToken');
+      const baseUrl = import.meta.env.VITE_DB_API_URL || 'http://localhost:4000';
+      const normalized = baseUrl.replace(/\/api\/v1\/?$/, '');
+      const url = `${normalized}/api/v1/guided-sessions/${sessionId}/progress`;
+      
+      const progressData = {
+        questionsAttempted,
+        questionsCorrect,
+        conceptsCovered,
+      };
+
+      // Use fetch with keepalive for authenticated requests during unload
+      fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(progressData),
+        keepalive: true, // Critical for unload events - ensures request completes
+      }).catch(() => {
+        // Silently fail - we're unloading anyway
+      });
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [sessionId, viewState, questionsAttempted, questionsCorrect, conceptsCovered]);
+
   const loadSmartTopic = async (subject: string) => {
     setError(null);
 
@@ -103,6 +186,35 @@ export const GuidedReviewPanel = () => {
     setError(null);
 
     try {
+      // First, check for an active session to resume
+      const activeSession = await guidedReviewService.getActiveSession(selectedSubject, topic);
+      
+      if (activeSession) {
+        // Resume existing session
+        console.log('[GuidedReview] Resuming active session:', activeSession._id);
+        setSessionId(activeSession._id);
+        setSessionStartTime(new Date(activeSession.startTime));
+        
+        // Restore messages from chat history
+        const restoredMessages: Message[] = activeSession.chatHistory.map((msg, idx) => ({
+          id: `msg_restored_${idx}`,
+          role: msg.role,
+          content: msg.content,
+          timestamp: new Date(msg.timestamp),
+        }));
+        setMessages(restoredMessages);
+        
+        // Restore progress
+        setQuestionsAttempted(activeSession.outcomes?.questionsAttempted || 0);
+        setQuestionsCorrect(activeSession.outcomes?.questionsCorrect || 0);
+        setConceptsCovered(activeSession.outcomes?.conceptsCovered || []);
+        
+        setViewState('chat');
+        setLoading(false);
+        return;
+      }
+
+      // No active session found - start new one
       // Check for previous sessions on this topic
       const previousHistory = await guidedReviewService.getPreviousTopicSessions(
         selectedSubject,
@@ -280,6 +392,13 @@ export const GuidedReviewPanel = () => {
       };
       setMessages(prev => [...prev, feedbackMessage]);
 
+      // Save feedback message to session
+      await guidedReviewService.addMessageToSession(sessionId, {
+        role: 'assistant',
+        content: result.feedback.response,
+        conceptsCovered: result.feedback.conceptsCovered || [],
+      });
+
       if (result.feedback.conceptsCovered) {
         setConceptsCovered(prev => [...new Set([...prev, ...result.feedback.conceptsCovered])]);
       }
@@ -329,7 +448,21 @@ export const GuidedReviewPanel = () => {
     }
   };
 
-  const handleBackToSubjects = () => {
+  const handleBackToSubjects = async () => {
+    // Save session progress before leaving
+    if (sessionId) {
+      try {
+        await guidedReviewService.pauseSession(sessionId, {
+          questionsAttempted,
+          questionsCorrect,
+          conceptsCovered,
+        });
+      } catch (err) {
+        console.error('Failed to save session on exit:', err);
+        // Continue anyway - don't block user from leaving
+      }
+    }
+
     setSelectedSubject(null);
     setSelectedTopic(null);
     setSmartTopicResult(null);
@@ -361,7 +494,8 @@ export const GuidedReviewPanel = () => {
   // Render subject selection
   if (viewState === 'subject-selection') {
     return (
-      <div className="max-w-3xl mx-auto py-8 px-4">
+      <div className="h-full flex flex-col overflow-y-auto">
+        <div className="max-w-3xl mx-auto py-8 px-4 w-full">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Guided Review</h1>
           <p className="text-gray-600">
@@ -386,6 +520,7 @@ export const GuidedReviewPanel = () => {
             {error}
           </div>
         )}
+        </div>
       </div>
     );
   }
@@ -471,7 +606,8 @@ export const GuidedReviewPanel = () => {
       : 0;
 
     return (
-      <div className="max-w-2xl mx-auto py-8 px-4">
+      <div className="h-full flex flex-col overflow-y-auto">
+        <div className="max-w-2xl mx-auto py-8 px-4 w-full">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
@@ -565,6 +701,7 @@ export const GuidedReviewPanel = () => {
               Back to Dashboard
             </button>
           </div>
+        </div>
         </div>
       </div>
     );

@@ -251,6 +251,97 @@ export class GuidedSessionController {
   }
 
   /**
+   * Pause a guided session (save without ending)
+   * PUT /api/v1/guided-sessions/:id/pause
+   */
+  async pauseSession(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { questionsAttempted, questionsCorrect, conceptsCovered } = req.body;
+
+      const session = await GuidedSession.findById(id);
+      if (!session) {
+        res.status(404).json({ error: 'Guided session not found' });
+        return;
+      }
+
+      // Update progress if provided
+      if (questionsAttempted !== undefined) {
+        session.outcomes.questionsAttempted = questionsAttempted;
+      }
+      if (questionsCorrect !== undefined) {
+        session.outcomes.questionsCorrect = questionsCorrect;
+      }
+      if (conceptsCovered && Array.isArray(conceptsCovered)) {
+        const existingConcepts = new Set(session.outcomes.conceptsCovered || []);
+        for (const concept of conceptsCovered) {
+          if (concept && typeof concept === 'string') {
+            existingConcepts.add(concept);
+          }
+        }
+        session.outcomes.conceptsCovered = Array.from(existingConcepts);
+      }
+
+      // Keep session active - don't set endTime or isActive = false
+      await session.save();
+
+      console.log(`[GuidedSession] Paused session ${id} (saved progress, kept active)`);
+
+      res.json({
+        message: 'Session paused (saved)',
+        session,
+      });
+    } catch (error: any) {
+      console.error('[GuidedSession] Pause session error:', error);
+      res.status(500).json({ error: error.message || 'Failed to pause session' });
+    }
+  }
+
+  /**
+   * Update session progress (for auto-save)
+   * PUT /api/v1/guided-sessions/:id/progress
+   */
+  async updateProgress(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { questionsAttempted, questionsCorrect, conceptsCovered } = req.body;
+
+      const session = await GuidedSession.findById(id);
+      if (!session) {
+        res.status(404).json({ error: 'Guided session not found' });
+        return;
+      }
+
+      // Update progress if provided
+      if (questionsAttempted !== undefined) {
+        session.outcomes.questionsAttempted = questionsAttempted;
+      }
+      if (questionsCorrect !== undefined) {
+        session.outcomes.questionsCorrect = questionsCorrect;
+      }
+      if (conceptsCovered && Array.isArray(conceptsCovered)) {
+        const existingConcepts = new Set(session.outcomes.conceptsCovered || []);
+        for (const concept of conceptsCovered) {
+          if (concept && typeof concept === 'string') {
+            existingConcepts.add(concept);
+          }
+        }
+        session.outcomes.conceptsCovered = Array.from(existingConcepts);
+      }
+
+      await session.save();
+
+      res.json({
+        message: 'Progress updated',
+        session,
+      });
+    } catch (error: any) {
+      console.error('[GuidedSession] Update progress error:', error);
+      res.status(500).json({ error: error.message || 'Failed to update progress' });
+    }
+  }
+
+  /**
    * Get topic recommendations for a subject
    * GET /api/v1/guided-sessions/recommendations/:subject
    */

@@ -85,6 +85,20 @@ router.put('/:id/message', (req, res) => guidedSessionController.addMessage(req,
 router.put('/:id/question-attempt', (req, res) => guidedSessionController.recordQuestionAttempt(req, res));
 
 /**
+ * @route PUT /api/v1/guided-sessions/:id/pause
+ * @desc Pause a guided session (save without ending)
+ * @access Private
+ */
+router.put('/:id/pause', (req, res) => guidedSessionController.pauseSession(req, res));
+
+/**
+ * @route PUT /api/v1/guided-sessions/:id/progress
+ * @desc Update session progress (for auto-save)
+ * @access Private
+ */
+router.put('/:id/progress', (req, res) => guidedSessionController.updateProgress(req, res));
+
+/**
  * @route PUT /api/v1/guided-sessions/:id/end
  * @desc End a guided session
  * @access Private
