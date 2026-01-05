@@ -71,21 +71,23 @@ export class OpenAIService {
       const model = options.model || config.openaiModel;
       const maxTokens = options.maxTokens || config.maxTokens;
       
-      const requestParams: any = {
+      // Build request params with proper streaming type
+      const baseParams = {
         model,
         messages: options.messages,
         temperature: options.temperature ?? config.temperature,
-        stream: true,
+        stream: true as const, // Important: use 'as const' for proper typing
       };
 
       // Use max_completion_tokens for models that require it (o1, gpt-5.x)
-      if (this.requiresMaxCompletionTokens(model)) {
-        requestParams.max_completion_tokens = maxTokens;
-      } else {
-        requestParams.max_tokens = maxTokens;
-      }
+      const tokenParams = this.requiresMaxCompletionTokens(model)
+        ? { max_completion_tokens: maxTokens }
+        : { max_tokens: maxTokens };
 
-      const stream = await openai.chat.completions.create(requestParams);
+      const stream = await openai.chat.completions.create({
+        ...baseParams,
+        ...tokenParams,
+      });
 
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content;
