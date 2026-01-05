@@ -44,7 +44,7 @@ export const config: Config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '4001', 10),
   openaiApiKey: process.env.OPENAI_API_KEY || '',
-  openaiModel: process.env.OPENAI_MODEL || 'gpt-5.2',
+  openaiModel: process.env.OPENAI_MODEL || 'gpt-4o',
   corsOrigin: parseCorsOrigin(),
   maxTokens: parseInt(process.env.MAX_TOKENS || '1000', 10),
   temperature: parseFloat(process.env.TEMPERATURE || '0.7'),
