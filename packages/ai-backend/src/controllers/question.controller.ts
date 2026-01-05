@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { questionGeneratorService, Subject, Difficulty } from '../services/question-generator.service';
 
+// GPT-5.2 Compatible - Updated Jan 2026
+
 export class QuestionController {
   /**
    * Generate a single question
