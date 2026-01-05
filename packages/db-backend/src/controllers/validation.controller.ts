@@ -158,7 +158,7 @@ Please respond in JSON format:
 }`;
 
       const completion = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model: 'gpt-5.2',
         messages: [
           {
             role: 'system',
@@ -170,6 +170,7 @@ Please respond in JSON format:
           },
         ],
         temperature: 0.3,
+        max_completion_tokens: 2000,
         response_format: { type: 'json_object' },
       });
 
