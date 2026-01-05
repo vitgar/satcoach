@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Layout } from '../components/Layout';
 import api from '../services/api';
 
@@ -58,11 +58,21 @@ export const QuestionValidationPage = () => {
   // Pagination state
   const [currentSkip, setCurrentSkip] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  
+  // Ref for scrolling to results
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   // Load stats on mount
   useEffect(() => {
     loadStats();
   }, []);
+
+  // Scroll to results when validation completes
+  useEffect(() => {
+    if (validationResults.length > 0 && !validating && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [validationResults.length, validating]);
 
   const loadStats = async () => {
     try {
@@ -305,7 +315,8 @@ export const QuestionValidationPage = () => {
           )}
         </div>
 
-        {/* Results */}
+        {/* Results - scroll target */}
+        <div ref={resultsRef} />
         {validationResults.length > 0 && (
           <>
             {/* Results Header */}

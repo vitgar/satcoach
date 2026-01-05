@@ -36,6 +36,13 @@ router.post(
   (req, res) => questionController.submitAnswer(req, res)
 );
 
+// Save AI-generated questions (authenticated users)
+router.post(
+  '/save-generated',
+  authenticate,
+  (req, res) => questionController.saveGeneratedQuestion(req, res)
+);
+
 // Admin-only routes
 router.post(
   '/',

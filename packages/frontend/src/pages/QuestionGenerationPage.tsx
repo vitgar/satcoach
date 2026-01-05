@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Layout } from '../components/Layout';
 import { QuestionGenerationForm } from '../components/QuestionGenerationForm';
 import { QuestionViewer } from '../components/QuestionViewer';
@@ -10,6 +10,14 @@ export const QuestionGenerationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastGenerationParams, setLastGenerationParams] = useState<GenerationParams | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to results when questions are generated
+  useEffect(() => {
+    if (questions.length > 0 && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [questions]);
 
   const handleGenerate = async (params: GenerationParams) => {
     setIsLoading(true);
@@ -59,7 +67,8 @@ export const QuestionGenerationPage = () => {
           </div>
         )}
 
-        {/* Generation Summary */}
+        {/* Generation Summary - scroll target */}
+        <div ref={resultsRef} />
         {questions.length > 0 && lastGenerationParams && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
             <div className="flex items-center justify-between flex-wrap gap-4">

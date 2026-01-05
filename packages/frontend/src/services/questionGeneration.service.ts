@@ -2,9 +2,11 @@
  * Question Generation Service
  * 
  * Frontend service for generating questions via the AI backend
+ * and saving them to the database
  */
 
 import axios from 'axios';
+import api from './api';
 import { Question } from '../types';
 
 // Get base URL - normalize to ensure /api/v1 is included exactly once
@@ -90,11 +92,47 @@ class QuestionGenerationService {
       }
 
       console.log(`[QuestionGeneration] Generated ${allQuestions.length} questions total`);
-      return allQuestions;
+      
+      // Save all generated questions to the database
+      const savedQuestions = await this.saveQuestionsToDatabase(allQuestions);
+      console.log(`[QuestionGeneration] Saved ${savedQuestions.length} questions to database`);
+      
+      return savedQuestions;
     } catch (error: any) {
       console.error('[QuestionGeneration] Error:', error);
       throw new Error(error.response?.data?.error || 'Failed to generate questions');
     }
+  }
+
+  /**
+   * Save generated questions to the database
+   */
+  private async saveQuestionsToDatabase(questions: Question[]): Promise<Question[]> {
+    const savedQuestions: Question[] = [];
+    
+    for (const question of questions) {
+      try {
+        const response = await api.post('/questions/save-generated', {
+          subject: question.subject,
+          difficulty: question.difficulty,
+          difficultyScore: question.difficultyScore,
+          content: question.content,
+          tags: question.tags,
+        });
+        
+        // Update the question with the real database ID
+        savedQuestions.push({
+          ...question,
+          _id: response.data.question._id,
+        });
+      } catch (error: any) {
+        console.error('[QuestionGeneration] Failed to save question:', error.message);
+        // Still include the question even if save failed (with temp ID)
+        savedQuestions.push(question);
+      }
+    }
+    
+    return savedQuestions;
   }
 
   /**

@@ -226,6 +226,56 @@ export class QuestionController {
   }
 
   /**
+   * POST /api/v1/questions/save-generated
+   * Save AI-generated questions (authenticated users)
+   */
+  async saveGeneratedQuestion(req: Request, res: Response): Promise<void> {
+    try {
+      const { subject, difficulty, difficultyScore, content, tags } = req.body;
+
+      // Validation
+      if (!subject || !difficulty || !content) {
+        res.status(400).json({ error: 'Missing required fields' });
+        return;
+      }
+
+      if (!content.questionText || !content.options || !content.correctAnswer || !content.explanation) {
+        res.status(400).json({ error: 'Missing required content fields' });
+        return;
+      }
+
+      if (content.options.length !== 4) {
+        res.status(400).json({ error: 'Must provide exactly 4 options' });
+        return;
+      }
+
+      if (!['A', 'B', 'C', 'D'].includes(content.correctAnswer)) {
+        res.status(400).json({ error: 'Correct answer must be A, B, C, or D' });
+        return;
+      }
+
+      const question = await questionService.createQuestion({
+        subject,
+        difficulty,
+        difficultyScore: difficultyScore || 5,
+        content,
+        tags: tags || [],
+        generatedBy: 'ai',
+      });
+
+      console.log(`[QuestionController] AI-generated question saved: ${question._id}`);
+
+      res.status(201).json({
+        message: 'Question saved successfully',
+        question,
+      });
+    } catch (error: any) {
+      console.error('Save generated question error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  /**
    * Helper: Map level to difficulty for response
    */
   private mapLevelToDifficulty(level: number): Difficulty {
