@@ -145,6 +145,14 @@ export const QUESTION_GENERATION_PROMPT = `You are an expert SAT question writer
 - Match the specified difficulty level
 - Test conceptual understanding, not just memorization
 
+**CRITICAL - VARIETY REQUIREMENT:**
+When generating multiple questions (especially in batch), you MUST ensure each question covers DIFFERENT topics, subtopics, or problem types. Do NOT generate multiple questions about the same specific concept or scenario.
+- Vary the mathematical concepts, problem types, or applications
+- Use different real-world contexts or scenarios
+- Cover different aspects of the subject area
+- Ensure questions feel distinct and cover diverse content
+- If a topic is specified, vary the specific subtopics, problem types, or applications within that topic
+
 **Difficulty Levels:**
 - Easy (1-3): Straightforward application of basic concepts
 - Medium (4-7): Multi-step problems requiring deeper understanding

@@ -110,11 +110,58 @@ export class QuestionGeneratorService {
     topic?: string,
     includeGraph?: boolean
   ): Promise<GeneratedQuestion[]> {
-    const promises = Array(count)
-      .fill(null)
-      .map(() => this.generateQuestion(subject, difficulty, topic, includeGraph));
-
-    return Promise.all(promises);
+    const questions: GeneratedQuestion[] = [];
+    const coveredTopics = new Set<string>();
+    
+    // Generate questions sequentially to ensure variety
+    for (let i = 0; i < count; i++) {
+      // Build variety instruction
+      let varietyInstruction = '';
+      
+      if (topic) {
+        // If topic is specified, vary subtopics and problem types
+        varietyInstruction = `\n\nIMPORTANT VARIETY REQUIREMENT (Question ${i + 1} of ${count}):
+- This question must cover a DIFFERENT aspect, subtopic, or problem type within "${topic}" than any previous questions
+- Vary the specific concept, application, or scenario
+- Use a different real-world context or problem setup
+- Ensure this question feels distinct from previous ones`;
+        
+        if (coveredTopics.size > 0) {
+          varietyInstruction += `\n- Already covered: ${Array.from(coveredTopics).join(', ')}`;
+        }
+      } else {
+        // If no topic specified, vary topics entirely
+        varietyInstruction = `\n\nIMPORTANT VARIETY REQUIREMENT (Question ${i + 1} of ${count}):
+- This question must cover a DIFFERENT topic or concept than any previous questions
+- Vary the mathematical concept, problem type, or subject area
+- Use a different real-world context or scenario
+- Ensure this question feels distinct from previous ones`;
+        
+        if (coveredTopics.size > 0) {
+          varietyInstruction += `\n- Already covered topics: ${Array.from(coveredTopics).join(', ')}`;
+        }
+      }
+      
+      // Generate question with variety instruction
+      // Combine topic and variety instruction if topic exists, otherwise just use variety instruction
+      const fullTopic = topic 
+        ? `${topic}${varietyInstruction}` 
+        : varietyInstruction.trim();
+      
+      const question = await this.generateQuestion(
+        subject,
+        difficulty,
+        fullTopic || undefined, // Pass undefined if empty
+        includeGraph
+      );
+      
+      questions.push(question);
+      
+      // Track covered topics from tags
+      question.tags.forEach(tag => coveredTopics.add(tag.toLowerCase()));
+    }
+    
+    return questions;
   }
 
   /**
@@ -128,13 +175,33 @@ export class QuestionGeneratorService {
     topic?: string,
     includeGraph?: boolean
   ): string {
+    // Check if topic contains variety instruction
+    const hasVarietyInstruction = topic?.includes('IMPORTANT VARIETY REQUIREMENT');
+    
+    let baseTopic: string | undefined;
+    let varietyInstruction: string | undefined;
+    
+    if (hasVarietyInstruction && topic) {
+      // Extract base topic and variety instruction
+      const parts = topic.split('\n\nIMPORTANT VARIETY REQUIREMENT');
+      baseTopic = parts[0].trim() || undefined;
+      varietyInstruction = 'IMPORTANT VARIETY REQUIREMENT' + parts[1];
+    } else {
+      baseTopic = topic;
+    }
+    
     let prompt = `Generate a ${difficulty} difficulty ${subject} SAT question`;
     
-    if (topic) {
-      prompt += ` focused on the topic: "${topic}"`;
+    if (baseTopic) {
+      prompt += ` focused on the topic: "${baseTopic}"`;
     }
     
     prompt += `.\n\nDifficulty Score: ${difficultyScore}/10\n\n`;
+    
+    // Add variety instruction if present
+    if (varietyInstruction) {
+      prompt += varietyInstruction + '\n\n';
+    }
     
     // Build JSON format example based on graph requirement
     if (subject === 'math' && includeGraph) {
