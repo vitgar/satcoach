@@ -50,13 +50,15 @@ export class QuestionGeneratorService {
    */
   async generateQuestion(
     subject: Subject,
-    difficulty: Difficulty,
+    difficulty?: Difficulty,
     topic?: string,
     includeGraph?: boolean
   ): Promise<GeneratedQuestion> {
-    const difficultyScore = this.mapDifficultyToScore(difficulty);
+    // If no difficulty specified, pick a random one
+    const actualDifficulty = difficulty || this.getRandomDifficulty();
+    const difficultyScore = this.mapDifficultyToScore(actualDifficulty);
     
-    const userPrompt = this.buildQuestionPrompt(subject, difficulty, difficultyScore, topic, includeGraph);
+    const userPrompt = this.buildQuestionPrompt(subject, actualDifficulty, difficultyScore, topic, includeGraph);
     
     const messages: ChatMessage[] = [
       { role: 'system', content: QUESTION_GENERATION_PROMPT },
@@ -80,7 +82,7 @@ export class QuestionGeneratorService {
       // Response is already validated by the schema
       return {
         subject,
-        difficulty,
+        difficulty: actualDifficulty,
         difficultyScore,
         content: {
           questionText: response.questionText,
@@ -103,7 +105,7 @@ export class QuestionGeneratorService {
    */
   async generateQuestions(
     subject: Subject,
-    difficulty: Difficulty,
+    difficulty: Difficulty | undefined,
     count: number,
     topic?: string,
     includeGraph?: boolean
@@ -278,6 +280,14 @@ Important:
     };
 
     return baseSchema;
+  }
+
+  /**
+   * Get a random difficulty level
+   */
+  private getRandomDifficulty(): Difficulty {
+    const difficulties: Difficulty[] = ['easy', 'medium', 'hard'];
+    return difficulties[Math.floor(Math.random() * difficulties.length)];
   }
 
   /**

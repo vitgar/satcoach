@@ -68,7 +68,7 @@ export class QuestionController {
         return;
       }
 
-      if (!difficulty || !['easy', 'medium', 'hard'].includes(difficulty)) {
+      if (difficulty && !['easy', 'medium', 'hard'].includes(difficulty)) {
         res.status(400).json({ error: 'Invalid difficulty' });
         return;
       }
