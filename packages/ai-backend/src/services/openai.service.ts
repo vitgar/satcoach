@@ -100,7 +100,16 @@ export class OpenAIService {
   }
 
   /**
-   * Generate structured data using function calling with JSON schema enforcement
+   * Check if model requires modern tools API instead of deprecated functions API
+   */
+  private requiresToolsAPI(model: string): boolean {
+    // GPT-5.x and newer models require the tools API
+    return model.includes('gpt-5') || model.includes('gpt-6');
+  }
+
+  /**
+   * Generate structured data using function/tools calling with JSON schema enforcement
+   * Uses modern 'tools' API for GPT-5+ models, falls back to 'functions' for older models
    */
   async generateStructuredData<T = any>(
     options: ChatCompletionOptions,
@@ -118,8 +127,6 @@ export class OpenAIService {
         model,
         messages: options.messages,
         temperature: options.temperature ?? config.temperature,
-        functions: [functionSchema],
-        function_call: { name: functionSchema.name },
       };
 
       // Use max_completion_tokens for models that require it (o1, gpt-5.x)
@@ -129,15 +136,48 @@ export class OpenAIService {
         requestParams.max_tokens = maxTokens;
       }
 
-      const response = await openai.chat.completions.create(requestParams);
-
-      const functionCall = response.choices[0]?.message?.function_call;
-      
-      if (!functionCall || !functionCall.arguments) {
-        throw new Error('No function call in OpenAI response');
+      // Use tools API for GPT-5+ models (functions is deprecated)
+      if (this.requiresToolsAPI(model)) {
+        requestParams.tools = [{
+          type: 'function',
+          function: {
+            name: functionSchema.name,
+            description: functionSchema.description,
+            parameters: functionSchema.parameters,
+          }
+        }];
+        requestParams.tool_choice = {
+          type: 'function',
+          function: { name: functionSchema.name }
+        };
+      } else {
+        // Legacy API for older models
+        requestParams.functions = [functionSchema];
+        requestParams.function_call = { name: functionSchema.name };
       }
 
-      const result = JSON.parse(functionCall.arguments);
+      const response = await openai.chat.completions.create(requestParams);
+
+      // Handle response based on API used
+      let resultArgs: string | undefined;
+      
+      if (this.requiresToolsAPI(model)) {
+        // Modern tools API response
+        const toolCalls = response.choices[0]?.message?.tool_calls;
+        if (toolCalls && toolCalls.length > 0) {
+          resultArgs = toolCalls[0].function?.arguments;
+        }
+      } else {
+        // Legacy function_call response
+        const functionCall = response.choices[0]?.message?.function_call;
+        resultArgs = functionCall?.arguments;
+      }
+      
+      if (!resultArgs) {
+        throw new Error('No function/tool call in OpenAI response');
+      }
+
+      const result = JSON.parse(resultArgs);
       return result as T;
     } catch (error: any) {
       console.error('OpenAI Function Calling Error:', error.message);
